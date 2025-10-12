@@ -17,6 +17,7 @@
 }
 
 @media (max-width: 480px) {
+
     .prize-section p,
     .btn-upload,
     .progress-text.completed {
@@ -51,16 +52,12 @@
         height: 48px !important;
     }
 
-    .form-group span {
-        transform: translate(0px, -85px);
-    }
-
     .img-container {
         justify-content: center;
         margin-top: 30px;
         transform: translateX(-10%);
     }
-    
+
     .img-container img {
         height: 60vh;
     }
@@ -166,24 +163,22 @@
 
     .modal-fullscreen-sm-down .modal-body {
         overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-        margin-top: 2rem;
     }
 
     form {
         padding: 0;
     }
 
-    #formModal .modal-body h3 {
-        font-size: clamp(22px, 7vw, 32px);
-        margin: 20px 0 0;
+    #formModal .modal-body h6,
+    form,
+    .form-group .info,
+    .form-check {
+        margin-bottom: 2rem;
     }
 
-    .form-group label {
-        margin-bottom: 20px;
+    #formModal .modal-body h3 {
+        font-size: clamp(22px, 7vw, 32px);
+        margin: 1rem 0 2rem;
     }
 
     .form-check-label {
@@ -191,8 +186,8 @@
         line-height: 1.2;
     }
 
-    .gradient-hr {
-        margin: 0 0 6rem;
+    .btn-close.btn-close-white {
+        padding-top: 2rem;
     }
 
     /* Mission Modal */
@@ -209,7 +204,7 @@
 
     #missionModal .modal-header {
         padding: 60px 24px 0;
-        overflow-y: auto;         
+        overflow-y: auto;
     }
 
     #missionModal .modal-header .p3-logo {
@@ -250,8 +245,8 @@
         width: 100%;
     }
 
-    .btn-share {
-        margin: 24px 0 48px;
+    #luckyDrawBtn {
+        margin: 0 0 3rem;
     }
 
     .accordion-item {
@@ -322,8 +317,17 @@
     #prizeDownloadModal .modal-body {
         padding: 2rem 0.5rem;
     }
+
     .img-container img {
         height: 60vh;
+    }
+
+    .nested-modal .modal-dialog {
+        margin: auto 20px;
+    }
+
+    .download-modal.modal-content {
+        padding: 12px;
     }
 }
 
@@ -408,7 +412,7 @@
         justify-content: center;
         transform: translateX(-5%);
     }
-    
+
     .img-container img {
         height: 60vh;
     }
@@ -435,61 +439,161 @@
     .mission-row {
         padding: 2rem 0 0;
     }
-    
+
     .img-container img {
         height: 80vh;
     }
 }
 
 @media (min-width: 1200px) and (max-width: 1399.98px) {
-  .start-now-section img { width: 195px; }
-  .background-box-img, .introduction { width: 1050px; }
-  .background-box-img { height: 550px; }
-  .second-section .img-content img { width: 450px; height: 275px; }
-  .img-tint img { width: 440px; }
+    .start-now-section img {
+        width: 195px;
+    }
 
-  .introduction .title h3, #missionModal .modal-body h3 { font-size: 50px; }
-  .text-content h3,
-  #formModal .modal-body h3 { font-size: 30px; }
-  .form-group label,
-  .form-group input,
-  .bonus-status,
-  .prize-section p,
-  .btn-upload,
-  .btn-download { font-size: 20px; }
-  .text-content p,
-  .task-card p,
-  .submission p,
-  .file-upload h6,
-  .download-modal p { font-size: 14px; }
-  .file-upload p { font-size: 12px; }
-  .task-card h6, .download-modal h3 { font-size: 28px; }
-  .btn-mission .btn-text { width: 280px; font-size: 25px; }
+    .background-box-img,
+    .introduction {
+        width: 1050px;
+    }
 
-  .second-section .text-content { padding: 47px 0 24px; }
-  .text-content p { padding: 0 10px; }
-  .img-content { padding-top: 20px; }
-  .accordion-scroll { height: 430px; }
-  .accordion-item { margin: 0 0.3rem 1rem; }
-  .prize-section { padding: 0; }
-  .mission-row { padding: 1rem 0 0 4rem; }
-  .img-tint { margin-top: 20px; }
-  #missionModal .modal-header .p3-logo { width: 120px; height: 97px; }
-  #prizeDownloadModal .modal-dialog { max-width: 500px; }
-  .download-modal.modal-content { padding: 18px; }
-  #prizeDownloadModal .modal-body { padding: 1rem 30px; }
-  .btn-download { padding: 8px 24px; margin-top: 2rem; }
+    .background-box-img {
+        height: 550px;
+    }
 
-  .accordion-header { border-top: solid 2px red; }
+    .second-section .img-content img {
+        width: 450px;
+        height: 275px;
+    }
+
+    .img-tint img {
+        width: 440px;
+    }
+
+    .introduction .title h3,
+    #missionModal .modal-body h3 {
+        font-size: 50px;
+    }
+
+    .text-content h3,
+    #formModal .modal-body h3 {
+        font-size: 30px;
+    }
+
+    .form-group label,
+    .form-group input,
+    .bonus-status,
+    .prize-section p,
+    .btn-upload,
+    .btn-download {
+        font-size: 20px;
+    }
+
+    .text-content p,
+    .task-card p,
+    .submission p,
+    .file-upload h6,
+    .download-modal p {
+        font-size: 14px;
+    }
+
+    .file-upload p {
+        font-size: 12px;
+    }
+
+    .task-card h6,
+    .download-modal h3 {
+        font-size: 28px;
+    }
+
+    .btn-mission .btn-text {
+        width: 280px;
+        font-size: 25px;
+    }
+
+    .second-section .text-content {
+        padding: 47px 0 24px;
+    }
+
+    .text-content p {
+        padding: 0 10px;
+    }
+
+    .img-content {
+        padding-top: 20px;
+    }
+
+    .accordion-scroll {
+        height: 430px;
+    }
+
+    .accordion-item {
+        margin: 0 0.3rem 1rem;
+    }
+
+    .prize-section {
+        padding: 0;
+    }
+
+    .mission-row {
+        padding: 1rem 0 0 4rem;
+    }
+
+    .img-tint {
+        margin-top: 20px;
+    }
+
+    #missionModal .modal-header .p3-logo {
+        width: 120px;
+        height: 97px;
+    }
+
+    #prizeDownloadModal .modal-dialog {
+        max-width: 500px;
+    }
+
+    .download-modal.modal-content {
+        padding: 18px;
+    }
+
+    #prizeDownloadModal .modal-body {
+        padding: 1rem 30px;
+    }
+
+    .btn-download {
+        padding: 8px 24px;
+        margin-top: 2rem;
+    }
+
+    .accordion-header {
+        border-top: solid 2px red;
+    }
 }
 
 @media (min-width: 1920px) {
-  .background-box-img { width: 1600px; }
-  .img-tint img { width: 600px; }
-  .accordion-scroll { height: 650px; }
-  .mission-row { padding: 3rem 0 0 4rem; max-width: 1500px; }
-  .mission-container { padding-right: 6rem; }
-  .progress { width: 100%; margin-bottom: 48px; }
+    .background-box-img {
+        width: 1600px;
+    }
+
+    .img-tint img {
+        width: 600px;
+    }
+
+    .accordion-scroll {
+        height: 650px;
+    }
+
+    .mission-row {
+        padding: 3rem 0 0 4rem;
+        max-width: 1500px;
+    }
+
+    .mission-container {
+        padding-right: 6rem;
+    }
+
+    .progress {
+        width: 100%;
+        margin-bottom: 48px;
+    }
 }
 
 @media (max-height: 800px) {

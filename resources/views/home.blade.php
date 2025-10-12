@@ -52,32 +52,32 @@
             <img src="img/background-box.png" class="background-box-img">
             <div class="row introduction">
                 <div class="col-md-12 title">
-                    <h3>S.E.E.S. MISSIONS HAVE BEGUN!</h3>
+                    <h3>JOIN THE S.E.E.S. MISSIONS!</h3>
                 </div>
                 <div class="col-12 col-lg-6 text-center order-2 order-lg-1">
                     <div class=" text-content">
-                        <h3>Join And Win Prizes</h3>
-                        <p>The S.E.E.S Missions is a commemorative campaign for Persona 3 Reload, now coming to the Nintendo Switch 2 on 23 October! <br><br>
-                            Join the missions, work with Persona fans and new users alike to hit the milestones and win awesome prizes! There's a freebie hidden in each mission, so everyone is a winner.
+                        <h3>Win Amazing Prizes</h3>
+                        <p>Participate in this Southeast Asia exclusive commemorative campaign for the launch of Persona 3 Reload on the Nintendo Switch 2! <br><br>
+                            Join missions, work together on milestones and unlock a lucky draw for everyone. There's a freebie in every mission, so everyone is a winner.
                         </p>
                     </div>
                     <div class="btn-wrap btn-mission" id="btnMissions">
                         <span class="btn-bg"></span>
-                        <button id="missionBtn" class="btn-text" data-bs-toggle="modal" data-bs-target="#formModal">Enter Missions</button>
+                        <button id="missionBtn" class="btn-text" data-bs-toggle="modal" data-bs-target="#formModal">Start Missions</button>
                     </div>
                 </div>
                 <div class="col-12 col-lg-6 img-content p-0 order-1 order-lg-2">
-                    <img src="img/prizes.png">
+                    <img src="img/prize.png">
                     <p>*Prizes subject to change</p>
                 </div>
             </div>
         </div>
     </div>
-    
     @include('partials.footer')
     @include('partials.modals.form')
     @include('partials.modals.mission')
-    @include('partials.modals.bonus-prize')
+    @include('partials.modals.lucky-draw-unlock')
+    @include('partials.modals.lucky-draw-win')
 
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>

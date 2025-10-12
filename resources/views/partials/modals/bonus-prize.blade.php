@@ -1,13 +1,24 @@
 <div class="modal" id="prizeDownloadModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content download-modal">
-            <button type="button" class="btn-close btn-close-white opacity-100" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn text-end" data-bs-dismiss="modal" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <path d="M17.293 5.29295C17.6835 4.90243 18.3165 4.90243 18.707 5.29295C19.0976 5.68348 19.0976 6.31649 18.707 6.70702L13.4141 12L18.707 17.293L18.7754 17.3691C19.0957 17.7619 19.0731 18.3409 18.707 18.707C18.3409 19.0731 17.7619 19.0957 17.3691 18.7754L17.293 18.707L12 13.414L6.70703 18.707C6.31651 19.0975 5.68349 19.0975 5.29297 18.707C4.90244 18.3165 4.90244 17.6835 5.29297 17.293L10.5859 12L5.29297 6.70702C4.90244 6.31649 4.90244 5.68348 5.29297 5.29295C5.68349 4.90243 6.31651 4.90243 6.70703 5.29295L12 10.5859L17.293 5.29295Z" />
+                </svg>
+            </button>
             <div class="modal-body">
                 <h3>Congrats! You have completed all the tasks.</h3>
                 <p>Here's an exclusive Persona 3 Reload Wallpapers for your download.</p>
                 <img src="img/download-prize.png">
                 <div class="w-100">
-                    <button class="btn-download" onclick="downloadImage()"><img src="img/download.png">Download</button>
+                    <button class="btn-tertiary mt-4" onclick="downloadImage()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+                            <path d="M3 19V17C3 16.4477 3.44772 16 4 16C4.55228 16 5 16.4477 5 17V19C5 19.2652 5.10543 19.5195 5.29297 19.707C5.48051 19.8946 5.73478 20 6 20H18C18.2652 20 18.5195 19.8946 18.707 19.707C18.8946 19.5195 19 19.2652 19 19V17C19 16.4477 19.4477 16 20 16C20.5523 16 21 16.4477 21 17V19C21 19.7957 20.6837 20.5585 20.1211 21.1211C19.5585 21.6837 18.7957 22 18 22H6C5.20435 22 4.44151 21.6837 3.87891 21.1211C3.3163 20.5585 3 19.7956 3 19Z"/>
+                            <path d="M16.293 10.293C16.6835 9.90243 17.3165 9.90243 17.707 10.293C18.0975 10.6835 18.0975 11.3165 17.707 11.707L12.707 16.707C12.3165 17.0975 11.6835 17.0975 11.293 16.707L6.29295 11.707C5.90243 11.3165 5.90243 10.6835 6.29295 10.293C6.68348 9.90243 7.31649 9.90243 7.70702 10.293L12 14.5859L16.293 10.293Z"/>
+                            <path d="M11 16V4C11 3.44772 11.4477 3 12 3C12.5523 3 13 3.44772 13 4V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16Z" />
+                        </svg>
+                        Download
+                    </button>
                 </div>
             </div>
         </div>

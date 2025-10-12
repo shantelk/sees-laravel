@@ -30,15 +30,18 @@
                                     </h2>
                                     <div id="mission1" class="accordion-collapse collapse" aria-labelledby="mission-heading1">
                                         <div class="accordion-body">
-                                            <div class="task-card" data-mission="1" id="task1" data-step="01">
-                                                <p class="title font-adjust">Log in or sign up to Sega Account</p>
-                                                <h6 class="status-text font-adjust">GO</h6>
+                                            <div class="task-card" id="task1" data-mission="1" data-step="01">
+                                                <p class="title font-adjust">Login or signup for a SEGA Account</p>
+                                                <button id="nextBtn" class="btn-bold">
+                                                    <h6 class="btn-text status-text font-adjust">GO</h6>
+                                                    <img src="img/polygon.png" class="btn-bg">
+                                                </button>
                                             </div>
                                             <div class="bonus-status bonus-locked" id="mission1-status">
                                                 <img class="lock-icon" src="img/lock.png">
                                                 <span class="status-label font-adjust">Bonus Prize Locked</span>
                                             </div>
-                                            <p class="help-text" id="mission1-desc">Complete all 1 task to unlock bonus prize!</p>
+                                            <p class="help-text" id="mission1-desc">Complete all 1 task(s) to unlock a bonus prize!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -49,34 +52,37 @@
                                             <div class="d-flex justify-content-between w-100">
                                                 <div class="mission-label">
                                                     <p>Mission 02</p>
-                                                    <h3>Devotion</h3>
+                                                    <h3>Drive</h3>
                                                 </div>
                                                 <div class="progress-sec">
                                                     <p>Task Progress</p>
-                                                    <span class="progress-text" id="mission2-progress">00/03</span>
+                                                    <span class="progress-text" id="mission2-progress">00/02</span>
                                                 </div>
                                             </div>
                                         </button>
                                     </h2>
                                     <div id="mission2" class="accordion-collapse collapse" aria-labelledby="mission-heading2">
                                         <div class="accordion-body">
-                                            <div class="task-card" data-mission="2" data-step="01">
-                                                <p class="title font-adjust">Like ATLUS SEGA SEA on Facebook</p>
-                                                <h6 class="status-text font-adjust">GO</h6>
+                                            <div class="task-card" id="task2" data-mission="2" data-step="01">
+                                                <p class="title font-adjust">Like / Follow ATLUS SEA on Facebook</p>
+                                                <button id="nextBtn" class="btn-bold">
+                                                    <h6 class="btn-text status-text font-adjust">GO</h6>
+                                                    <img src="img/polygon.png" class="btn-bg">
+                                                </button>
+                                                <!-- <h6 class="status-text font-adjust">GO</h6> -->
                                             </div>
-                                            <div class="task-card" data-mission="2" data-step="02">
-                                                <p class="title font-adjust">Like ATLUS SEGA SEA on Instagram</p>
-                                                <h6 class="status-text font-adjust">GO</h6>
-                                            </div>
-                                            <div class="task-card" data-mission="2" data-step="03">
-                                                <p class="title font-adjust">Join ATLUS SEA Discord</p>
-                                                <h6 class="status-text font-adjust">GO</h6>
+                                            <div class="task-card" id="task3" data-mission="2" data-step="02">
+                                                <p class="title font-adjust">Follow @atlus.sea on Instagram</p>
+                                                <button id="nextBtn" class="btn-bold">
+                                                    <h6 class="btn-text status-text font-adjust">GO</h6>
+                                                    <img src="img/polygon.png" class="btn-bg">
+                                                </button>
                                             </div>
                                             <div class="bonus-status bonus-locked" id="mission2-status">
                                                 <img class="lock-icon" src="img/lock.png">
                                                 <span class="status-label font-adjust">Bonus Prize Locked</span>
                                             </div>
-                                            <p class="help-text" id="mission2-desc">Complete all 3 tasks to unlock bonus prize!</p>
+                                            <p class="help-text" id="mission2-desc">Complete all 2 task(s) to unlock a bonus prize!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -87,34 +93,29 @@
                                             <div class="d-flex justify-content-between w-100">
                                                 <div class="mission-label">
                                                     <p>Mission 03</p>
-                                                    <h3>Dedication</h3>
+                                                    <h3>Unity</h3>
                                                 </div>
                                                 <div class="progress-sec">
                                                     <p>Task Progress</p>
-                                                    <span class="progress-text" id="mission3-progress">00/03</span>
+                                                    <span class="progress-text" id="mission3-progress">00/01</span>
                                                 </div>
                                             </div>
                                         </button>
                                     </h2>
                                     <div id="mission3" class="accordion-collapse collapse" aria-labelledby="mission-heading3">
                                         <div class="accordion-body">
-                                            <div class="task-card" data-mission="3" data-step="01">
-                                                <p class="title font-adjust">Watch Persona 3 Reload Trailer</p>
-                                                <h6 class="status-text font-adjust">GO</h6>
-                                            </div>
-                                            <div class="task-card" data-mission="3" data-step="02">
-                                                <p class="title font-adjust">Answer Something Here</p>
-                                                <h6 class="status-text font-adjust">GO</h6>
-                                            </div>
-                                            <div class="task-card" data-mission="3" data-step="03">
-                                                <p class="title font-adjust">Submit Something Here</p>
-                                                <h6 class="status-text font-adjust">GO</h6>
+                                            <div class="task-card" id="task4" data-mission="3" data-step="01">
+                                                <p class="title font-adjust">Join the ATLUS SEA Discord</p>
+                                                <button id="nextBtn" class="btn-bold">
+                                                    <h6 class="btn-text status-text font-adjust">GO</h6>
+                                                    <img src="img/polygon.png" class="btn-bg">
+                                                </button>
                                             </div>
                                             <div class="bonus-status bonus-lock" id="mission3-status">
                                                 <img class="lock-icon" src="img/lock.png">
                                                 <span class="status-label font-adjust">Bonus Prize Locked</span>
                                             </div>
-                                            <p class="help-text" id="mission3-desc">Complete all 3 tasks to unlock bonus prize!</p>
+                                            <p class="help-text" id="mission3-desc">Complete all 1 task(s) to unlock a bonus prize!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -125,24 +126,28 @@
                                             <div class="d-flex justify-content-between w-100">
                                                 <div class="mission-label">
                                                     <p>Final Mission</p>
-                                                    <h3>Submission</h3>
+                                                    <h3>Dedication</h3>
                                                 </div>
                                                 <span id="final-countdown" class="countdown-badge"></span>
+                                                <div class="progress-sec">
+                                                    <p>Receipt Submitted</p>
+                                                    <span class="progress-text" id="receipt-submitted">00</span>
+                                                </div>
                                             </div>
                                         </button>
                                     </h2>
                                     <div id="mission-collapse4" class="accordion-collapse collapse" aria-labelledby="mission-heading4">
                                         <div class="accordion-body">
                                             <div class="submission">
-                                                <p>Upload the receipt of your purchase of Persona 3 Reload from any retail store from the period of 1st October - 23rd October 2025.</p>
+                                                <p>Upload a receipt/proof of purchase* for Persona 3 Reload!</p>
                                                 <div class="file-upload" id="dropArea">
                                                     <h6>Choose a file or drag & drop it here</h6>
                                                     <p>JPEG, PNG or PDF formats, up to 50MB</p>
-                                                    <button class="btn-upload" id="browseBtn">Browse File</button>
-                                                    <input type="file" id="fileInput" hidden multiple accept=".jpg,.jpeg,.png,.pdf" />
+                                                    <button class="btn-tertiary text-uppercase mt-4 mt-lg-5" id="browseBtn">Browse File</button>
+                                                    <input type="file" id="fileInput" hidden accept=".jpg,.jpeg,.png,.pdf" />
                                                     <ul id="fileList"></ul>
                                                 </div>
-                                                <p class="help-text">*You can upload as many receipts as you like as long as its within the event period.</p>
+                                                <p class="help-text">*Verification of receipts will be done during the lucky draw period.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -151,19 +156,24 @@
                         </div>
                     </div>
                     <div class="col-12 col-lg-6 prize-section text-center order-lg-2">
-                        <h3 class="title">Grand Prize</h3>
-                        <p id="luckyDrawText">07 more Tasks Complete to unlock Lucky Draw</p>
+                        <h3 class="title">Lucky Draw</h3>
+                        <p id="luckyDrawText">Complete all tasks to unlock Lucky Draw!</p>
+
                         <div class="d-flex justify-content-center">
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                <span id="progressPercent" class="progress-label">0%</span>
                             </div>
                         </div>
-                        <div class="img-tint">
-                            <img src="img/prizes.png">
+                        <div class="img-tint" id="imgTint">
+                            <img id="prizeImg" src="img/prize-locked.png">
+                            <div class="img-overlay">
+                                <h6 id="progressText">Complete 04 tasks to unlock!</p>
+                            </div>
                         </div>
-                        <button class="btn-share w-100">
-                            <span class="btn-text">Share</span>
-                            <img src="img/polygon.png" class="btn-bg">
+                        <button id="luckyDrawBtn" class="btn-share w-100">
+                            <span class="btn-text">Enter Lucky Draw</span>
+                            <img src="img/polygon-long.png" class="btn-bg">
                         </button>
                     </div>
                 </div>
