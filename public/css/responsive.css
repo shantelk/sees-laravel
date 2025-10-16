@@ -19,7 +19,7 @@
 @media (max-width: 480px) {
 
     .prize-section p,
-    .btn-upload,
+    .btn-tertiary,
     .progress-text.completed {
         font-size: 20px !important;
     }
@@ -482,7 +482,7 @@
     .form-group input,
     .bonus-status,
     .prize-section p,
-    .btn-upload,
+    .btn-tertiary,
     .btn-download {
         font-size: 20px;
     }

@@ -171,7 +171,7 @@
                                 <h6 id="progressText">Complete 04 tasks to unlock!</p>
                             </div>
                         </div>
-                        <button id="luckyDrawBtn" class="btn-share w-100">
+                        <button id="luckyDrawBtn" class="btn-bold w-100">
                             <span class="btn-text">Enter Lucky Draw</span>
                             <img src="img/polygon-long.png" class="btn-bg">
                         </button>

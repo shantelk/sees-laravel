@@ -539,8 +539,7 @@ input:-webkit-autofill:active {
   text-decoration: underline !important;
 }
 
-.btn-bold,
-.btn-share {
+.btn-bold {
   position: relative;
   font-family: 'Croma Sans ExtraBold';
   font-size: 32px;
@@ -561,13 +560,11 @@ input:-webkit-autofill:active {
 
 .btn-bold .btn-bg,
 .btn-bold:disabled .btn-bg,
-.btn-share .btn-bg,
 #luckyDrawBtn {
   display: none;
 }
 
-.btn-bold:hover:not(:disabled) .btn-bg,
-.btn-share:hover .btn-bg {
+.btn-bold:hover:not(:disabled) .btn-bg {
   display: block;
   position: absolute;
   top: 48%;
@@ -584,12 +581,11 @@ input:-webkit-autofill:active {
   transform: translate(-50%, -50%) rotate(10deg);
 }
 
-.btn-share:active .btn-bg {
+#luckyDrawBtn.btn-bold:active .btn-bg {
   transform: translate(-50%, -50%) rotate(2.225deg);
 }
 
-.btn-bold .btn-text,
-.btn-share .btn-text {
+.btn-bold .btn-text {
   position: relative;
   z-index: 2;
 }
@@ -945,18 +941,6 @@ input:-webkit-autofill:active {
 .file-upload p {
   font-family: 'Inter';
   font-size: 14px;
-}
-
-.btn-upload {
-  padding: 12px 24px;
-  font-family: 'Croma Sans ExtraBold';
-  font-size: 24px;
-  background: #1901FB;
-  border: none;
-  text-transform: uppercase;
-  color: #fff;
-  margin: 0 auto;
-  margin-top: 35px;
 }
 
 #fileList {
