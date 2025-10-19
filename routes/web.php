@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-});
+use App\Http\Controllers\MissionController;
+
+Route::get('/', [MissionController::class, 'showMissions'])->name('home');
+

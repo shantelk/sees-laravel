@@ -20,8 +20,8 @@
             </div>
         </button>
     </div>
-    <div id="overlay"></div>
-    <div id="toaster">
+    <!--<div id="overlay"></div>
+     <div id="toaster">
         <span>This website uses cookies to enhance your browsing experience.
             <a href="#">Learn more</a>
         </span>
@@ -29,15 +29,20 @@
             <span class="btn-text">Ok</span>
             <img src="img/polygon.png" class="btn-bg">
         </button>
-    </div>
+    </div> -->
     <audio id="home-audio" autoplay loop muted>
         <source src="audio/music.wav" type="audio/wav">
     </audio>
     <div class="first-section">
         <img class="switch" src="img/switch.png">
         <div class="start-now-section">
+            <button class="w-100 btn-bold" data-bs-toggle="modal" data-bs-target="#missionModal">
+                <span>Launch</span>
+            </button>
+
             <img src="img/p3.png">
             <h3>S.E.E.S. MISSIONS</h3>
+            <p>SOUTHEAST ASIA EDITION</p>
             <div class="image-mask-container">
                 <div onclick="scrollToBottom()" id="lottie-container" class="img img1 cursor-pointer"></div>
             </div>
@@ -57,27 +62,50 @@
                 <div class="col-12 col-lg-6 text-center order-2 order-lg-1">
                     <div class=" text-content">
                         <h3>Win Amazing Prizes</h3>
-                        <p>Participate in this Southeast Asia exclusive commemorative campaign for the launch of Persona 3 Reload on the Nintendo Switch 2! <br><br>
-                            Join missions, work together on milestones and unlock a lucky draw for everyone. There's a freebie in every mission, so everyone is a winner.
+                        <h6 class="event-dt text-cyan">Event period: xx October - xx November 2025</h6>
+                        <p>Participate in this Southeast Asia exclusive launch campaign for Persona 3 Reload on the Nintendo Switch 2! <br><br>
+                            Join missions, work together on milestones and unlock a lucky draw for everyone. There’s a freebie in every mission, so everyone is a winner.</p>
                         </p>
                     </div>
                     <div class="btn-wrap btn-mission" id="btnMissions">
                         <span class="btn-bg"></span>
-                        <button id="missionBtn" class="btn-text" data-bs-toggle="modal" data-bs-target="#formModal">Start Missions</button>
+                        <button id="missionBtn" class="btn-text" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
                     </div>
+                    <button class="btn-link mt-3" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        Already signed up? Continue missions here
+                    </button>
                 </div>
                 <div class="col-12 col-lg-6 img-content p-0 order-1 order-lg-2">
-                    <img src="img/prize.png">
+                    <img src="img/prize-v2.png">
                     <p>*Prizes subject to change</p>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Done -->
     @include('partials.footer')
-    @include('partials.modals.form')
-    @include('partials.modals.mission')
-    @include('partials.modals.lucky-draw-unlock')
-    @include('partials.modals.lucky-draw-win')
+    @include('modals.static', [ 'id'=> 'ppModal', 'title'=> 'Privacy Policy'])
+    @include('modals.static', [ 'id'=> 'tosModal', 'title'=> 'Terms of Service'])
+    @include('modals.confirmation', [
+        'id' => 'signoutModal',
+        'title' => 'Are you sure <br> you want to logout?',
+        'buttonText' => 'No, bring me back',
+    ])
+    @include('modals.confirmation', [
+        'id' => 'errorUnlockModal',
+        'title' => 'Complete at least 1 <br>mission to join.',
+        'buttonText' => 'Back to Missions',
+    ])
+
+
+    <!--  -->
+    @include('modals.signup')
+    @include('modals.login')
+
+    @include('modals.mission', ['missions' => $missions])
+    @include('modals.entry-submission')
+
+
 
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>

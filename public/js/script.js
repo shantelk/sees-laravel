@@ -38,12 +38,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setupToggle(homeAudio, homeToggle, [homeToggle]);
 
-    toasterBtn.addEventListener("click", () => {
-        overlay.style.display = "none";
-        toaster.style.display = "none";
-        homeAudio.muted = false;
-        homeAudio.play().catch(() => { });
-    });
+    // toasterBtn.addEventListener("click", () => {
+    //     overlay.style.display = "none";
+    //     toaster.style.display = "none";
+    //     homeAudio.muted = false;
+    //     homeAudio.play().catch(() => { });
+    // });
 
     // Form Validation //
     const usernameInput = document.getElementById("username");
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const emailValid = emailInput.checkValidity();
         const checkboxChecked = checkbox.checked;
         if (nicknameValid && emailValid && checkboxChecked) {
-            missionBtn.textContent = "Continue Missions";
+            // missionBtn.textContent = "Continue Missions";
             missionBtn.setAttribute("data-bs-target", "#missionModal");
         }
     });
@@ -193,13 +193,26 @@ document.querySelectorAll('.task-card').forEach(card => {
 //         }
 //     });
 // });
+document.querySelectorAll('.bonus-status').forEach(el => {
+    el.addEventListener('click', () => {
+        if (el.classList.contains('bonus-unlocked')) {
+            const missionId = el.dataset.id;
+            const modalEl = document.getElementById(`prizeModal${missionId}`);
+            const prizeModal = new bootstrap.Modal(modalEl, {
+                backdrop: false,
+                keyboard: false
+            });
+            prizeModal.show();
+        }
+    });
+});
 
 const imgTint = document.getElementById('imgTint');
 const progressText = document.getElementById('progressText');
 imgTint.addEventListener('click', () => {
     const isVisible = progressText && window.getComputedStyle(progressText).display != 'none' && progressText.textContent.trim() != '';
     if (isVisible) {
-        const unlockModal = new bootstrap.Modal(unlockLuckyDraw, {
+        const unlockModal = new bootstrap.Modal(document.getElementById("errorUnlockModal"), {
             backdrop: false,   // keeps first modal visible
             keyboard: false
         });
@@ -219,38 +232,67 @@ function updateProgressBar() {
     const percent = (doneTasks / allTasks) * 100;
     const remaining = allTasks - doneTasks;
 
-    globalBar.style.width = percent + "%";
-    globalBar.setAttribute("aria-valuenow", percent.toFixed(2));
-    progressPercent.textContent = `${Math.round(percent)}%`;
+    // globalBar.style.width = percent + "%";
+    // globalBar.setAttribute("aria-valuenow", percent.toFixed(2));
+    // progressPercent.textContent = `${Math.round(percent)}%`;
 
-    if (percent >= 100) {
-        progressPercent.classList.add("complete");
-    } else {
-        progressPercent.classList.remove("complete");
-    }
+    // if (percent >= 100) {
+    //     progressPercent.classList.add("complete");
+    // } else {
+    //     progressPercent.classList.remove("complete");
+    // }
 
     if (remaining > 0) {
-        luckyDrawText.textContent = "Complete all tasks to unlock Lucky Draw!";
+        luckyDrawText.textContent = "Complete missions to accumulate entry chances!";
         progressText.textContent = `Complete ${remaining.toString().padStart(2, "0")} task${remaining > 1 ? 's' : ''} to unlock!`;
         prizeImg.src = 'img/prize-locked.png';
-        luckyDrawBtn.style.display = 'none';
+        // luckyDrawBtn.style.display = 'none';
     } else {
-        luckyDrawText.textContent = "You've completed all your tasks!";
+        luckyDrawText.textContent = "You've completed all mission(s)!";
         progressText.textContent = "";
         prizeImg.src = 'img/prize.png';
-        luckyDrawBtn.style.display = 'block';
+        // luckyDrawBtn.style.display = 'block';
     }
 }
 
+const step1 = document.querySelector('#entryModal .step-1');
+const step2 = document.querySelector('#entryModal .step-2');
 document.getElementById('luckyDrawBtn').addEventListener('click', function (e) {
     e.preventDefault();
 
-    const unlockLuckyDrawModal = new bootstrap.Modal(luckyDrawModal, {
+    const entryModal = new bootstrap.Modal(document.getElementById("entryModal"), {
         backdrop: false,
         keyboard: false
     });
-    unlockLuckyDrawModal.show();
+    entryModal.show();
+
+    step2.classList.add('d-none');
 });
+
+document.getElementById('entryBtn').addEventListener('click', function (e) {
+    step1.classList.add('d-none');
+    step2.classList.remove('d-none');
+});
+
+// Reset when modal closes
+const entryModal = document.getElementById('entryModal');
+entryModal.addEventListener('hidden.bs.modal', function () {
+    step1.classList.remove('d-none');
+    step2.classList.add('d-none');
+});
+
+// Sign Out
+document.getElementById('signoutBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const signoutModal = new bootstrap.Modal(document.getElementById("signoutModal"), {
+        backdrop: false,
+        keyboard: false
+    });
+    signoutModal.show();
+
+});
+
 
 // Drag & drop & File Upload //
 const dropArea = document.getElementById("dropArea");
@@ -307,22 +349,22 @@ function validateFile(file) {
     return true;
 }
 
-const taskLinks = {
-    task1: "https://cpn.sega-account.com/",
-    task2: "https://www.facebook.com/Atlus.asia/",
-    task3: "https://www.instagram.com/atlus.sea/",
-    task4: "https://discord.com/invite/atlussea"
-};
-Object.keys(taskLinks).forEach(taskId => {
-    const el = document.getElementById(taskId);
-    if (el) {
-        el.addEventListener("click", () => {
-            window.open(taskLinks[taskId], "_blank");
-        });
-    }
-});
+// const taskLinks = {
+//     task1: "https://cpn.sega-account.com/",
+//     task2: "https://www.facebook.com/Atlus.asia/",
+//     task3: "https://www.instagram.com/atlus.sea/",
+//     task4: "https://discord.com/invite/atlussea"
+// };
+// Object.keys(taskLinks).forEach(taskId => {
+//     const el = document.getElementById(taskId);
+//     if (el) {
+//         el.addEventListener("click", () => {
+//             window.open(taskLinks[taskId], "_blank");
+//         });
+//     }
+// });
 
-function downloadImage() {
+function downloadImage(item) {
     const link = document.createElement('a');
     link.href = 'img/download-prize.png';
     link.download = 'download-prize.png';

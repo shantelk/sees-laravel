@@ -1,6 +1,6 @@
 <footer>
     <div>
-        <a href="#">Privacy Policy </a> <span> | </span> <a href="#">Terms of Service</a>
+        <button class="btn-link" data-bs-toggle="modal" data-bs-target="#ppModal">Privacy Policy</button> <span> | </span> <button class="btn-link" data-bs-toggle="modal" data-bs-target="#tosModal">Terms of Service</button>
     </div>
     <p class="mb-0"> © ALTUS. © SEGA.</p>
 </footer>
