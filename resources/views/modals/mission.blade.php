@@ -130,7 +130,7 @@
                         <h3 class="title">Lucky Draw</h3>
                         <p id="luckyDrawText">Complete missions to accumulate entry chances!</p>
                         <p>Entries acquired: 0</p>
-                        <div class="img-tint" id="imgTint">
+                        <div class="img-tint locked" id="imgTint">
                             <img id="prizeImg" src="img/prize-v2-locked.png">
                             <div class="img-overlay">
                                 <h6 id="progressText">Complete a mission to unlock!</h6>
