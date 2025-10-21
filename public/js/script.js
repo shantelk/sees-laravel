@@ -38,12 +38,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setupToggle(homeAudio, homeToggle, [homeToggle]);
 
-    // toasterBtn.addEventListener("click", () => {
-    //     overlay.style.display = "none";
-    //     toaster.style.display = "none";
-    //     homeAudio.muted = false;
-    //     homeAudio.play().catch(() => { });
-    // });
+    toasterBtn.addEventListener("click", () => {
+        overlay.style.display = "none";
+        toaster.style.display = "none";
+        homeAudio.muted = false;
+        homeAudio.play().catch(() => { });
+    });
 
     // Form Validation //
     function isEmailValid(email) {
@@ -103,23 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
         checkbox.addEventListener("change", validateSignup);
     }
 
-    // Countdown Timer //
-    // const today = new Date();
-    // const unlockDate = new Date("2025-09-29T00:00:00");
-    // const finalMission = document.getElementById("final-mission");
-    // const countdownEl = document.getElementById("final-countdown");
-    // const btn = finalMission.querySelector(".accordion-button");
-
-    // if (today < unlockDate) {
-    //     const diffTime = unlockDate - today;
-    //     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    //     countdownEl.textContent = `Unlock in ${diffDays} days`;
-    // } else {
-    //     finalMission.classList.remove("locked");
-    //     btn.removeAttribute("disabled");
-    //     if (countdownEl) countdownEl.remove();
-    // }
-
     function formatNumber(n) {
         return n.toString().padStart(2, '0');
     }
@@ -131,60 +114,105 @@ document.addEventListener("DOMContentLoaded", function () {
         4: { total: 1, completed: 0 }
     };
 
-    // refine ? //
-    /**
-     * Update mission progress, unlock bonuses, and trigger Lucky Draw eligibility.
-     * @param {number} missionId - The mission ID (e.g., 1, 2, 3, 4)
-     */
-
     function completeMission(missionId) {
         if (!missions[missionId]) return;
 
-        // ✅ Mark completed
         missions[missionId].completed = missions[missionId].total;
 
-        // ✅ Update progress text
         const progressEl = document.getElementById(`mission${missionId}-progress`) || document.getElementById('receipt-submitted');
         if (progressEl) {
             progressEl.textContent = "Completed";
             progressEl.classList.add("completed");
         }
 
-        // ✅ Unlock bonus status
         const statusEl = document.getElementById(`mission${missionId}-status`);
         const descEl = document.getElementById(`mission${missionId}-desc`);
         const lockIcon = statusEl?.querySelector(".lock-icon");
 
         if (statusEl) {
-            statusEl.classList.remove("bonus-locked");
             statusEl.classList.add("bonus-unlocked");
-            statusEl.querySelector(".status-label").textContent = "Bonus Prize Unlocked!";
+            statusEl.classList.remove("bonus-locked");
+            const label = statusEl.querySelector(".status-label");
+            if (label) label.textContent = "Bonus Prize Unlocked!";
         }
         if (lockIcon) lockIcon.style.display = "none";
         if (descEl) descEl.innerHTML = "You have completed your tasks! <br> Unlock and claim your bonus prize.";
 
-        // ✅ Trigger Lucky Draw enable
-        updateLuckyDrawButton();
+        updateLuckyDrawSection();
     }
 
-    function updateLuckyDrawButton() {
+    function incompleteMission(missionId) {
+        if (!missions[missionId]) return;
+
+        missions[missionId].completed = 0;
+
+        const progressEl = document.getElementById(`mission${missionId}-progress`) || document.getElementById('receipt-submitted');
+        if (progressEl) {
+            progressEl.textContent = `${formatNumber(missions[missionId].completed)}/${formatNumber(missions[missionId].total)}`;
+            progressEl.classList.remove("completed");
+        }
+
+        const statusEl = document.getElementById(`mission${missionId}-status`);
+        const descEl = document.getElementById(`mission${missionId}-desc`);
+        const lockIcon = statusEl?.querySelector(".lock-icon");
+
+        if (statusEl) {
+            statusEl.classList.remove("bonus-unlocked");
+            statusEl.classList.add("bonus-locked");
+            const label = statusEl.querySelector(".status-label");
+            if (label) label.textContent = "Bonus Prize Locked";
+        }
+        if (lockIcon) lockIcon.style.display = "inline-block";
+        if (descEl) descEl.textContent = `Complete all ${missions[missionId].total} task(s) to unlock a bonus prize!`;
+
+        updateLuckyDrawSection();
+    }
+
+    function updateLuckyDrawSection() {
         const completedMissions = Object.values(missions).filter(m => m.completed >= m.total).length;
-        const luckyBtn = document.getElementById("luckyDrawBtn");
-        if (!luckyBtn) return;
+        const allMissions = Object.keys(missions).length;
+
+        const imgTint = document.getElementById('imgTint');
+        const prizeImg = document.getElementById('prizeImg');
+        const luckyDrawText = document.getElementById('luckyDrawText');
+        const luckyDrawBtn = document.getElementById('luckyDrawBtn');
+        const progressText = document.getElementById('progressText');
+
+        if (!imgTint || !prizeImg || !luckyDrawBtn) return;
 
         if (completedMissions >= 1) {
-            luckyBtn.disabled = false;
-            luckyBtn.classList.remove("disabled");
+            imgTint.classList.add("unlocked");
+            imgTint.classList.remove("locked");
+            prizeImg.src = 'img/prize-v2.png';
+            luckyDrawBtn.disabled = false;
+            luckyDrawBtn.classList.remove("disabled");
+            if (progressText) progressText.textContent = "";
+
+            if (completedMissions === allMissions) {
+                luckyDrawText.textContent = "You've completed all mission(s)!";
+            } else {
+                luckyDrawText.textContent = "Complete missions to accumulate entry chances!";
+            }
         } else {
-            luckyBtn.disabled = true;
-            luckyBtn.classList.add("disabled");
+            imgTint.classList.remove("unlocked");
+            imgTint.classList.add("locked");
+            prizeImg.src = 'img/prize-v2-locked.png';
+            luckyDrawBtn.disabled = true;
+            luckyDrawBtn.classList.add("disabled");
+            if (progressText) progressText.textContent = "Complete a mission to unlock!";
+            luckyDrawText.textContent = "Complete missions to accumulate entry chances!";
         }
+    }
+
+    function onReceiptUploaded() {
+        completeMission(4);
     }
 
     document.querySelectorAll('.task-card').forEach(card => {
         card.addEventListener('click', () => {
             const mission = card.dataset.mission;
             const statusText = card.querySelector('.status-text');
+            const progress = document.getElementById(`mission${mission}-progress`);
 
             if (!card.classList.contains('complete')) {
                 card.classList.add('complete');
@@ -196,41 +224,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 missions[mission].completed--;
             }
 
-            const progress = document.getElementById(`mission${mission}-progress`);
+            progress.textContent = `${formatNumber(missions[mission].completed)}/${formatNumber(missions[mission].total)}`;
+            progress.classList.remove("completed");
+
+            const statusLabel = document.getElementById(`mission${mission}-status`);
+            const desc = document.getElementById(`mission${mission}-desc`);
+            const lockIcon = statusLabel?.querySelector(".lock-icon");
 
             if (missions[mission].completed === missions[mission].total) {
                 completeMission(mission);
             } else {
-                progress.textContent = `${formatNumber(missions[mission].completed)}/${formatNumber(missions[mission].total)}`;
-                progress.classList.remove("completed");
-            }
-
-            const statusLabel = document.getElementById(`mission${mission}-status`);
-            const desc = document.getElementById(`mission${mission}-desc`);
-            const lockIcon = statusLabel.querySelector(".lock-icon");
-
-            if (missions[mission].completed === missions[mission].total) {
-                statusLabel.classList.add("bonus-unlocked");
-                statusLabel.classList.remove("bonus-locked");
-
-                if (lockIcon) lockIcon.style.display = "none";
-                statusLabel.querySelector(".status-label").textContent = "Bonus Prize Unlocked!";
-                desc.innerHTML = "You have completed your tasks! <br> Unlock and claim your bonus prize.";
-            } else {
-                statusLabel.classList.add("bonus-locked");
-                statusLabel.classList.remove("bonus-unlocked");
-
+                if (statusLabel) {
+                    statusLabel.classList.add("bonus-locked");
+                    statusLabel.classList.remove("bonus-unlocked");
+                    const label = statusLabel.querySelector(".status-label");
+                    if (label) label.textContent = "Bonus Prize Locked";
+                }
                 if (lockIcon) lockIcon.style.display = "inline-block";
-                statusLabel.querySelector(".status-label").textContent = "Bonus Prize Locked";
-                desc.textContent = `Complete all ${missions[mission].total} task(s) to unlock a bonus prize!`;
+                if (desc) desc.textContent = `Complete all ${missions[mission].total} task(s) to unlock a bonus prize!`;
             }
 
-            updateProgress();
+            updateLuckyDrawSection();
         });
     });
-
-    //////////////
-
 
     document.querySelectorAll('.bonus-status').forEach(el => {
         el.addEventListener('click', () => {
@@ -246,52 +262,18 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-
-
     const imgTint = document.getElementById('imgTint');
-    const progressText = document.getElementById('progressText');
-    imgTint.addEventListener('click', () => {
-        const isVisible = progressText && window.getComputedStyle(progressText).display != 'none' && progressText.textContent.trim() != '';
-        if (isVisible) {
-            const unlockModal = new bootstrap.Modal(document.getElementById("errorUnlockModal"), {
-                backdrop: false,   // keeps first modal visible
-                keyboard: false
-            });
-            unlockModal.show();
-        }
-    });
-
-    function updateProgress() {
-        const prizeImg = document.getElementById('prizeImg');
-        const allTasks = document.querySelectorAll('.task-card').length;
-        const doneTasks = document.querySelectorAll('.task-card.complete').length;
-        const luckyDrawText = document.getElementById('luckyDrawText');
-        const luckyDrawBtn = document.getElementById('luckyDrawBtn');
-
-        const percent = (doneTasks / allTasks) * 100;
-        const remaining = allTasks - doneTasks;
-
-        if (doneTasks >= 1 && doneTasks < allTasks) {
-            luckyDrawText.textContent = "Complete missions to accumulate entry chances!";
-            progressText.textContent = "";
-            prizeImg.src = 'img/prize-v2.png';
-            luckyDrawBtn.removeAttribute('disabled');
-            // luckyDrawBtn.style.display = 'none';
-        } else if (doneTasks === allTasks) {
-            luckyDrawText.textContent = "You've completed all mission(s)!";
-            progressText.textContent = "";
-            prizeImg.src = 'img/prize-v2.png';
-            luckyDrawBtn.removeAttribute('disabled');
-        } else {
-            luckyDrawText.textContent = "Complete missions to accumulate entry chances!";
-            progressText.textContent = "Complete a mission to unlock!";
-            prizeImg.src = 'img/prize-v2-locked.png';
-            luckyDrawBtn.setAttribute('disabled', 'true');
-        }
+    if (imgTint) {
+        imgTint.addEventListener('click', () => {
+            if (imgTint.classList.contains('locked')) {
+                const unlockModal = new bootstrap.Modal(document.getElementById("errorUnlockModal"), {
+                    backdrop: false,
+                    keyboard: false
+                });
+                unlockModal.show();
+            }
+        });
     }
-
-
-
 
     // Drag & drop & File Upload //
     const dropArea = document.getElementById("dropArea");
@@ -340,7 +322,6 @@ document.addEventListener("DOMContentLoaded", function () {
         dropArea.classList.add("d-none");
         fileBox.classList.remove("d-none");
 
-        // Show file info
         fileName.textContent = file.name;
         fileSize.textContent = `${Math.round(file.size / 1024)} kb`;
 
@@ -350,61 +331,69 @@ document.addEventListener("DOMContentLoaded", function () {
     // TODO: replace startFakeUpload() with startRealUpload() when backend API is ready
     function startFakeUpload(file) {
         let progress = 0;
-        uploadStatus.textContent = "Uploading...";
-        uploadStatus.classList.remove("text-success", "text-danger");
-        progressBar.style.width = "0%";
-        progressPercent.textContent = "0%";
 
-        progressBar.parentElement.classList.remove("d-none");
-        progressPercent.classList.remove("d-none");
+        const fileNameEl = document.querySelector(".file-name");
+        const fileSizeEl = document.querySelector(".file-size");
+        const uploadStatus = document.querySelector(".upload-status");
+        const progressBar = document.getElementById("progressBar");
+        const progressPercent = document.getElementById("progressPercent");
+        const progressBox = document.querySelector(".progress");
+
+        if (fileNameEl) fileNameEl.textContent = file.name;
+        if (fileSizeEl) fileSizeEl.textContent = "-";
+
+        if (uploadStatus) {
+            uploadStatus.textContent = "Uploading...";
+            uploadStatus.classList.remove("text-success", "text-danger", "d-none");
+            uploadStatus.classList.add("text-cyan");
+            uploadStatus.style.opacity = "1";
+        }
+
+        if (progressBox) progressBox.classList.remove("d-none");
+        if (progressBar) progressBar.style.width = "0%";
+        if (progressPercent) {
+            progressPercent.textContent = "0%";
+            progressPercent.classList.remove("d-none");
+        }
 
         const uploadInterval = setInterval(() => {
-            progress += Math.random() * 15; // simulate variable speed
+            progress += 25 + Math.random() * 25;
             if (progress >= 100) progress = 100;
 
-            progressBar.style.width = `${progress}%`;
-            progressPercent.textContent = `${Math.floor(progress)}%`;
+            if (progressBar) progressBar.style.width = `${progress}%`;
+            if (progressPercent) progressPercent.textContent = `${Math.floor(progress)}%`;
 
-            if (progress < 100) {
-                uploadStatus.textContent = `Uploading...`;
-            } else {
+            if (uploadStatus) uploadStatus.textContent = "Uploading...";
+
+            if (progress >= 100) {
                 clearInterval(uploadInterval);
 
-                // simulate random fail/success
-                const success = Math.random() > 0.15; // simulate random failure
-                uploadStatus.classList.remove("text-cyan");
-                if (success) {
-
-
+                if (uploadStatus) {
                     uploadStatus.textContent = "Complete ✓";
+                    uploadStatus.classList.remove("text-cyan");
                     uploadStatus.classList.add("text-success");
-                    progressPercent.textContent = "100%";
-
-                    setTimeout(() => {
-                        progressBar.parentElement.classList.add("d-none");
-                        progressPercent.classList.add("d-none");
-                        uploadStatus.classList.add("d-none");
-                    }, 1000);
-
-                    const submissionEl = document.querySelector('.submission');
-                    const missionId = Number(submissionEl?.dataset.mission);
-                    completeMission(missionId);
-
-
-                    receiptSubmitted.textContent = "01";
-                    // bonusStatus.classList.remove("bonus-locked");
-                    // bonusStatus.classList.add("bonus-unlocked");
-                    // bonusLabel.textContent = "BONUS PRIZE UNLOCKED!";
-                } else {
-                    uploadStatus.textContent = "Upload failed ✗ ";
-                    uploadStatus.classList.add("text-danger");
-                    progressPercent.textContent = "0%";
                 }
+
+                if (fileSizeEl) {
+                    const sizeKB = file.size / 1024;
+                    const readableSize = sizeKB > 1024 ? (sizeKB / 1024).toFixed(2) + " MB" : sizeKB.toFixed(1) + " KB";
+                    fileSizeEl.textContent = readableSize;
+                }
+
+                setTimeout(() => {
+                    if (uploadStatus) uploadStatus.classList.add("d-none");
+                    if (progressBox) progressBox.classList.add("d-none");
+                    if (progressPercent) progressPercent.classList.add("d-none");
+                }, 500);
+
+                const submissionEl = document.querySelector(".submission");
+                const missionId = Number(submissionEl?.dataset.mission) || 4;
+                completeMission(missionId);
+                onReceiptUploaded();
             }
-        }, 400);
+        }, 200);
     }
 
-    // Done //
     deleteFileBtn.addEventListener("click", () => {
         fileBox.classList.add("d-none");
         dropArea.classList.remove("d-none");
@@ -416,6 +405,7 @@ document.addEventListener("DOMContentLoaded", function () {
         bonusStatus.classList.remove("bonus-unlocked");
         bonusStatus.classList.add("bonus-locked");
         bonusLabel.textContent = "BONUS PRIZE LOCKED";
+        incompleteMission(4);
     });
 
     function validateFile(file) {
@@ -438,7 +428,6 @@ document.addEventListener("DOMContentLoaded", function () {
     luckyDrawBtn.addEventListener('click', (e) => {
         e.preventDefault();
 
-        // Always reset to Step 1 when modal opens
         entryModalEl.querySelector('.step-1').classList.remove('d-none');
         entryModalEl.querySelector('.step-2').classList.add('d-none');
 
@@ -458,21 +447,18 @@ document.addEventListener("DOMContentLoaded", function () {
     entryBtn.addEventListener('click', () => {
         if (entryBtn.disabled) return;
 
-        // Switch to Step 2
         entryModalEl.querySelector('.step-1').classList.add('d-none');
         entryModalEl.querySelector('.step-2').classList.remove('d-none');
 
         hasSubmitted = true;
     });
 
-    // 🎯 When modal is closed after Step 2
     entryModalEl.addEventListener('hidden.bs.modal', () => {
         if (hasSubmitted) {
             luckyDrawBtn.textContent = "Check Entries";
             luckyDrawBtn.classList.add('btn-check-entries');
         }
     });
-
 
     // Sign Out
     document.getElementById('signoutBtn').addEventListener('click', function (e) {
@@ -485,29 +471,25 @@ document.addEventListener("DOMContentLoaded", function () {
         signoutModal.show();
 
     });
-
-    // const taskLinks = {
-    //     task1: "https://cpn.sega-account.com/",
-    //     task2: "https://www.facebook.com/Atlus.asia/",
-    //     task3: "https://www.instagram.com/atlus.sea/",
-    //     task4: "https://discord.com/invite/atlussea"
-    // };
-    // Object.keys(taskLinks).forEach(taskId => {
-    //     const el = document.getElementById(taskId);
-    //     if (el) {
-    //         el.addEventListener("click", () => {
-    //             window.open(taskLinks[taskId], "_blank");
-    //         });
-    //     }
-    // });
-
-    function downloadImage(url, filename) {
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = filename || 'bonus-prize';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
 });
+
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-file]');
+    if (!btn) return;
+    const url = btn.dataset.file;
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.setAttribute('download', url.split('/').pop());
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+});
+
+
+function downloadCover() {
+    const link = document.createElement('a');
+    link.href = 'img/paper-cover.jpg';
+    link.download = 'paper-cover.png';
+    link.click();
+}

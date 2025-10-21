@@ -38,11 +38,11 @@
                                                 </div>
                                                 <div class="progress-sec">
                                                     @if(empty($mission['is_final']))
-                                                        <p>Task Progress</p>
-                                                        <span class="progress-text" id="mission{{ $mission['id'] }}-progress">00/{{ sprintf('%02d', count($mission['tasks'])) }}</span>
+                                                    <p>Task Progress</p>
+                                                    <span class="progress-text" id="mission{{ $mission['id'] }}-progress">00/{{ sprintf('%02d', count($mission['tasks'])) }}</span>
                                                     @else
-                                                        <p>Receipt Submitted</p>
-                                                        <span class="progress-text" id="receipt-submitted">00</span>
+                                                    <p>Receipt Submitted</p>
+                                                    <span class="progress-text" id="receipt-submitted">00</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -51,18 +51,21 @@
                                     <div id="mission{{ $mission['id'] }}" class="accordion-collapse collapse" aria-labelledby="mission-heading{{ $mission['id'] }}">
                                         <div class="accordion-body">
                                             @if(empty($mission['is_final']))
-                                                @foreach($mission['tasks'] as $index => $task)
-                                                <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}">
-                                                    <p class="title font-adjust">{{ $task }}</p>
-                                                    <button class="btn-bold">
-                                                        <h6 class="btn-text status-text font-adjust">GO</h6>
-                                                        <img src="{{ asset('img/polygon.png') }}" class="btn-bg">
-                                                    </button>
-                                                </div>
-                                                @endforeach
-                                                @if(isset($mission['note']))
-                                                    <em>Note: {{ $mission['note'] }}</em>
-                                                @endif
+                                            @foreach($mission['tasks'] as $index => $task)
+                                            @php
+                                                $link = $mission['links'][$index] ?? '#';
+                                            @endphp
+                                            <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}" onclick="window.open('{{ $link }}', '_blank', 'noopener')">
+                                                <p class="title font-adjust">{{ $task }}</p>
+                                                <button class="btn-bold">
+                                                    <h6 class="btn-text status-text font-adjust">GO</h6>
+                                                    <img src="{{ asset('img/polygon.png') }}" class="btn-bg">
+                                                </button>
+                                            </div>
+                                            @endforeach
+                                            @if(isset($mission['note']))
+                                            <em>Note: {{ $mission['note'] }}</em>
+                                            @endif
                                             @else
                                             <div class="submission" data-mission="{{ $mission['id'] }}">
                                                 <p>Upload a receipt/proof of purchase* for Persona 3 Reload!</p>

@@ -20,7 +20,7 @@
             </div>
         </button>
     </div>
-    <!--<div id="overlay"></div>
+    <div id="overlay"></div>
      <div id="toaster">
         <span>This website uses cookies to enhance your browsing experience.
             <a href="#">Learn more</a>
@@ -29,7 +29,7 @@
             <span class="btn-text">Ok</span>
             <img src="img/polygon.png" class="btn-bg">
         </button>
-    </div> -->
+    </div>
     <audio id="home-audio" autoplay loop muted>
         <source src="audio/music.mp3" type="audio/mp3">
     </audio>
