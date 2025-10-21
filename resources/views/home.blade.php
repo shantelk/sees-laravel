@@ -21,7 +21,7 @@
         </button>
     </div>
     <div id="overlay"></div>
-     <div id="toaster">
+    <div id="toaster">
         <span>This website uses cookies to enhance your browsing experience.
             <a href="#">Learn more</a>
         </span>
@@ -36,10 +36,6 @@
     <div class="first-section">
         <img class="switch" src="img/switch.png">
         <div class="start-now-section">
-            <button class="w-100 btn-bold" data-bs-toggle="modal" data-bs-target="#missionModal">
-                <span>Launch</span>
-            </button>
-
             <img src="img/p3.png">
             <h3>S.E.E.S. MISSIONS</h3>
             <p>SOUTHEAST ASIA EDITION</p>
@@ -84,23 +80,22 @@
     </div>
     @include('partials.footer')
 
-    @include('modals.mission', ['missions' => $missions])
-
     @include('modals.auth.login')
     @include('modals.auth.signup')
+    @include('modals.mission', ['missions' => $missions])
 
     @include('modals.static-content', [ 'id'=> 'ppModal', 'title'=> 'Privacy Policy'])
     @include('modals.static-content', [ 'id'=> 'tosModal', 'title'=> 'Terms of Service'])
 
     @include('modals.confirmation', [
-        'id' => 'signoutModal',
-        'title' => 'Are you sure <br> you want to logout?',
-        'buttonText' => 'No, bring me back',
+    'id' => 'signoutModal',
+    'title' => 'Are you sure <br> you want to logout?',
+    'buttonText' => 'No, bring me back',
     ])
     @include('modals.confirmation', [
-        'id' => 'errorUnlockModal',
-        'title' => 'Complete at least 1 mission to join.',
-        'buttonText' => 'Back to Missions',
+    'id' => 'errorUnlockModal',
+    'title' => 'Complete at least 1 mission to join.',
+    'buttonText' => 'Back to Missions',
     ])
 
     @include('modals.entry-submission')

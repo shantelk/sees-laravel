@@ -471,21 +471,21 @@ document.addEventListener("DOMContentLoaded", function () {
         signoutModal.show();
 
     });
+
+
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-file]');
+        if (!btn) return;
+        const url = btn.dataset.file;
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.setAttribute('download', url.split('/').pop());
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    });
 });
-
-document.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-file]');
-    if (!btn) return;
-    const url = btn.dataset.file;
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.setAttribute('download', url.split('/').pop());
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-});
-
 
 function downloadCover() {
     const link = document.createElement('a');
