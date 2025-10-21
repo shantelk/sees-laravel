@@ -52,6 +52,18 @@ class MissionController extends Controller
                     'downloads' => [],
                 ],
             ],
+            [
+                'id' => 4,
+                'title' => 'Dedication',
+                'is_final' => true,
+                'bonus' => [
+                    'description' => "Here is an exclusive Persona 3 Reload Nintendo Switch 2 paper cover as a bonus prize.",
+                    'image' => 'img/paper-cover.jpg',
+                    'downloads' => [
+                        ['label' => 'Download', 'link' => 'downloads/mission2_frame.png'],
+                    ],
+                ],
+            ]
         ];
 
         return view('home', compact('missions'));

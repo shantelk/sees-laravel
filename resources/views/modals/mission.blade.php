@@ -3,9 +3,8 @@
         <div class="modal-content bg-image-modal">
             <div class="modal-header text-white">
                 <div class="d-flex justify-content-between w-100">
-                    <!-- <button class="btn-back" data-bs-dismiss="modal"><img src="img/back.png">Back</button> -->
                     <img class="p3-logo cursor-pointer" src="img/p3.png" data-bs-dismiss="modal">
-                    <div class="d-flex items-center">
+                    <div class="d-flex items-center gap-2">
                         <div class="user-details">
                             <h6>John123</h6>
                             <p>john123@email.com</p>
@@ -34,30 +33,76 @@
                                             aria-controls="mission{{ $mission['id'] }}">
                                             <div class="d-flex justify-content-between w-100">
                                                 <div class="mission-label">
-                                                    <p>Mission {{ sprintf('%02d', $mission['id']) }}</p>
+                                                    <p>{{ empty($mission['is_final']) ? 'Mission ' . sprintf('%02d', $mission['id']) : 'Final Mission' }}</p>
                                                     <h3>{{ $mission['title'] }}</h3>
                                                 </div>
                                                 <div class="progress-sec">
-                                                    <p>Task Progress</p>
-                                                    <span class="progress-text" id="mission{{ $mission['id'] }}-progress">00/{{ sprintf('%02d', count($mission['tasks'])) }}</span>
+                                                    @if(empty($mission['is_final']))
+                                                        <p>Task Progress</p>
+                                                        <span class="progress-text" id="mission{{ $mission['id'] }}-progress">00/{{ sprintf('%02d', count($mission['tasks'])) }}</span>
+                                                    @else
+                                                        <p>Receipt Submitted</p>
+                                                        <span class="progress-text" id="receipt-submitted">00</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </button>
                                     </h2>
                                     <div id="mission{{ $mission['id'] }}" class="accordion-collapse collapse" aria-labelledby="mission-heading{{ $mission['id'] }}">
                                         <div class="accordion-body">
-                                            @foreach($mission['tasks'] as $index => $task)
-                                            <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}">
-                                                <p class="title font-adjust">{{ $task }}</p>
-                                                <button class="btn-bold">
-                                                    <h6 class="btn-text status-text font-adjust">GO</h6>
-                                                    <img src="{{ asset('img/polygon.png') }}" class="btn-bg">
-                                                </button>
+                                            @if(empty($mission['is_final']))
+                                                @foreach($mission['tasks'] as $index => $task)
+                                                <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}">
+                                                    <p class="title font-adjust">{{ $task }}</p>
+                                                    <button class="btn-bold">
+                                                        <h6 class="btn-text status-text font-adjust">GO</h6>
+                                                        <img src="{{ asset('img/polygon.png') }}" class="btn-bg">
+                                                    </button>
+                                                </div>
+                                                @endforeach
+                                                @if(isset($mission['note']))
+                                                    <em>Note: {{ $mission['note'] }}</em>
+                                                @endif
+                                            @else
+                                            <div class="submission" data-mission="{{ $mission['id'] }}">
+                                                <p>Upload a receipt/proof of purchase* for Persona 3 Reload!</p>
+                                                <div class="drag-n-drop" id="dropArea">
+                                                    <h6>Choose a file or drag & drop it here</h6>
+                                                    <p>JPEG, PNG or PDF formats, up to 50MB</p>
+                                                    <button class="btn-tertiary text-uppercase mt-4 mt-lg-5" id="browseBtn">Browse File</button>
+                                                    <input type="file" id="fileInput" hidden accept=".jpg,.jpeg,.png,.pdf" />
+                                                </div>
+                                                <div class="file-upload d-none" id="fileBox">
+                                                    <div class="d-flex gap-4 align-items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                            <path d="M12 2L12.117 2.007C12.3402 2.03332 12.5481 2.13408 12.707 2.29301C12.8659 2.45194 12.9667 2.65978 12.993 2.883L13 3V7L13.005 7.15C13.0408 7.62617 13.2458 8.07383 13.5829 8.41203C13.92 8.75023 14.3669 8.95666 14.843 8.994L15 9H19L19.117 9.007C19.3402 9.03332 19.5481 9.13408 19.707 9.29301C19.8659 9.45194 19.9667 9.65978 19.993 9.883L20 10V19C20 19.7652 19.7077 20.5015 19.1827 21.0583C18.6578 21.615 17.9399 21.9501 17.176 21.995L17 22H7C6.23479 22 5.49849 21.7077 4.94174 21.1827C4.38499 20.6578 4.04989 19.9399 4.005 19.176L4 19V5C3.99996 4.23479 4.29233 3.49849 4.81728 2.94174C5.34224 2.38499 6.06011 2.04989 6.824 2.005L7 2H12Z" fill="white" />
+                                                            <path d="M19 7.00002H15L14.999 2.99902L19 7.00002Z" fill="white" />
+                                                        </svg>
+                                                        <div class="d-flex file-info">
+                                                            <div class="file-details">
+                                                                <p class="file-name">File name.jpg</p>
+                                                                <p class="help-text file-size m-0">-</p>
+                                                                <span class="upload-status text-cyan">Uploading...</span>
+                                                            </div>
+                                                            <button class="btn" id="deleteFileBtn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                    <path d="M4 7H20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    <path d="M5 7L6 19C6 19.5304 6.21071 20.0391 6.58579 20.4142C6.96086 20.7893 7.46957 21 8 21H16C16.5304 21 17.0391 20.7893 17.4142 20.4142C17.7893 20.0391 18 19.5304 18 19L19 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    <path d="M9 7V4C9 3.73478 9.10536 3.48043 9.29289 3.29289C9.48043 3.10536 9.73478 3 10 3H14C14.2652 3 14.5196 3.10536 14.7071 3.29289C14.8946 3.48043 15 3.73478 15 4V7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    <path d="M10 12L14 16M14 12L10 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2 mt-2">
+                                                        <div class="progress flex-grow-1 me-2">
+                                                            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                        <span id="progressPercent" class="help-text text-white m-0">0%</span>
+                                                    </div>
+                                                </div>
+                                                <p class="help-text m-0">*Only the latest uploaded receipt is accepted. Verification of receipts will be done during the lucky draw period.</p>
                                             </div>
-                                            @endforeach
-
-                                            @if(isset($mission['note']))
-                                            <em>Note: {{ $mission['note'] }}</em>
                                             @endif
                                             <div class="bonus-status bonus-locked" id="mission{{ $mission['id'] }}-status"
                                                 data-id="{{ $mission['id'] }}"
@@ -68,148 +113,30 @@
                                                 <span class="status-label font-adjust">Bonus Prize Locked</span>
                                             </div>
                                             <p class="help-text" id="mission{{ $mission['id'] }}-desc">
-                                                Complete all {{ count($mission['tasks']) }} task(s) to unlock a bonus prize!
+                                                Complete all {{ !empty($mission['tasks']) ? count($mission['tasks']) : 1 }} task(s) to unlock a bonus prize!
                                             </p>
                                         </div>
                                         @include('modals.bonus-prize', ['mission' => $mission])
                                     </div>
                                 </div>
                                 @endforeach
-
-                                <!-- <div class="accordion-item">
-                                    <h2 class="accordion-header" id="mission-heading2">
-                                        <button class="accordion-button custom-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mission2" aria-expanded="false" aria-controls="mission2">
-                                            <div class="d-flex justify-content-between w-100">
-                                                <div class="mission-label">
-                                                    <p>Mission 02</p>
-                                                    <h3>Drive</h3>
-                                                </div>
-                                                <div class="progress-sec">
-                                                    <p>Task Progress</p>
-                                                    <span class="progress-text" id="mission2-progress">00/02</span>
-                                                </div>
-                                            </div>
-                                        </button>
-                                    </h2>
-                                    <div id="mission2" class="accordion-collapse collapse" aria-labelledby="mission-heading2">
-                                        <div class="accordion-body">
-                                            <div class="task-card" id="task2" data-mission="2" data-step="01">
-                                                <p class="title font-adjust">Like / Follow ATLUS SEA on Facebook</p>
-                                                <button id="nextBtn" class="btn-bold">
-                                                    <h6 class="btn-text status-text font-adjust">GO</h6>
-                                                    <img src="img/polygon.png" class="btn-bg">
-                                                </button>
-                                                <h6 class="status-text font-adjust">GO</h6>
-                                            </div>
-                                            <div class="task-card" id="task3" data-mission="2" data-step="02">
-                                                <p class="title font-adjust">Follow @atlus.sea on Instagram</p>
-                                                <button id="nextBtn" class="btn-bold">
-                                                    <h6 class="btn-text status-text font-adjust">GO</h6>
-                                                    <img src="img/polygon.png" class="btn-bg">
-                                                </button>
-                                            </div>
-                                            <div class="bonus-status bonus-locked" id="mission2-status">
-                                                <img class="lock-icon" src="img/lock.png">
-                                                <span class="status-label font-adjust">Bonus Prize Locked</span>
-                                            </div>
-                                            <p class="help-text" id="mission2-desc">Complete all 2 task(s) to unlock a bonus prize!</p>
-                                        </div>
-                                    </div>
-                                </div> -->
-
-                                <!-- <div class="accordion-item">
-                                    <h2 class="accordion-header" id="mission-heading3">
-                                        <button class="accordion-button custom-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mission3" aria-expanded="false" aria-controls="mission3">
-                                            <div class="d-flex justify-content-between w-100">
-                                                <div class="mission-label">
-                                                    <p>Mission 03</p>
-                                                    <h3>Unity</h3>
-                                                </div>
-                                                <div class="progress-sec">
-                                                    <p>Task Progress</p>
-                                                    <span class="progress-text" id="mission3-progress">00/01</span>
-                                                </div>
-                                            </div>
-                                        </button>
-                                    </h2>
-                                    <div id="mission3" class="accordion-collapse collapse" aria-labelledby="mission-heading3">
-                                        <div class="accordion-body">
-                                            <div class="task-card" id="task4" data-mission="3" data-step="01">
-                                                <p class="title font-adjust">Join the ATLUS SEA Discord</p>
-                                                <button id="nextBtn" class="btn-bold">
-                                                    <h6 class="btn-text status-text font-adjust">GO</h6>
-                                                    <img src="img/polygon.png" class="btn-bg">
-                                                </button>
-                                            </div>
-                                            <div class="bonus-status bonus-lock" id="mission3-status">
-                                                <img class="lock-icon" src="img/lock.png">
-                                                <span class="status-label font-adjust">Bonus Prize Locked</span>
-                                            </div>
-                                            <p class="help-text" id="mission3-desc">Complete all 1 task(s) to unlock a bonus prize!</p>
-                                        </div>
-                                    </div>
-                                </div> -->
-
-                                <div class="accordion-item locked" id="final-mission">
-                                    <h2 class="accordion-header" id="mission-heading4">
-                                        <button disabled class="accordion-button collapsed custom-header" type="button" data-bs-toggle="collapse" data-bs-target="#mission-collapse4" aria-expanded="false" aria-controls="mission-collapse4">
-                                            <div class="d-flex justify-content-between w-100">
-                                                <div class="mission-label">
-                                                    <p>Final Mission</p>
-                                                    <h3>Dedication</h3>
-                                                </div>
-                                                <span id="final-countdown" class="countdown-badge"></span>
-                                                <div class="progress-sec">
-                                                    <p>Receipt Submitted</p>
-                                                    <span class="progress-text" id="receipt-submitted">00</span>
-                                                </div>
-                                            </div>
-                                        </button>
-                                    </h2>
-                                    <div id="mission-collapse4" class="accordion-collapse collapse" aria-labelledby="mission-heading4">
-                                        <div class="accordion-body">
-                                            <div class="submission">
-                                                <p>Upload a receipt/proof of purchase* for Persona 3 Reload!</p>
-                                                <div class="file-upload" id="dropArea">
-                                                    <h6>Choose a file or drag & drop it here</h6>
-                                                    <p>JPEG, PNG or PDF formats, up to 50MB</p>
-                                                    <button class="btn-tertiary text-uppercase mt-4 mt-lg-5" id="browseBtn">Browse File</button>
-                                                    <input type="file" id="fileInput" hidden accept=".jpg,.jpeg,.png,.pdf" />
-                                                    <ul id="fileList"></ul>
-                                                </div>
-                                                <p class="help-text">*Only the latest uploaded receipt is accepted. Verification of receipts will be done during the lucky draw period.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-6 prize-section text-center order-lg-2">
+                    <div class="col-12 col-lg-6 lucky-draw-sec text-center order-lg-2">
                         <h3 class="title">Lucky Draw</h3>
                         <p id="luckyDrawText">Complete missions to accumulate entry chances!</p>
                         <p>Entries acquired: 0</p>
-
-                        <!-- <div class="d-flex justify-content-center">
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                <span id="progressPercent" class="progress-label">0%</span>
-                            </div>
-                        </div> -->
                         <div class="img-tint" id="imgTint">
-                            <img id="prizeImg" src="img/prize-v2.png">
+                            <img id="prizeImg" src="img/prize-v2-locked.png">
                             <div class="img-overlay">
-                                <h6 id="progressText">Complete a mission to unlock!</p>
+                                <h6 id="progressText">Complete a mission to unlock!</h6>
                             </div>
                         </div>
                         <h6 class="event-dt text-cyan">Event period: xx October - xx November 2025</h6>
-                        <button id="luckyDrawBtn" class="btn-tertiary text-uppercase">
-                            Enter Lucky Draw
+                        <button id="luckyDrawBtn" class="btn-tertiary" disabled>
+                            ENTER LUCKY DRAW
                         </button>
-                        <!-- <button id="luckyDrawBtn" class="btn-bold w-100">
-                            <span class="btn-text">Enter Lucky Draw</span>
-                            <img src="img/polygon-long.png" class="btn-bg">
-                        </button> -->
                     </div>
                 </div>
             </div>

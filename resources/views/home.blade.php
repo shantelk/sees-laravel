@@ -31,7 +31,7 @@
         </button>
     </div> -->
     <audio id="home-audio" autoplay loop muted>
-        <source src="audio/music.wav" type="audio/wav">
+        <source src="audio/music.mp3" type="audio/mp3">
     </audio>
     <div class="first-section">
         <img class="switch" src="img/switch.png">
@@ -82,10 +82,16 @@
             </div>
         </div>
     </div>
-    <!-- Done -->
     @include('partials.footer')
-    @include('modals.static', [ 'id'=> 'ppModal', 'title'=> 'Privacy Policy'])
-    @include('modals.static', [ 'id'=> 'tosModal', 'title'=> 'Terms of Service'])
+
+    @include('modals.mission', ['missions' => $missions])
+
+    @include('modals.auth.login')
+    @include('modals.auth.signup')
+
+    @include('modals.static-content', [ 'id'=> 'ppModal', 'title'=> 'Privacy Policy'])
+    @include('modals.static-content', [ 'id'=> 'tosModal', 'title'=> 'Terms of Service'])
+
     @include('modals.confirmation', [
         'id' => 'signoutModal',
         'title' => 'Are you sure <br> you want to logout?',
@@ -93,19 +99,11 @@
     ])
     @include('modals.confirmation', [
         'id' => 'errorUnlockModal',
-        'title' => 'Complete at least 1 <br>mission to join.',
+        'title' => 'Complete at least 1 mission to join.',
         'buttonText' => 'Back to Missions',
     ])
 
-
-    <!--  -->
-    @include('modals.signup')
-    @include('modals.login')
-
-    @include('modals.mission', ['missions' => $missions])
     @include('modals.entry-submission')
-
-
 
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>

@@ -419,7 +419,7 @@ footer span {
 
 .auth-modal .modal-body {
   text-align: center;
-  padding: 0;
+  /* padding: 0; */
 }
 
 form {
@@ -615,19 +615,11 @@ input:-webkit-autofill:active {
   margin-bottom: 0;
 }
 
-/* #entryModal .modal-content {
-  height: 748px;
-} */
-
 #entryModal .modal-body p {
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 #entryModal img {
-  /* width: 199px;
-  height: 199px;
-  flex-shrink: 0;
-  aspect-ratio: 1/1; */
   background: #FFF;
   box-shadow: 8px 8px 0 0 #1800FF;
 }
@@ -640,7 +632,7 @@ input:-webkit-autofill:active {
   align-items: center;
   flex: 1 0 0;
   align-self: stretch;
-  min-height: 690px;
+  min-height: 680px;
 }
 
 .success-entry .desc {
@@ -717,7 +709,7 @@ input:-webkit-autofill:active {
   padding: 12px;
 }
 
-.socials-cta svg {
+.socials-cta a {
   margin: 8px;
 }
 
@@ -840,11 +832,11 @@ input:-webkit-autofill:active {
 
 .accordion-scroll::-webkit-scrollbar {
   width: 6px;
-  background: #1F2467;
+  background: rgba(239, 239, 239, 0.20);
 }
 
 .accordion-scroll::-webkit-scrollbar-thumb {
-  background: #1901FB;
+  background: #EFEFEF;
   border-radius: 0;
 }
 
@@ -897,6 +889,10 @@ input:-webkit-autofill:active {
   margin-bottom: 0 !important;
 }
 
+#receipt-submitted.progress-text.completed {
+  color: #000;
+}
+
 .progress-sec h5 {
   font-size: 24px;
   color: #1901FB;
@@ -912,7 +908,7 @@ input:-webkit-autofill:active {
   color: #fff;
   background-color: #0006E2;
   height: 55px;
-  padding: 8px 2.5rem 8px 1.5rem;
+  padding: 8px 1.5rem 8px 1rem;
   cursor: pointer;
   margin-bottom: 12px;
   overflow: hidden;
@@ -1038,12 +1034,11 @@ input:-webkit-autofill:active {
   margin: 0;
 }
 
-.submission .help-text {
+/* .submission .help-text {
   font-size: 12px !important;
-  margin: 0 !important;
-}
+} */
 
-.file-upload {
+.drag-n-drop {
   border: 2px dashed #fff;
   padding: 2rem 3rem;
   background: #1901FB29;
@@ -1051,25 +1046,36 @@ input:-webkit-autofill:active {
   margin: 24px 0;
 }
 
-.file-upload h6 {
+.drag-n-drop h6 {
   font-family: 'Croma Sans Bold';
   font-size: 16px;
   line-height: 100%;
   margin-bottom: 8px;
 }
 
-.file-upload p {
+.drag-n-drop p {
   font-family: 'Inter';
   font-size: 14px;
 }
 
-#fileList {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0 0;
+.file-upload {
+  background: rgba(0, 6, 226, 0.16);
+  padding: 12px;
+  margin: 24px auto;
 }
 
-.prize-section {
+.file-info {
+  justify-content: space-between;
+  width: 90%;
+  align-items: center;
+}
+
+.file-info .file-name {
+  font-family: "Croma Sans Medium";
+  font-size: 16px;
+}
+
+.lucky-draw-sec {
   position: relative;
 }
 
@@ -1078,24 +1084,20 @@ input:-webkit-autofill:active {
   font-weight: 500;
   font-size: 24px;
   margin-bottom: 0;
+  line-height: 1.3;
 }
 
-.prize-section p {
-  font-family: 'Croma Sans Medium';
+.lucky-draw-sec p {
+  font-family: 'Inter';
   font-size: 16px;
   text-align: center;
-
 }
 
 .progress {
-  width: 550px;
-  height: 16px;
   border: solid 2px #000000;
-  box-shadow: 1px 3px 0px 0px #003CFF;
+  box-shadow: 4px 4px 0 0 #003CFF;
   border-radius: 0;
   background: #0E5293;
-  margin-bottom: 24px;
-  position: relative;
 }
 
 .progress-bar {
@@ -1104,10 +1106,6 @@ input:-webkit-autofill:active {
 }
 
 .progress-label {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
   color: #2DBEFB;
   text-align: right;
   font-family: "Croma Sans Medium";
@@ -1116,6 +1114,25 @@ input:-webkit-autofill:active {
 
 .progress-label.complete {
   color: #0E5293;
+}
+
+.upload-status {
+  font-family: 'Inter';
+  font-size: 12px;
+  margin-top: 1rem;
+}
+
+.text-success {
+  color: #23ED4F !important;
+}
+
+.text-danger {
+  color: #FE0100 !important;
+}
+
+#deleteFileBtn:hover {
+  background: #1901FB;
+  border-radius: 0;
 }
 
 .img-overlay {
@@ -1134,6 +1151,7 @@ input:-webkit-autofill:active {
 .img-tint img {
   width: 480px;
   box-shadow: 8px 8px 0px 0px #1800FF;
+  background: linear-gradient(0deg, rgba(0, 60, 255, 0.80) 0%, rgba(0, 60, 255, 0.80) 100%) lightgray 50% / cover no-repeat;
 }
 
 .img-tint {
@@ -1142,13 +1160,13 @@ input:-webkit-autofill:active {
   margin-bottom: 24px;
 }
 
-.img-tint::after {
+/* .img-tint::after {
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(0, 60, 255, 0.8);
   mix-blend-mode: normal;
-}
+} */
 
 .img-overlay h6 {
   color: #fff;
@@ -1179,17 +1197,46 @@ input:-webkit-autofill:active {
   padding: 0 36px 1.5rem;
 }
 
-/* .download-modal .btn:hover svg {
-  background: #1901FB;
-} */
-
-/* .dynamic img {
-  width: 267px;
-} */
-
 .dynamic p {
   font-family: "Croma Sans Medium";
   font-size: 16px;
+  padding: 0 .5rem;
+}
+
+.dynamic .modal-body {
+  padding: 0 3rem 1.5rem 3rem !important;
+}
+
+.frame-box {
+  display: flex;
+  width: 255px;
+  height: 167px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  margin: .75rem 0;
+}
+
+.inner-frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: #2DBEFB;
+  border: 1px solid #000;
+  position: relative;
+}
+
+.inner-frame img {
+  position: absolute;
+}
+
+.prompt {
+  padding: 0 1rem;
+  margin-top: 3rem;
 }
 
 .retail-logo {
@@ -1201,15 +1248,10 @@ input:-webkit-autofill:active {
   align-items: center;
 }
 
-/* .retail-logo img {
-  height: 44px;
-} */
-
 .modal-bg-dark.modal-content {
   border: none;
   border-radius: 0;
   padding: 24px;
-  /* text-align: center; */
 }
 
 .modal-bg-dark h3,
@@ -1231,13 +1273,10 @@ input:-webkit-autofill:active {
   font-family: "Inter";
   font-size: 12px;
   margin-bottom: 0;
-  /* font-style: normal;
-  font-weight: 500;
-  line-height: normal; */
 }
 
 .static .modal-bg-dark ol {
-  padding: 1rem;
+  padding: 0 .5rem;
 }
 
 .static .modal-bg-dark ol li,
@@ -1262,17 +1301,6 @@ input:-webkit-autofill:active {
   background: #EFEFEF;
   border-radius: 0;
 }
-
-/* .modal-bg-dark p {
-  font-family: 'Croma Sans Medium';
-  font-size: 16px;
-  color: #fff;
-  margin-bottom: 1rem;
-} */
-
-/* .modal-bg-dark img {
-  width: 250px;
-} */
 
 /* Buttons */
 
@@ -1335,9 +1363,6 @@ input:-webkit-autofill:active {
   background: transparent;
   border: none;
   margin: 4px 8px;
-  /* font-style: normal;
-  font-weight: 400;
-  line-height: normal; */
 }
 
 .btn-link:hover,

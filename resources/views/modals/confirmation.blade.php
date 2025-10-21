@@ -12,9 +12,9 @@
                     <button class="btn-tertiary mt-4" data-bs-dismiss="modal" aria-label="Close">{{ $buttonText }}</button>
                 </div>
                 @if($id == 'signoutModal')
-                <div>
-                    <button class="btn-link mt-4" onclick="window.location.href='{{ url('/') }}'">Yes, log me out</button>
-                </div>
+                    <div>
+                        <button class="btn-link mt-4" onclick="window.location.href='{{ url('/') }}'">Yes, log me out</button>
+                    </div>
                 @endif
             </div>
         </div>

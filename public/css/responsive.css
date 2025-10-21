@@ -18,9 +18,15 @@
 
 @media (max-width: 480px) {
 
-    .prize-section p,
-    .btn-tertiary,
-    .progress-text.completed {
+    /* .lucky-draw-sec p {
+        font-size: 16px;
+    } */
+
+    #luckyDrawText {
+        font-size: 22px;
+    }
+
+    .btn-tertiary {
         font-size: 20px !important;
     }
 
@@ -30,21 +36,21 @@
         font-size: 24px;
     }
 
-    .mission-label h3 {
+    /* .mission-label h3 {
         font-size: 20px !important;
-    }
+    } */
 
     .custom-header {
         padding: 15px;
     }
 
-    .file-upload h6 {
+    /* .drag-n-drop h6 {
         font-size: 14px;
-    }
+    } */
 
-    .submission p {
+    /* .submission p {
         font-size: 12px !important;
-    }
+    } */
 
 
     #missionModal .modal-header .p3-logo {
@@ -88,8 +94,12 @@
         width: 100%;
     }
 
-    .start-now-section h3 {
+    /* .start-now-section h3 {
         margin-bottom: clamp(25px, 8vw, 40px);
+    } */
+
+    .start-now-section p {
+        margin-bottom: 20px;
     }
 
     .start-now-section img {
@@ -105,7 +115,7 @@
     }
 
     .background-box-img {
-        height: 782px;
+        height: 850px;
     }
 
     .introduction {
@@ -145,8 +155,8 @@
         font-size: 12px;
     }
 
-    footer{
-        padding: 10px 80px;
+    footer {
+        padding: 10px 60px;
         display: block;
         height: auto;
     }
@@ -156,9 +166,9 @@
     }
 
     /* Modals */
-    .modal-fullscreen-sm-down {
+    /* .modal-fullscreen-sm-down {
         padding: 2.5rem 20px;
-    }
+    } */
 
     .modal-fullscreen-sm-down .modal-body {
         overflow-y: auto;
@@ -168,16 +178,16 @@
         padding: 0;
     }
 
-    .auth-modal.modal-body h6,
+    .auth-modal .modal-body h6,
     form,
     .form-group .info,
     .form-check {
         margin-bottom: 2rem;
     }
 
-    .auth-modal.modal-body h3 {
+    .auth-modal .modal-body h3 {
         font-size: clamp(22px, 7vw, 32px);
-        margin: 1rem 0 2rem;
+        margin: 0 0 2rem;
     }
 
     .form-check-label {
@@ -186,7 +196,7 @@
     }
 
     .btn-close.btn-close-white {
-        padding-top: 2rem;
+        padding-top: 1rem;
     }
 
     /* Mission Modal */
@@ -222,11 +232,12 @@
 
     #missionModal .modal-body h3 {
         font-size: 48px;
+        line-height: 1;
     }
 
-    #missionModal .modal-body h3.title {
+    /* #missionModal .modal-body h3.title {
         font-size: clamp(30px, 8vw, 48px);
-    }
+    } */
 
     .mission-container {
         padding: 0;
@@ -236,11 +247,11 @@
         width: 100%;
     }
 
-    .progress-text {
+    /* .progress-text {
         font-size: clamp(22px, 6vw, 28px);
-    }
+    } */
 
-    .prize-section img {
+    .lucky-draw-sec img {
         width: 100%;
     }
 
@@ -281,17 +292,17 @@
     }
 
     .task-card h6 {
-        font-size: clamp(22px, 7vw, 30px);
+        font-size: clamp(22px, 7vw, 28px);
         padding: 0;
     }
 
     .bonus-status {
         padding: 12px 20px;
-        font-size: clamp(12px, 4vw, 20px);
+        font-size: 20px;
         gap: 5px;
     }
 
-    .file-upload {
+    .drag-n-drop {
         padding: 2rem 1.5rem;
     }
 
@@ -327,6 +338,72 @@
 
     .download-modal.modal-content {
         padding: 12px;
+    }
+
+    .static .modal-bg-dark .modal-body {
+        padding: 0 16px;
+        margin: 0;
+    }
+
+    .auth-modal .modal-content {
+        padding-top: 3rem;
+    }
+
+    .auth-modal .btn-close.btn-close-white {
+        margin-right: 1.25rem;
+    }
+
+    .dynamic h5,
+    .nested-modal .modal-bg-dark h3 {
+        font-size: 24px;
+    }
+
+    .download-btn {
+        flex-direction: column;
+    }
+
+    .img-overlay h6 {
+        padding: 0 1rem;
+    }
+
+    .event-dt {
+        font-size: 12px;
+        margin-bottom: 24px;
+    }
+
+    .file-details {
+        line-height: 1;
+    }
+
+    .download-btn {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        /* optional for spacing between buttons */
+    }
+
+    .dynamic .modal-body,
+    #entryModal .modal-body {
+        padding: 0 !important;
+    }
+
+    .prompt {
+        padding: 0;
+    }
+
+    .retail-logo {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .retail-logo img {
+        /* flex: 0 0 30%; */
+        max-width: 25%;
+        height: auto;
+    }
+
+    .prize-container {
+        display: block;
     }
 }
 
@@ -473,14 +550,14 @@
     }
 
     .text-content h3,
-    .auth-modal.modal-body h3 {
+    .auth-modal .modal-body h3 {
         font-size: 30px;
     }
 
     .form-group label,
     .form-group input,
     .bonus-status,
-    .prize-section p,
+    .lucky-draw-sec p,
     .btn-tertiary,
     .btn-download {
         font-size: 20px;
@@ -489,12 +566,12 @@
     .text-content p,
     .task-card p,
     .submission p,
-    .file-upload h6,
+    .drag-n-drop h6,
     .download-modal p {
         font-size: 14px;
     }
 
-    .file-upload p {
+    .drag-n-drop p {
         font-size: 12px;
     }
 
@@ -528,7 +605,7 @@
         margin: 0 0.3rem 1rem;
     }
 
-    .prize-section {
+    .lucky-draw-sec {
         padding: 0;
     }
 
