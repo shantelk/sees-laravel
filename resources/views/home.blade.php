@@ -94,7 +94,7 @@
     ])
     @include('modals.confirmation', [
     'id' => 'errorUnlockModal',
-    'title' => 'Complete at least 1 mission to join.',
+    'title' => 'Complete at least 1 <br> mission to join.',
     'buttonText' => 'Back to Missions',
     ])
 
