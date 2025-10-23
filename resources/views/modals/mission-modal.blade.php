@@ -55,7 +55,8 @@
                                             @php
                                                 $link = $mission['links'][$index] ?? '#';
                                             @endphp
-                                            <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}" onclick="window.open('{{ $link }}', '_blank', 'noopener')">
+                                            <!-- <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}" onclick="window.open('{{ $link }}', '_blank', 'noopener')"> -->
+                                            <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}">
                                                 <p class="title font-adjust">{{ $task }}</p>
                                                 <button class="btn-bold">
                                                     <h6 class="btn-text status-text font-adjust">GO</h6>
@@ -131,7 +132,7 @@
                         <p id="luckyDrawText">Complete missions to accumulate entry chances!</p>
                         <p>Entries acquired: 0</p>
                         <div class="img-tint locked" id="imgTint">
-                            <img id="prizeImg" src="img/prize-v2-locked.png">
+                            <img id="prizeImg" src="img/prize-locked.png">
                             <div class="img-overlay">
                                 <h6 id="progressText">Complete a mission to unlock!</h6>
                             </div>

@@ -15,18 +15,23 @@
 
                     <p class="mb-1">Please ensure that this is the correct email of your entries:</p>
                     <div class="credentials">
-                        <p>Username: <span>John123</span></p>
-                        <p>Email: <span>john123@email.com</span></p>
+                        <p>Username: <span>{{ $username }}</span></p>
+                        <p>Email: <span>{{ $email }}</span></p>
                     </div>
                 </div>
                 <div class="prize-container">
-                    <div class="prize-img">
-                        <img src="img/controller.png">
-                        <p class="mt-1 mb-0">1 x GameSir Super Nova Multiplatform <br>Game Controller</p>
+                    <div>
+                        <div class="prize-img">
+                            <img src="img/controller.png">
+                        </div>
+                        <p class="mt-3 mb-0">1 x GameSir Super Nova Multiplatform <br>Game Controller</p>
                     </div>
-                    <div class="prize-img">
-                        <img src="img/sample.png">
-                        <p class="mt-1 mb-0">1 x Signed Shikishi from Azusa Shimada <br> (Persona 3 Reload Character Designer)</p>
+                    <div>
+                        <div class="prize-img">
+                            <img src="img/sample.png">
+                            <span>Sample</span>
+                        </div>
+                        <p class="mt-3 mb-0">1 x Signed Shikishi from Azusa Shimada <br> (Persona 3 Reload Character Designer)</p>
                     </div>
                 </div>
                 <div class="w-100">
@@ -36,7 +41,7 @@
                     <button id="backBtn" class="btn-link d-none" data-bs-dismiss="modal" aria-label="Close">Back to Missions</button>
                 </div>
                 <div class="w-100 my-4">
-                    <em class="text-cyan">You have completed [4] mission(s), and have accumulated entries of [4] for the draw.</em>
+                    <em class="text-cyan" id="emText">You have completed [0] mission(s), and have accumulated entries of [0] for the draw.</em>
                 </div>
                 <div class="w-100">
                     <h6>Winners will be announced on official ATLUS SEA pages! Stay tuned!</h6>

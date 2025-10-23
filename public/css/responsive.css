@@ -14,6 +14,10 @@
     .help-text {
         margin: 0 25px;
     }
+
+    .success-entry {
+        min-height: 300px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -36,9 +40,9 @@
         font-size: 24px;
     }
 
-    /* .mission-label h3 {
+    .mission-label h3 {
         font-size: 20px !important;
-    } */
+    }
 
     .custom-header {
         padding: 15px;
@@ -99,7 +103,7 @@
     } */
 
     .start-now-section p {
-        margin-bottom: 20px;
+        margin-bottom: 0;
     }
 
     .start-now-section img {
@@ -156,7 +160,7 @@
     }
 
     footer {
-        padding: 10px 60px;
+        padding: 10px 30px;
         display: block;
         height: auto;
     }
@@ -247,9 +251,9 @@
         width: 100%;
     }
 
-    /* .progress-text {
+    .progress-text {
         font-size: clamp(22px, 6vw, 28px);
-    } */
+    }
 
     .lucky-draw-sec img {
         width: 100%;
@@ -296,9 +300,13 @@
         padding: 0;
     }
 
+    .task-card {
+        padding: 8px 2.5rem 8px 1rem;
+    }
+
     .bonus-status {
         padding: 12px 20px;
-        font-size: 20px;
+        font-size: clamp(12px, 4vw, 20px);
         gap: 5px;
     }
 
@@ -319,11 +327,6 @@
         margin-top: 8px;
     }
 
-    .download-modal h3 {
-        font-size: 24px;
-        padding: 0 0.5rem;
-    }
-
     #prizeDownloadModal .modal-body {
         padding: 2rem 0.5rem;
     }
@@ -336,16 +339,15 @@
         margin: auto 20px;
     }
 
-    .download-modal.modal-content {
-        padding: 12px;
-    }
 
     .static .modal-bg-dark .modal-body {
         padding: 0 16px;
         margin: 0;
     }
 
-    .auth-modal .modal-content {
+    .auth-modal .modal-content,
+    .static .modal-content,
+    #entryModal .modal-content {
         padding-top: 3rem;
     }
 
@@ -375,11 +377,8 @@
         line-height: 1;
     }
 
-    .download-btn {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1rem;
-        /* optional for spacing between buttons */
+    .download-btn button {
+        min-width: 156px;
     }
 
     .dynamic .modal-body,
@@ -398,13 +397,33 @@
 
     .retail-logo img {
         /* flex: 0 0 30%; */
-        max-width: 25%;
+        max-width: 23%;
         height: auto;
     }
 
     .prize-container {
-        display: block;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        padding: 24px 16px;
     }
+
+    .accordion-body em {
+        font-size: 10px;
+    }
+
+    .desc p {
+        width: 100%;
+    }
+
+    .nested-modal .btn-link {
+        margin-top: 1rem;
+    }
+
+    .lucky-draw-sec {
+        padding: 0;
+    }
+
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
@@ -492,6 +511,20 @@
     .img-container img {
         height: 60vh;
     }
+
+    .nested-modal .modal-dialog,
+    .dynamic .modal-dialog {
+        max-width: 650px;
+    }
+
+    #luckyDrawBtn.btn-tertiary {
+        margin: 24px 0;
+    }
+
+    .start-now-section p {
+        margin-bottom: 0;
+    }
+
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
@@ -566,8 +599,7 @@
     .text-content p,
     .task-card p,
     .submission p,
-    .drag-n-drop h6,
-    .download-modal p {
+    .drag-n-drop h6 {
         font-size: 14px;
     }
 
@@ -575,8 +607,7 @@
         font-size: 12px;
     }
 
-    .task-card h6,
-    .download-modal h3 {
+    .task-card h6 {
         font-size: 28px;
     }
 
@@ -586,7 +617,7 @@
     }
 
     .second-section .text-content {
-        padding: 47px 0 24px;
+        padding: 20px 0 24px;
     }
 
     .text-content p {
@@ -620,14 +651,6 @@
     #missionModal .modal-header .p3-logo {
         width: 120px;
         height: 97px;
-    }
-
-    /* #prizeDownloadModal .modal-dialog {
-        max-width: 500px;
-    } */
-
-    .download-modal.modal-content {
-        padding: 18px;
     }
 
     #prizeDownloadModal .modal-body {

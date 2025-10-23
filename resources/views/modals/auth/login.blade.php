@@ -1,7 +1,7 @@
 <div class="auth-modal modal fade" id="loginModal" data-page="login" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
         <div class="modal-content">
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end px-md-4">
                 <button type="button" class="btn-close btn-close-white opacity-100" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -9,7 +9,8 @@
                     Welcome back...
                 </h3>
                 <h5>Enter your username and email to continue the missions</h5>
-                <form action="">
+                <form id="loginForm">
+                    @csrf
                     <div class="form-group">
                         <div>
                             <label for="loginUsername">Username</label>
@@ -26,7 +27,7 @@
                         </div>
                     </div>
                 </form>
-                <button id="loginNextBtn" class="w-100 btn-bold mt-lg-5" data-bs-toggle="modal" data-bs-target="#missionModal" disabled>
+                <button type="submit" id="loginNextBtn" class="w-100 btn-bold mt-md-5" onclick="submitEmail('login')" disabled>
                     <span class="btn-text">Next</span>
                     <img src="img/polygon.png" class="btn-bg">
                 </button>

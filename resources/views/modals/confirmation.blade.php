@@ -12,11 +12,31 @@
                     <button class="btn-tertiary mt-4" data-bs-dismiss="modal" aria-label="Close">{{ $buttonText }}</button>
                 </div>
                 @if($id == 'signoutModal')
-                    <div>
-                        <button class="btn-link mt-4" onclick="window.location.href='{{ url('/') }}'">Yes, log me out</button>
-                    </div>
+                <div>
+                    <button class="btn-link" onclick="logout()">Yes, log me out</button>
+                </div>
                 @endif
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function logout() {
+        fetch("{{ route('logout') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                    "Accept": "application/json",
+                },
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    sessionStorage.clear();
+                    window.location.href = "/";
+                }
+            })
+            .catch(err => console.error('Logout failed:', err));
+    }
+</script>
