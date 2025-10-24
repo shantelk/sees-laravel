@@ -13,7 +13,20 @@
 </head>
 
 <body>
+    <audio id="home-audio" loop>
+        <source src="{{ asset('audio/music.mp3') }}" type="audio/mp3">
+    </audio>
     <main>
+        <div id="overlay" style="display: none;"></div>
+        <div id="toaster" style="display: none;">
+            <span>This website uses cookies to enhance your browsing experience.
+                <a href="#">Learn more</a>
+            </span>
+            <button id="toasterBtn" class="btn-bold">
+                <span class="btn-text">Ok</span>
+                <img src="img/polygon.png" class="btn-bg">
+            </button>
+        </div>
         <div class="switch-container">
             <button id="home-audio-toggle" class="btn-audio">
                 <span class="audio-text">Mute</span>
@@ -23,6 +36,7 @@
                 </div>
             </button>
         </div>
+
         @yield('content')
     </main>
 

@@ -440,7 +440,6 @@
             if (link) {
                 window.open(link, "_blank", "noopener,noreferrer");
             }
-            // if (btn) btn.disabled = true;
             setTimeout(async () => {
                 try {
                     await updateProgress(missionKey, missionId);
@@ -474,74 +473,6 @@
         }
     }
 
-    // TODO: replace startFakeUpload() with startRealUpload() when backend API is ready
-    function startFakeUpload(file) {
-        let progress = 0;
-
-        const fileNameEl = document.querySelector(".file-name");
-        const fileSizeEl = document.querySelector(".file-size");
-        const uploadStatus = document.querySelector(".upload-status");
-        const progressBar = document.getElementById("progressBar");
-        const progressPercent = document.getElementById("progressPercent");
-        const progressBox = document.querySelector(".progress");
-
-        if (fileNameEl) fileNameEl.textContent = file.name;
-        if (fileSizeEl) fileSizeEl.textContent = "-";
-
-        if (uploadStatus) {
-            uploadStatus.textContent = "Uploading...";
-            uploadStatus.classList.remove("text-success", "text-danger", "d-none");
-            uploadStatus.classList.add("text-cyan");
-            uploadStatus.style.opacity = "1";
-        }
-
-        if (progressBox) progressBox.classList.remove("d-none");
-        if (progressBar) progressBar.style.width = "0%";
-        if (progressPercent) {
-            progressPercent.textContent = "0%";
-            progressPercent.classList.remove("d-none");
-        }
-
-        const uploadInterval = setInterval(() => {
-            progress += 25 + Math.random() * 25;
-            if (progress >= 100) progress = 100;
-
-            if (progressBar) progressBar.style.width = `${progress}%`;
-            if (progressPercent) progressPercent.textContent = `${Math.floor(progress)}%`;
-
-            if (uploadStatus) uploadStatus.textContent = "Uploading...";
-
-            if (progress >= 100) {
-                clearInterval(uploadInterval);
-                if (uploadStatus) {
-                    uploadStatus.textContent = "Complete ✓";
-                    uploadStatus.classList.remove("text-cyan");
-                    uploadStatus.classList.add("text-success");
-                }
-
-                if (fileSizeEl) {
-                    const sizeKB = file.size / 1024;
-                    const readableSize = sizeKB > 1024 ? (sizeKB / 1024).toFixed(2) + " MB" : sizeKB.toFixed(1) + " KB";
-                    fileSizeEl.textContent = readableSize;
-                }
-
-                setTimeout(() => {
-                    if (uploadStatus) uploadStatus.classList.add("d-none");
-                    if (progressBox) progressBox.classList.add("d-none");
-                    if (progressPercent) progressPercent.classList.add("d-none");
-                }, 500);
-
-                const submissionEl = document.querySelector(".submission");
-                const missionId = Number(submissionEl?.dataset.mission) || 4;
-                completeMission(missionId);
-                updateReceiptStatus(true);
-                onReceiptUploaded();
-            }
-        }, 200);
-    }
-
-    const USE_FAKE_UPLOAD = true;
-
     function uploadFile(file) {
         const fileNameEl = document.querySelector(".file-name");
         const fileSizeEl = document.querySelector(".file-size");
@@ -569,10 +500,6 @@
         const formData = new FormData();
         formData.append("image", file);
 
-        if (USE_FAKE_UPLOAD) {
-            simulateFakeUpload(file);
-            return; // stop here if using fake upload
-        }
         try {
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "/api/upload-image", true);
@@ -621,8 +548,6 @@
 
                     progressBox.style.opacity = "1";
                     uploadStatus.style.opacity = "1";
-                    progressBox.style.opacity = "1";
-                    uploadStatus.style.opacity = "1";
                     progressPercent.style.opacity = "1";
 
                     setTimeout(() => {
@@ -662,95 +587,6 @@
 
             handleUploadError(file, uploadStatus, progressBar, fileSizeEl, "Upload failed");
         }
-    }
-
-    function simulateFakeUpload(file) {
-        const uploadStatus = document.querySelector(".upload-status");
-        const progressBar = document.getElementById("progressBar");
-        const progressPercent = document.getElementById("progressPercent");
-        const progressBox = document.querySelector(".progress");
-        const fileSizeEl = document.querySelector(".file-size");
-        const deleteBtn = document.getElementById("deleteFileBtn");
-        const browseBtn = document.getElementById("browseBtn");
-
-        let progress = 0;
-
-        // Initial setup
-        uploadStatus.textContent = "Uploading...";
-        uploadStatus.className = "upload-status text-cyan";
-        progressBox.classList.remove("d-none");
-        progressPercent.classList.remove("d-none");
-        progressBox.style.opacity = "1";
-        uploadStatus.style.opacity = "1";
-        progressPercent.style.opacity = "1";
-
-        deleteBtn.disabled = true;
-        browseBtn.disabled = true;
-
-        const interval = setInterval(() => {
-            progress += Math.random() * 20;
-            if (progress >= 100) progress = 100;
-
-            progressBar.style.width = `${progress}%`;
-            progressPercent.textContent = `${Math.floor(progress)}%`;
-
-            if (progress >= 100) {
-                clearInterval(interval);
-
-                // ✅ Simulated fake API response
-                const fakeResponse = {
-                    success: true,
-                    message: "File uploaded successfully",
-                    data: {
-                        image_id: 999,
-                        filename: file.name,
-                        box_url: "https://assets-psblue-sega-com.obs.ap-southeast-3.myhuaweicloud.com/images/fake/" + file.name,
-                        box_file_id: "FAKE-" + Date.now(),
-                    },
-                };
-
-                // Store fake response in session
-                const receiptData = {
-                    filename: fakeResponse.data.filename,
-                    box_url: fakeResponse.data.box_url,
-                    file_size: formatFileSize(file.size),
-                };
-                sessionStorage.setItem("receipt", JSON.stringify(receiptData));
-
-                // ✅ Success UI
-                uploadStatus.textContent = "Complete ✓";
-                uploadStatus.className = "upload-status text-success";
-                fileSizeEl.textContent = receiptData.file_size;
-
-                // Smooth fade-out for all upload indicators
-                progressBox.style.transition = "opacity 0.4s ease";
-                uploadStatus.style.transition = "opacity 0.4s ease";
-                progressPercent.style.transition = "opacity 0.4s ease";
-
-                setTimeout(() => {
-                    progressBox.style.opacity = "0";
-                    uploadStatus.style.opacity = "0";
-                    progressPercent.style.opacity = "0";
-                }, 800);
-
-                setTimeout(() => {
-                    progressBox.classList.add("d-none");
-                    uploadStatus.classList.add("d-none");
-                    progressPercent.classList.add("d-none");
-
-                    progressBox.style.opacity = "";
-                    uploadStatus.style.opacity = "";
-                    progressPercent.style.opacity = "";
-                }, 1300);
-
-                deleteBtn.disabled = false;
-                browseBtn.disabled = false;
-
-                // ✅ Update mission UI
-                onReceiptUploaded();
-                updateReceiptStatus(true);
-            }
-        }, 300);
     }
 
     function handleUploadError(file, uploadStatus, progressBar, fileSizeEl, message) {

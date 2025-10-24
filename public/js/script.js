@@ -7,43 +7,69 @@ function scrollToBottom() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Audio //
     const homeAudio = document.getElementById("home-audio");
     const homeToggle = document.getElementById("home-audio-toggle");
     const overlay = document.getElementById("overlay");
     const toaster = document.getElementById("toaster");
     const toasterBtn = document.getElementById("toasterBtn");
 
-    function setupToggle(audio, button, allButtons) {
-        if (!button) return;
-        button.addEventListener("click", () => {
-            if (audio.muted) {
-                audio.muted = false;
-                audio.play().catch(() => { });
-                allButtons.forEach(btn => {
-                    btn.querySelector(".audio-text").textContent = "Mute";
-                    btn.querySelector(".volume").classList.add("active");
-                    btn.querySelector(".mute").classList.remove("active");
-                });
-            } else {
-                audio.muted = true;
-                allButtons.forEach(btn => {
-                    btn.querySelector(".audio-text").textContent = "Unmute";
-                    btn.querySelector(".volume").classList.remove("active");
-                    btn.querySelector(".mute").classList.add("active");
-                });
-            }
+    if (!homeAudio) return;
+
+    const hasAccepted = sessionStorage.getItem("cookieAccepted") === "true";
+    const isMuted = sessionStorage.getItem("audioMuted") === "true";
+    homeAudio.muted = isMuted;
+
+    const updateAudioButtonUI = (muted) => {
+        const text = homeToggle.querySelector(".audio-text");
+        const volume = homeToggle.querySelector(".volume");
+        const mute = homeToggle.querySelector(".mute");
+
+        if (text) text.textContent = muted ? "Unmute" : "Mute";
+        if (volume) volume.classList.toggle("active", !muted);
+        if (mute) mute.classList.toggle("active", muted);
+    };
+
+    updateAudioButtonUI(isMuted);
+
+    if (!hasAccepted) {
+        overlay?.classList.remove("d-none");
+        toaster?.classList.remove("d-none");
+        overlay.style.display = "flex";
+        toaster.style.display = "flex";
+    } else {
+        overlay?.classList.add("d-none");
+        toaster?.classList.add("d-none");
+        overlay.style.display = "none";
+        toaster.style.display = "none";
+    }
+
+    if (hasAccepted && !isMuted) {
+        homeAudio.play().catch(() => { });
+    }
+
+    if (toasterBtn) {
+        toasterBtn.addEventListener("click", () => {
+            overlay.style.display = "none";
+            toaster.style.display = "none";
+            sessionStorage.setItem("cookieAccepted", "true");
+            homeAudio.muted = false;
+            sessionStorage.setItem("audioMuted", "false");
+            homeAudio.play().catch(() => { });
+            updateAudioButtonUI(false);
         });
     }
 
-    // setupToggle(homeAudio, homeToggle, [homeToggle]);
+    homeToggle.addEventListener("click", () => {
+        const nowMuted = !homeAudio.muted;
+        homeAudio.muted = nowMuted;
+        sessionStorage.setItem("audioMuted", nowMuted);
+        updateAudioButtonUI(nowMuted);
 
-    // toasterBtn.addEventListener("click", () => {
-    //     overlay.style.display = "none";
-    //     toaster.style.display = "none";
-    //     homeAudio.muted = false;
-    //     homeAudio.play().catch(() => { });
-    // });
+        if (!nowMuted) {
+            homeAudio.play().catch(() => { });
+            sessionStorage.setItem("cookieAccepted", "true");
+        }
+    });
 
     // Form Validation //
     function isEmailValid(email) {

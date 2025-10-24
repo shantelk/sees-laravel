@@ -19,12 +19,6 @@ class ApiController extends Controller
         try {
             $path = 'https://api-psblue.agatedev.net/api/submit-email';
             $response = Http::post($path, $validated);
-            Log::info('External API called', [
-                'endpoint' => $path,
-                'payload' => $validated,
-                'status' => $response->status(),
-                'response' => $response->json(),
-            ]);
 
             if (!$response->successful()) {
                 return response()->json([
@@ -36,7 +30,6 @@ class ApiController extends Controller
 
             $data = $response->json()['data'] ?? $response->json();
         } catch (\Exception $e) {
-            Log::error('External API call failed', ['message' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Server error: ' . $e->getMessage(),
@@ -73,19 +66,12 @@ class ApiController extends Controller
                 'mission'   => $validated['mission'],
                 'completed' => $validated['completed'],
             ]);
-            Log::info('External API called', [
-                'endpoint' => $path,
-                'payload' => $validated,
-                'status' => $response->status(),
-                'response' => $response->json(),
-            ]);
 
             return response()->json(
                 $response->json(),
                 $response->status()
             );
         } catch (\Exception $e) {
-            Log::error('External API call failed', ['message' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Server error: ' . $e->getMessage(),
@@ -103,18 +89,11 @@ class ApiController extends Controller
                 'X-Api-Token' => $token,
             ])->get($path);
 
-            Log::info('External API called', [
-                'endpoint' => $path,
-                'status' => $response->status(),
-                'response' => $response->json(),
-            ]);
-
             return response()->json(
                 $response->json(),
                 $response->status()
             );
         } catch (\Exception $e) {
-            Log::error('External API call failed', ['message' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Server error: ' . $e->getMessage(),
@@ -143,20 +122,6 @@ class ApiController extends Controller
                 $request->file('image')->getClientOriginalName()
             )->post($path);
 
-            Log::info('File upload debug', [
-                'file_exists' => file_exists($request->file('image')->getRealPath()),
-                'file_name' => $request->file('image')->getClientOriginalName(),
-                'mime' => $request->file('image')->getMimeType(),
-                'size_kb' => round($request->file('image')->getSize() / 1024, 2),
-            ]);
-
-            Log::info('External API called', [
-                'endpoint' => $path,
-                'status'   => $response->status(),
-                'response' => $response->json(),
-            ]);
-
-            // 🔐 Handle 401
             if ($response->status() === 401) {
                 $request->session()->forget('api_token');
                 $request->session()->invalidate();
@@ -171,7 +136,6 @@ class ApiController extends Controller
                 'errors'  => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
-            Log::error('Upload failed', ['error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Server error: ' . $e->getMessage(),
@@ -184,7 +148,6 @@ class ApiController extends Controller
         $request->session()->forget(['api_token', 'username', 'email']);
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        Log::info('Logout hit successfully');
 
         return response()->json([
             'success' => true,

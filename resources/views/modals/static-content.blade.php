@@ -323,13 +323,10 @@
                         The Company reserves the right to amend these Terms at any time without prior notice if deemed necessary. The revised Terms shall be deemed effective retroactively from the commencement of the Campaign.
                     </p>
 
-
-
                     <h6 class="text-uppercase">Article 9 (Governing Law and Jurisdiction)</h6>
                     <p>
                         These Terms shall be governed by and construed in accordance with the laws of Singapore. Any disputes arising in connection with the Campaign shall be referred to and finally resolved by arbitration administered by the Singapore International Arbitration Centre (“SIAC”) in accordance with the Arbitration Rules of the Singapore International Arbitration Centre (“SIAC Rules”) for the time being in force. The seat of the arbitration shall be Singapore. The Tribunal shall consist of one (1) arbitrator. The language of the arbitration shall be English.
                     </p>
-
 
                     <h6 class="text-uppercase">Sega Corporation</h6>
                 </div>
