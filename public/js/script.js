@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function downloadCover() {
     const link = document.createElement('a');
     link.href = 'img/paper-cover.jpg';
-    link.download = 'paper-cover.png';
+    link.download = 'Persona3-Reload-Nintendo-Switch-2-Cover.png';
     link.click();
 }
 
@@ -198,21 +198,26 @@ async function logout() {
             },
         });
 
-        if (!response.ok) {
-            console.error("Logout request failed with status:", response.status);
-            return;
+        let data = {};
+
+        try {
+            data = await response.json();
+        } catch {
+            data = {};
         }
 
-        const data = await response.json();
+        sessionStorage.clear();
 
-        if (data.success) {
-            sessionStorage.clear();
-            window.location.href = "/";
+        if (response.status === 401) {
+            console.warn("Session already expired on server.");
         } else {
-            console.warn("Logout unsuccessful:", data);
+            console.warn("Logout endpoint returned unexpected status:", response.status);
         }
+        window.location.href = "/";
     } catch (err) {
         console.error("Logout failed:", err);
+        sessionStorage.clear();
+        window.location.href = "/";
     }
 }
 

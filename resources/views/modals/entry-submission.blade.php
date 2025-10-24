@@ -1,5 +1,5 @@
 <div class="modal dark-overlay" id="entryModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
         <div class="modal-content modal-bg-dark text-center">
             <button type="button" class="btn text-end px-0" data-bs-dismiss="modal" aria-label="Close">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
@@ -11,7 +11,7 @@
                 <div class="m-lg-3">
                     <h3>10 WINNERS ONLY!</h3>
                     <p class="mb-0">10 lucky winners will be selected to win the following prizes. Verification of entries will be done during the selection process.</p>
-                    <p class="font-secondary text-cyan mb-4">Event period: xx October - xx November 2025</h6>
+                    <p class="font-secondary text-cyan mb-4">Event period: 31 October - 21 November 2025</h6>
 
                     <p class="mb-1">Please ensure that this is the correct email of your entries:</p>
                     <div class="credentials">

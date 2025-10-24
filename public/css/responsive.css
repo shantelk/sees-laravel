@@ -7,7 +7,7 @@
         width: 80% !important;
     }
 
-    #missionModal .modal-body h3.title {
+    #missionModal .content h3.title {
         font-size: 40px;
     }
 
@@ -16,16 +16,11 @@
     }
 
     .success-entry {
-        min-height: 300px;
+        min-height: 300px !important;
     }
 }
 
 @media (max-width: 480px) {
-
-    /* .lucky-draw-sec p {
-        font-size: 16px;
-    } */
-
     #luckyDrawText {
         font-size: 22px;
     }
@@ -40,7 +35,8 @@
         font-size: 24px;
     }
 
-    .mission-label h3 {
+    .mission-label h3,
+    .progress-text.completed {
         font-size: 20px !important;
     }
 
@@ -48,16 +44,7 @@
         padding: 15px;
     }
 
-    /* .drag-n-drop h6 {
-        font-size: 14px;
-    } */
-
-    /* .submission p {
-        font-size: 12px !important;
-    } */
-
-
-    #missionModal .modal-header .p3-logo {
+    #missionModal .nav-bar .p3-logo {
         width: 64px !important;
         height: 48px !important;
     }
@@ -97,10 +84,6 @@
         transform: translateX(-50%);
         width: 100%;
     }
-
-    /* .start-now-section h3 {
-        margin-bottom: clamp(25px, 8vw, 40px);
-    } */
 
     .start-now-section p {
         margin-bottom: 0;
@@ -170,10 +153,6 @@
     }
 
     /* Modals */
-    /* .modal-fullscreen-sm-down {
-        padding: 2.5rem 20px;
-    } */
-
     .modal-fullscreen-sm-down .modal-body {
         overflow-y: auto;
     }
@@ -209,39 +188,35 @@
         background-size: cover;
     }
 
-    #missionModal .modal-header,
-    #missionModal .modal-body {
+    #missionModal .nav-bar,
+    #missionModal .content {
         padding: 40px 24px 0;
         overflow-y: auto;
     }
 
-    #missionModal .modal-header {
+    #missionModal .nav-bar {
         padding: 60px 24px 0;
         overflow-y: auto;
     }
 
-    #missionModal .modal-header .p3-logo {
+    #missionModal .nav-bar .p3-logo {
         width: 74px;
         height: 56px;
         padding: 0
     }
 
-    #missionModal .modal-body .row {
+    #missionModal .content .row {
         padding: 0;
     }
 
-    #missionModal .modal-body .row .col-md-6 {
+    #missionModal .content .row .col-md-6 {
         padding: 0;
     }
 
-    #missionModal .modal-body h3 {
+    #missionModal .content h3 {
         font-size: 48px;
         line-height: 1;
     }
-
-    /* #missionModal .modal-body h3.title {
-        font-size: clamp(30px, 8vw, 48px);
-    } */
 
     .mission-container {
         padding: 0;
@@ -301,7 +276,7 @@
     }
 
     .task-card {
-        padding: 8px 2.5rem 8px 1rem;
+        padding: 8px 2rem 8px 1rem;
     }
 
     .bonus-status {
@@ -396,7 +371,6 @@
     }
 
     .retail-logo img {
-        /* flex: 0 0 30%; */
         max-width: 23%;
         height: auto;
     }
@@ -408,7 +382,7 @@
         padding: 24px 16px;
     }
 
-    .accordion-body em {
+    .accordion-body p.note {
         font-size: 10px;
     }
 
@@ -436,25 +410,25 @@
         font-size: 28px;
     }
 
-    #missionModal .modal-body {
+    #missionModal .content {
         padding: 20px;
         overflow-y: auto;
-    }
-
-    #missionModal .modal-header {
-        padding: 0 80px;
     }
 
     .introduction .title h3 {
         font-size: clamp(42px, 5vw, 3rem);
     }
 
-    #missionModal .modal-header {
-        padding: 60px 24px 0;
+    #missionModal .nav-bar {
+        padding: 30px 24px 0;
     }
 
     .img-container {
         margin-top: 30px;
+    }
+
+    .bonus-status {
+        font-size: 20px;
     }
 }
 
@@ -478,7 +452,7 @@
         width: auto !important;
     }
 
-    #missionModal .modal-body .row {
+    #missionModal .content .row {
         padding: 0;
     }
 
@@ -525,6 +499,11 @@
         margin-bottom: 0;
     }
 
+    .bg-image-modal {
+        background: url("../img/m-mission-bg.png") no-repeat top center;
+        background-size: cover;
+    }
+
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
@@ -541,12 +520,8 @@
         width: auto;
     }
 
-    .accordion-scroll {
-        height: 1000px;
-    }
-
-    .mission-row {
-        padding: 2rem 0 0;
+    .accordion-header {
+        border-top: none;
     }
 
     .img-container img {
@@ -556,7 +531,7 @@
 
 @media (min-width: 1200px) and (max-width: 1399.98px) {
     .start-now-section img {
-        width: 195px;
+        width: 155px;
     }
 
     .background-box-img,
@@ -578,7 +553,7 @@
     }
 
     .introduction .title h3,
-    #missionModal .modal-body h3 {
+    #missionModal .content h3 {
         font-size: 50px;
     }
 
@@ -589,7 +564,6 @@
 
     .form-group label,
     .form-group input,
-    .bonus-status,
     .lucky-draw-sec p,
     .btn-tertiary,
     .btn-download {
@@ -648,7 +622,7 @@
         margin-top: 20px;
     }
 
-    #missionModal .modal-header .p3-logo {
+    #missionModal .nav-bar .p3-logo {
         width: 120px;
         height: 97px;
     }
@@ -662,8 +636,8 @@
         margin-top: 2rem;
     }
 
-    .accordion-header {
-        border-top: solid 2px red;
+    #missionModal .nav-bar {
+        padding: 0 120px;
     }
 }
 
@@ -677,12 +651,11 @@
     }
 
     .accordion-scroll {
-        height: 650px;
+        height: 550px;
     }
 
     .mission-row {
-        padding: 3rem 0 0 4rem;
-        max-width: 1500px;
+        padding: 3rem 0 0 0;
     }
 
     .mission-container {
@@ -702,5 +675,9 @@
 
     .image-mask-container {
         width: 50%;
+    }
+
+    .success-entry {
+        min-height: 600px;
     }
 }

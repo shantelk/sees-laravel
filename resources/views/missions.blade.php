@@ -3,7 +3,7 @@
 @section('content')
 <div id="missionModal">
     <div class="bg-image-modal">
-        <div class="modal-header text-white">
+        <div class="nav-bar text-white">
             <div class="d-flex justify-content-between w-100">
                 <a href="/">
                     <img class="p3-logo cursor-pointer" src="img/p3.png">
@@ -24,9 +24,9 @@
             </div>
         </div>
 
-        <div class="modal-body text-white">
+        <div class="container text-white content mt-lg-3">
             <div class="row mission-row">
-                <div class="col-12 col-lg-6 mission-container order-lg-1 m-b-40-xs">
+                <div class="col-12 col-lg-5 mission-container m-b-40-xs px-lg-0">
                     <h3 class="title">Missions</h3>
                     <div class="accordion-scroll">
                         <div class="accordion" id="accordionMissionExample">
@@ -67,7 +67,7 @@
                                         </div>
                                         @endforeach
                                         @if(isset($mission['note']))
-                                        <em>Note: {{ $mission['note'] }}</em>
+                                        <p class="note">Note: {{ $mission['note'] }}</p>
                                         @endif
                                         @else
                                         <!-- Mission 4: File Upload -->
@@ -76,7 +76,7 @@
                                             <div class="drag-n-drop" id="dropArea">
                                                 <h6>Choose a file or drag & drop it here</h6>
                                                 <p>JPEG, PNG or PDF formats, up to 50MB</p>
-                                                <button class="btn-tertiary text-uppercase mt-4 mt-lg-5" id="browseBtn">Browse File</button>
+                                                <button class="btn-tertiary text-uppercase mt-4 mt-xl-5" id="browseBtn">Browse File</button>
                                                 <input type="file" id="fileInput" hidden accept=".jpg,.jpeg,.png,.pdf" />
                                             </div>
                                             <div class="file-upload d-none" id="fileBox">
@@ -101,7 +101,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div class="d-flex align-items-center gap-2 mt-2">
+                                                <div id="progressBox" class="d-flex align-items-center gap-2 mt-2">
                                                     <div class="progress flex-grow-1 me-2">
                                                         <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
@@ -130,17 +130,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6 lucky-draw-sec text-center order-lg-2">
+                <div class="col-12 col-lg-6 lucky-draw-sec text-center">
                     <h3 class="title">Lucky Draw</h3>
                     <p id="luckyDrawText">Complete missions to accumulate entry chances!</p>
-                    <p>Entries acquired: <span id="entriesCount">0</span>/<span id="entriesTotal">3</span></p>
+                    <p class="mb-0">Entries acquired: <span id="entriesCount">0</span>/<span id="entriesTotal">3</span></p>
                     <div class="img-tint locked" id="imgTint">
-                        <img id="prizeImg" src="img/prize-locked.png">
+                        <img class="img-fluid" id="prizeImg" src="img/prize-locked.png">
                         <div class="img-overlay">
                             <h6 id="progressText">Complete a mission to unlock!</h6>
                         </div>
                     </div>
-                    <h6 class="event-dt text-cyan">Event period: xx October - xx November 2025</h6>
+                    <h6 class="event-dt text-cyan">Event period: 31 October - 21 November 2025</h6>
                     <button id="luckyDrawBtn" class="btn-tertiary" disabled>
                         ENTER LUCKY DRAW
                     </button>
@@ -270,6 +270,15 @@
                 } else {
                     lockMissionUI(missionId, counts);
                 }
+            }
+
+            // Special handling for Mission 4
+            if (missionsData.m4 && missionsData.m4.completed) {
+                completeMission(4);
+                updateReceiptStatus(true);
+            } else {
+                incompleteMission(4, 0);
+                updateReceiptStatus(false);
             }
             updateLuckyDrawSection();
             updateEntriesDisplay();
@@ -531,6 +540,8 @@
         }, 200);
     }
 
+    const USE_FAKE_UPLOAD = true;
+
     function uploadFile(file) {
         const fileNameEl = document.querySelector(".file-name");
         const fileSizeEl = document.querySelector(".file-size");
@@ -558,6 +569,10 @@
         const formData = new FormData();
         formData.append("image", file);
 
+        if (USE_FAKE_UPLOAD) {
+            simulateFakeUpload(file);
+            return; // stop here if using fake upload
+        }
         try {
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "/api/upload-image", true);
@@ -578,9 +593,6 @@
                     data = JSON.parse(xhr.responseText);
                 } catch {}
 
-                progressBox.classList.add("d-none");
-                progressPercent.classList.add("d-none");
-
                 deleteBtn.disabled = false;
                 browseBtn.disabled = false;
 
@@ -592,14 +604,41 @@
                 }
 
                 if (status >= 200 && status < 300) {
+                    const receiptData = {
+                        filename: data.data.filename,
+                        box_url: data.data.box_url,
+                        file_size: formatFileSize(file.size),
+                    };
+                    sessionStorage.setItem('receipt', JSON.stringify(receiptData));
+
                     uploadStatus.textContent = "Complete";
                     uploadStatus.className = "upload-status text-success";
                     fileSizeEl.textContent = formatFileSize(file.size);
 
-                    completeMission(4);
-                    updateEntriesDisplay();
-                    updateReceiptStatus(true);
+                    progressBox.style.transition = "opacity 0.4s ease";
+                    uploadStatus.style.transition = "opacity 0.4s ease";
+                    progressPercent.style.transition = "opacity 0.4s ease";
+
+                    progressBox.style.opacity = "1";
+                    uploadStatus.style.opacity = "1";
+                    progressBox.style.opacity = "1";
+                    uploadStatus.style.opacity = "1";
+                    progressPercent.style.opacity = "1";
+
+                    setTimeout(() => {
+                        progressBox.style.opacity = "0";
+                        uploadStatus.style.opacity = "0";
+                        progressPercent.style.opacity = "0";
+                    }, 800);
+
+                    setTimeout(() => {
+                        progressBox.classList.add("d-none");
+                        uploadStatus.classList.add("d-none");
+                        progressPercent.classList.add("d-none");
+                    }, 1300);
+
                     onReceiptUploaded();
+                    updateReceiptStatus(true);
                 } else {
                     handleUploadError(file, uploadStatus, progressBar, fileSizeEl, "Upload failed");
                 }
@@ -623,6 +662,95 @@
 
             handleUploadError(file, uploadStatus, progressBar, fileSizeEl, "Upload failed");
         }
+    }
+
+    function simulateFakeUpload(file) {
+        const uploadStatus = document.querySelector(".upload-status");
+        const progressBar = document.getElementById("progressBar");
+        const progressPercent = document.getElementById("progressPercent");
+        const progressBox = document.querySelector(".progress");
+        const fileSizeEl = document.querySelector(".file-size");
+        const deleteBtn = document.getElementById("deleteFileBtn");
+        const browseBtn = document.getElementById("browseBtn");
+
+        let progress = 0;
+
+        // Initial setup
+        uploadStatus.textContent = "Uploading...";
+        uploadStatus.className = "upload-status text-cyan";
+        progressBox.classList.remove("d-none");
+        progressPercent.classList.remove("d-none");
+        progressBox.style.opacity = "1";
+        uploadStatus.style.opacity = "1";
+        progressPercent.style.opacity = "1";
+
+        deleteBtn.disabled = true;
+        browseBtn.disabled = true;
+
+        const interval = setInterval(() => {
+            progress += Math.random() * 20;
+            if (progress >= 100) progress = 100;
+
+            progressBar.style.width = `${progress}%`;
+            progressPercent.textContent = `${Math.floor(progress)}%`;
+
+            if (progress >= 100) {
+                clearInterval(interval);
+
+                // ✅ Simulated fake API response
+                const fakeResponse = {
+                    success: true,
+                    message: "File uploaded successfully",
+                    data: {
+                        image_id: 999,
+                        filename: file.name,
+                        box_url: "https://assets-psblue-sega-com.obs.ap-southeast-3.myhuaweicloud.com/images/fake/" + file.name,
+                        box_file_id: "FAKE-" + Date.now(),
+                    },
+                };
+
+                // Store fake response in session
+                const receiptData = {
+                    filename: fakeResponse.data.filename,
+                    box_url: fakeResponse.data.box_url,
+                    file_size: formatFileSize(file.size),
+                };
+                sessionStorage.setItem("receipt", JSON.stringify(receiptData));
+
+                // ✅ Success UI
+                uploadStatus.textContent = "Complete ✓";
+                uploadStatus.className = "upload-status text-success";
+                fileSizeEl.textContent = receiptData.file_size;
+
+                // Smooth fade-out for all upload indicators
+                progressBox.style.transition = "opacity 0.4s ease";
+                uploadStatus.style.transition = "opacity 0.4s ease";
+                progressPercent.style.transition = "opacity 0.4s ease";
+
+                setTimeout(() => {
+                    progressBox.style.opacity = "0";
+                    uploadStatus.style.opacity = "0";
+                    progressPercent.style.opacity = "0";
+                }, 800);
+
+                setTimeout(() => {
+                    progressBox.classList.add("d-none");
+                    uploadStatus.classList.add("d-none");
+                    progressPercent.classList.add("d-none");
+
+                    progressBox.style.opacity = "";
+                    uploadStatus.style.opacity = "";
+                    progressPercent.style.opacity = "";
+                }, 1300);
+
+                deleteBtn.disabled = false;
+                browseBtn.disabled = false;
+
+                // ✅ Update mission UI
+                onReceiptUploaded();
+                updateReceiptStatus(true);
+            }
+        }, 300);
     }
 
     function handleUploadError(file, uploadStatus, progressBar, fileSizeEl, message) {
@@ -730,7 +858,7 @@
             fileName.textContent = file.name;
             fileSize.textContent = `${Math.round(file.size / 1024)} kb`;
 
-            startFakeUpload(file);
+            uploadFile(file);
         }
 
         function validateFile(file) {
@@ -781,7 +909,7 @@
             } else {
                 entryBtn.disabled = false;
                 entryBtn.textContent = `Submit Entries (${completed}/${total})`;
-                emText.textContent = `You have completed [${completed}] mission(s), and have accumulated entries of [${completed}] for the draw.`;
+                emText.textContent = `You have completed [${completed}] mission(s), and have accumulated entries of [${Math.min(completed, 3)}] for the draw.`;
                 backBtn.classList.add('d-none');
             }
             modalInstance.show();

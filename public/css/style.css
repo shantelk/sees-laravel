@@ -34,6 +34,10 @@ html {
   font-family: 'Baskervville' !important;
 }
 
+.font-primary-bold {
+  font-family: "Croma Sans Bold" !important;
+}
+
 /* Buttons */
 .btn-bold {
   position: relative;
@@ -74,6 +78,10 @@ html {
 
 .btn-bold:active:not(:disabled) .btn-bg {
   transform: translate(-50%, -50%) rotate(10deg);
+}
+
+#luckyDrawBtn {
+  margin-top: 24px;
 }
 
 #luckyDrawBtn.btn-bold:active .btn-bg {
@@ -518,7 +526,6 @@ footer span {
 
 .auth-modal .modal-body {
   text-align: center;
-  /* padding: 0; */
 }
 
 form {
@@ -681,14 +688,13 @@ input:-webkit-autofill:active {
   min-height: 100vh;
 }
 
-#missionModal .modal-header,
-#missionModal .modal-body {
+#missionModal .nav-bar {
   padding: 0 163px;
   border: 0;
   overflow-y: hidden;
 }
 
-#missionModal .modal-header .p3-logo {
+#missionModal .nav-bar .p3-logo {
   width: 140px;
   height: 117px;
   padding: 1.5rem;
@@ -718,7 +724,7 @@ input:-webkit-autofill:active {
   margin-bottom: 0;
 }
 
-#missionModal .modal-body h3 {
+#missionModal .content h3 {
   font-family: 'Croma Sans ExtraBold';
   font-size: 64px;
   text-transform: uppercase;
@@ -755,12 +761,14 @@ input:-webkit-autofill:active {
   text-align: center;
 }
 
-.accordion-body em {
+.accordion-body p.note {
   padding: 0;
   color: #fff;
   text-align: center;
   font-family: 'Baskervville';
   font-size: 12px;
+  font-style: italic;
+  line-height: 1;
 }
 
 .accordion-button:focus {
@@ -782,7 +790,7 @@ input:-webkit-autofill:active {
 
 .accordion-scroll {
   direction: rtl;
-  height: 432px;
+  height: 480px;
   overflow-y: auto;
   scrollbar-gutter: stable;
   padding-right: 6px;
@@ -797,13 +805,11 @@ input:-webkit-autofill:active {
 }
 
 .mission-row {
-  padding: 2rem 0 0 4rem;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.mission-container {
-  padding-right: 36px;
+  gap: 30px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .accordion-scroll::-webkit-scrollbar {
@@ -1136,6 +1142,7 @@ input:-webkit-autofill:active {
 .img-tint {
   position: relative;
   display: inline-block;
+  margin: 24px 0;
   margin-bottom: 24px;
 }
 
@@ -1177,10 +1184,6 @@ input:-webkit-autofill:active {
   font-size: 16px;
   padding: 0 .5rem;
 }
-
-/* .dynamic .modal-body {
-  padding: 0 3rem 1.5rem 3rem !important;
-} */
 
 .frame-box {
   display: flex;
@@ -1244,17 +1247,15 @@ input:-webkit-autofill:active {
   margin-bottom: 0;
 }
 
-.static .modal-bg-dark p {
-  font-family: "Inter";
-  font-size: 12px;
-  margin-bottom: 0;
-}
-
 .static .modal-bg-dark ol {
-  padding: 0 .5rem;
+  padding: 0 1rem;
 }
 
-.static .modal-bg-dark ol li,
+.static .modal-bg-dark ol li, .static .modal-bg-dark p  {
+  font-family: 'Croma Sans Regular';
+  font-size: 12px;
+}
+
 #entryModal .modal-body p {
   font-family: 'Croma Sans Medium';
   font-size: 12px;
@@ -1285,7 +1286,7 @@ input:-webkit-autofill:active {
   align-items: center;
   flex: 1 0 0;
   align-self: stretch;
-  min-height: 680px;
+  min-height: 650px;
 }
 
 .success-entry .desc {

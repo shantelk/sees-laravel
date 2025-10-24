@@ -13,7 +13,7 @@
                 @if($id == 'ppModal')
                 <!-- Privacy Policy -->
                 <div>
-                    <h6>Introduction</h6>
+                    <h6 class="text-uppercase">Introduction</h6>
                     <p> SEGA CORPORATION, its subsidiaries and affiliates (together “SEGA” or “SEGA Group”, individually a “SEGA Entity”) are committed to protecting the privacy and security of your personal information. The term “personal information” used herein also includes “personal data” and equivalent terms, as such terms are defined under applicable laws. SEGA collects different types of information from you, including personal information, when you use our mobile, online and downloadable products and services (together, the "Products").
                         <br><br>
                         This Privacy Policy explains how we collect, use and protect your personal information when you use our Products or interact with us. SEGA is responsible for collecting and using your personal information. See the “Your questions and how to contact us” section of this Privacy Policy for more details.
@@ -23,7 +23,7 @@
                         The Products may contain links to third-party websites, plug-ins, features, or services. If you choose to use these sites or features, please note that we do not have control over the third parties that operate these websites and services and are not responsible for their content or privacy practices. We encourage you to read their privacy policies before using their websites or services or giving them your personal information.
                         <br><br>
                     </p>
-                    <h6>SUMMARY</h6>
+                    <h6 class="text-uppercase">SUMMARY</h6>
                     <p>Our Privacy Policy will help explain what information we collect, how we use it and what options you have in relation to it.
                         <br><br>
                         We will only collect and process your personal information where we have a lawful basis in your country. As stated throughout this Privacy Policy, our lawful bases include consent (for example, where you have agreed to receive updates and marketing emails from SEGA), contract (where processing your personal information is necessary for the performance of a contract with you (e.g., to supply the Products you have requested)), compliance with our legal obligations, and our legitimate business interests in administering our business operations.
@@ -233,72 +233,63 @@
                 @else
                 <!-- Terms of Service -->
                 <div>
-                    <p>This “P3R S.E.E.S. Missions” campaign (“Campaign”) is being organized by SEGA Corporation, with an address at Sumitomo Fudosan Osaki Garden Tower, 1-1-1 Nishi-Shinagawa, Shinagawa-ku, Tokyo, 141-0033, Japan (“Company”). By participating in the Campaign, each participant (“Participant”) is deemed to have read, understood, and agreed to be bound by these terms and conditions (“Terms”).
+                    <p class="mb-0">This “P3R S.E.E.S. Missions” campaign (“Campaign”) is being organized by SEGA Corporation, with an address at Sumitomo Fudosan Osaki Garden Tower, 1-1-1 Nishi-Shinagawa, Shinagawa-ku, Tokyo, 141-0033, Japan (“Company”).
+                        <br><br>
+                        By participating in the Campaign, each participant (“Participant”) is deemed to have read, understood, and agreed to be bound by these terms and conditions (“Terms”).
+                        <br><br>
+                        This campaign is not connected to or sponsored by any social media platform operator (e.g. Facebook, Instagram, or Discord). However, in addition to these Terms, Participants also to following the terms and conditions of the relevant social media platform when participating in this campaign.
                     </p>
                     <br>
-                    <h6>Article 1 (Overview of the Campaign)</h6>
+
+                    <h6 class="text-uppercase">Article 1 (Overview of The Campaign)</h6>
                     <ol>
-                        <li>This Campaign is open to players of “Persona 3 Reload”(for Nintendo Switch 2 version) (“Game”) who reside in the Southeast Asia region. In these Terms, “Southeast Asia region” refers to Indonesia, Malaysia, the Philippines, Singapore, Thailand and Vietnam.
-                        </li>
-                        <li>There are four (4) specific missions (“Missions”) available on the Campaign website (p3rsees.sega.com). Participants who complete any one of the Missions will receive a digital prize (“Digital Prize”), such as wallpaper or digital photo frame, etc.
-                        </li>
-                        <li>Participants who complete at least one (1) Mission will be eligible to submit an entry (“Entry”) which qualifies the Participant for a random drawing, in which they will have the opportunity to win a physical prize (“Physical Prize”, the Digital Prize and the Physical Prize are collectively referred to as “Prize(s)”).
-                        </li>
-                        <li>The Campaign will run from 23 October 2025 (00:00, GMT+8) to 13 November 2025 (23:59, GMT+8) (“Campaign Period”).
-                        </li>
+                        <li>This Campaign is open to players of “Persona 3 Reload”(for Nintendo Switch 2 version) (“Game”) who reside in the Southeast Asia region. In these Terms, “Southeast Asia region” refers to Indonesia, Malaysia, the Philippines, Singapore and Thailand.</li>
+                        <li>There are four (4) specific missions (from the Mission 01 to the Mission 03 and a Final Mission) (collectively refer to as “Mission(s)”) available on the Campaign website (link). Participants may complete the Missions in sequence.</li>
+                        <li>By Completing Mission 01 to Mission 03, Participants will receive a corresponding digital prize (“Digital Prize”), such as wallpaper or digital photo frame, etc.</li>
+                        <li>Participants who complete at least one (1) Mission will be eligible to submit an entry (“Entry”) which qualifies the Participant for a random drawing, in which they will have the opportunity to win a physical prize (“Physical Prize”, the Digital Prize and the Physical Prize are collectively referred to as “Prize(s)”).</li>
+                        <li>From the Mission 01 to the Mission 03, the more Missions participants complete, the higher their chances of winning. However, Participants who complete the all the first three Missions will have the same chances as those who have completed the Final Mission.</li>
+                        <li>The Campaign will run from <span class="font-primary-bold">31 October 2025 (12:00, GMT+8) to 21 November 2025 (23:59, GMT+8) (“Campaign Period”)</span>.</li>
                     </ol>
 
-                    <h6>Article 2 (Eligibility)</h6>
+                    <h6 class="text-uppercase">Article 2 (Eligibility)</h6>
                     <ol>
-                        <li>Participants must read and agree to these Terms before participating the Campaign.
-                        </li>
-                        <li>Participants must reside in the Southeast Asia region, and the delivery address for Physical Prize must also be within Southeast Asia region.
-                        </li>
-                        <li>Participants who are minors under the law of their country of residence must obtain consent from a parent or legal guardian before participating.
-                        </li>
-                        <li>Employees of the Company and such Employees’ s related parties are not eligible to participate this Campaign.
-                        </li>
-                        <li>To receive the Digital Prize(s), the Participant must have completed the respective Mission(s) and their requirements.
-                        </li>
-                        <li>Participants will have been deemed to have successfully completed Mission 04 through the submission of a valid proof of purchase of the Game (“Purchase Proof”), such as a receipt, etc. The validity of the Purchase Proof shall be verified under the sole discretion of the Company.
-                        </li>
-                        <li>To be eligible to win the Physical Prize, the Participant must complete at least one (1) Mission as stated on the Campaign website and submit an Entry for a random drawing within the Campaign Period. To submit the Entry, the Participant must provide:
+                        <li>Participants must read and agree to these Terms before participating the Campaign.</li>
+                        <li>Participants must reside in the Southeast Asia region, and the delivery address for Physical Prize must also be within Southeast Asia region.</li>
+                        <li>Participants who are minors under the law of their country of residence must obtain consent from a parent or legal guardian before participating.</li>
+                        <li>Employees of the Company and such Employee’s related parties are not eligible to participate this Campaign.</li>
+                        <li>To receive a Digital Prize, the Participants must have completed the respective Mission(s) and their requirements, including but not limited to create a Company’s “SEGA Account” or follow Company’ s official social media account.</li>
+                        <li>For the Participants who would like to complete the Final Mission, they must submit a valid proof of purchase of the Game (“Purchase Proof”), such as a receipt, etc. The validity of the Purchase Proof shall be verified under the sole discretion of the Company. As stated in the Article 1.5, Participants who complete the all the first three Missions will have the same chances as those who have completed the Final Mission.</li>
+                        <li>Subject to the Campaign Period, the Participant must provide the following information to submit the Entry:
                             <ol>
-                                <li> Valid username (in Latin characters only);
-                                </li>
-                                <li>Valid email address</li>
+                                <li>Valid username (in Latin characters only);</li>
+                                <li>Valid email address; and</li>
                             </ol>
                         </li>
-                        <li> Multiple Entries for one Participant are not allowed.
-                        </li>
                     </ol>
 
-                    <h6>Article 3 (Handling of Personal Information)</h6>
+                    <h6 class="text-uppercase">Article 3 (Handling of Personal Information)</h6>
                     <ol>
-                        <li>The personal information collected through the Campaign website is limited to the username (which does not need to be the Participant’s real name), email address, and Purchase Proof (only if such proof contains any personal information).
-                        </li>
+                        <li>The personal information collected through the Campaign website is limited to the username (which does not need to be the Participant’s real name), email address, and Purchase Proof (only if such proof contains any personal information).</li>
                         <li>Any other personal information will be obtained through registration to the Company’s “SEGA Account” service, which is subject to its separate “Sega Account: Terms of Service” (<a class="text-cyan" href="https://sega-account.com/statics/terms">https://sega-account.com/statics/terms</a>) and the “Sega Corporation Privacy Policy”(<a class="text-cyan" href="https://www.sega.co.jp/en/privacypolicy/index.html">https://www.sega.co.jp/en/privacypolicy/index.html</a>). Participants must agree to those policies and any other applicable policies before registration.</li>
                         <li>Personal information collected through this Campaign website will be used solely for the purposes of operating the Campaign, contacting the winners of the Physical Prize, delivering Prizes, and other purposes related to the Campaign.</li>
                         <li>The Company will appropriately manage the collected personal information in accordance with the “Sega Corporation Privacy Policy” and applicable data protection laws in each jurisdiction, including the Personal Data Protection Act 2012 of Singapore (PDPA).</li>
                     </ol>
 
-                    <h6>Article 4 (Selection of Winners and Prize Delivery)</h6>
+                    <h6 class="text-uppercase">Article 4 (Selection of Winners and Prize Delivery)</h6>
                     <ol>
-                        <li>Digital Prize will be delivered digitally from the Campaign site. </li>
+                        <li>Participants may download the Digital Prizes from the Campaign Website directly.</li>
                         <li>For the Physical Prize, Eligible Entries will be randomly selected and a total of ten (10) winners (“Winners”) among all Eligible Entries will be selected to receive the Physical Prize.</li>
-                        <li>On or about 28 November 2025, the Winners will be announced on the Company’s official channel, including but not limited to, the ATLUS SEA Facebook page.
-                        </li>
+                        <li>On or about 28 November 2025, the Winners will be announced on the Company’s official channel, including but not limited to, the ATLUS SEA Facebook page.</li>
                         <li>Winners will be notified by email to the address which is registered in the Entry by the Participant.</li>
-                        <li>If the Winner fails to respond within the specified period after notification, or if the notification email cannot be delivered, the selection may be invalidated.
-                        </li>
+                        <li>If the Winner fails to respond within the specified period after notification, or if the notification email cannot be delivered, the selection may be invalidated.</li>
                         <li>Physical Prize delivery is limited to addresses within the Southeast Asia region.</li>
                         <li>The content and specifications of the Prizes are subject to change without prior notice.</li>
-                        <li>The right to receive the Prize (including the Digital Prize and the Physical Prize) is non-transferable and may not be exchanged, redeemed for cash, or sold to a third party.</li>
+                        <li>The right to receive the Prizes (including the Digital Prize and the Physical Prize) is non-transferable and may not be exchanged, redeemed for cash, or sold to a third party.</li>
                     </ol>
 
-                    <h6>Article 5 (Prohibited Acts)</h6>
+                    <h6 class="text-uppercase">Article 5 (Prohibited Acts)</h6>
                     <ol>
-                        <p>Participants must not engage in any of the following acts:</p>
+                        <p class="mb-0">Participants must not engage in any of the following acts:</p>
                         <li>Submitting false, incomplete, or misleading information.</li>
                         <li>Gaining unauthorized access, altering systems, or manipulating programs in order to participate the Campaign.
                         </li>
@@ -313,28 +304,34 @@
                         </li>
                     </ol>
 
-                    <h6>Article 6 (Disclaimer)
+                    <h6 class="text-uppercase">Article 6 (Disclaimer)
                     </h6>
                     <ol>
-                        <li>The Company reserves the right, at its sole discretion and without prior notice, to modify the Campaign Period, the prizes, the number of winners, the methods of selection or delivery, or the overall structure of the Campaign in order to ensure fairness, comply with applicable laws, or address unforeseen circumstances. The Company also reserves the right, at its sole discretion and without prior notice, to suspend or terminate the Campaign, in whole or in part. </li>
+                        <li>The Company reserves the right, at its sole discretion and without prior notice, to modify the Campaign Period, the prizes, the number of winners, the methods of selection or delivery, or the overall structure of the Campaign in order to ensure fairness, comply with applicable laws, or address unforeseen circumstances. The Company also reserves the right, at its sole discretion and without prior notice, to suspend or terminate the Campaign, in whole or in part.</li>
                         <li>The Company shall not be liable for any damages arising out suspension or interruption of the Campaign due to network conditions, server or system failures, maintenance, excessive access, or other unavoidable reasons.</li>
                         <li>The Company shall not be responsible for any loss or disadvantage resulting from the Participant’s incorrect input, email settings, or any other user-side circumstances that prevent the delivery of notifications.</li>
                         <li>Except in cases of willful misconduct or gross negligence on the part of the Company, the Company shall not be liable for any damages, losses, or injuries arising out of or in connection with the Campaign.</li>
                     </ol>
 
-                    <h6>Article 7 (Intellectual Property Rights)</h6>
-                    <p>All copyrights, trademarks, designs, logos, images, videos, text, and other intellectual property related to the Campaign belong to the Company or their rightful owners.</p>
-                    <br>
-                    <h6>Article 8 (Amendments to These Terms)</h6>
-                    <p>The Company reserves the right to amend these Terms at any time without prior notice if deemed necessary. The revised Terms shall be deemed effective retroactively from the commencement of the Campaign.
+                    <h6 class="text-uppercase">Article 7 (Intellectual Property Rights)</h6>
+                    <p>
+                        All copyrights, trademarks, designs, logos, images, videos, text, and other intellectual property related to the Campaign belong to the Company or their rightful owners.
                     </p>
-                    <br>
 
-                    <h6>Article 9 (Governing Law and Jurisdiction)</h6>
-                    <p>These Terms shall be governed by and construed in accordance with the laws of Singapore.Any disputes arising in connection with the Campaign shall be referred to and finally resolved by arbitration administered by the Singapore International Arbitration Centre (“SIAC”) in accordance with the Arbitration Rules of the Singapore International Arbitration Centre (“SIAC Rules”) for the time being in force. The seat of the arbitration shall be Singapore. The Tribunal shall consist of one (1) arbitrator. The language of the arbitration shall be English.</p>
-                    <br>
+                    <h6 class="text-uppercase">Article 8 (Amendments to These Terms)</h6>
+                    <p>
+                        The Company reserves the right to amend these Terms at any time without prior notice if deemed necessary. The revised Terms shall be deemed effective retroactively from the commencement of the Campaign.
+                    </p>
 
-                    <h6>SEGA CORPORATION</h6>
+
+
+                    <h6 class="text-uppercase">Article 9 (Governing Law and Jurisdiction)</h6>
+                    <p>
+                        These Terms shall be governed by and construed in accordance with the laws of Singapore. Any disputes arising in connection with the Campaign shall be referred to and finally resolved by arbitration administered by the Singapore International Arbitration Centre (“SIAC”) in accordance with the Arbitration Rules of the Singapore International Arbitration Centre (“SIAC Rules”) for the time being in force. The seat of the arbitration shall be Singapore. The Tribunal shall consist of one (1) arbitrator. The language of the arbitration shall be English.
+                    </p>
+
+
+                    <h6 class="text-uppercase">Sega Corporation</h6>
                 </div>
                 @endif
             </div>

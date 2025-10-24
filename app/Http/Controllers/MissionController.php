@@ -18,10 +18,10 @@ class MissionController extends Controller
                 'note' => 'Please use the same email as this campaign to qualify for a valid entry.',
                 'bonus' => [
                     'description' => "Here's an exclusive Persona 3 Reload wallpaper as a bonus prize.",
-                    'image' => 'img/wallpaper.png',
+                    'image' => 'img/persona3-reload-wallpaper.png',
                     'downloads' => [
-                        ['label' => 'Desktop', 'link' => 'img/wallpaper.png'],
-                        ['label' => 'Mobile', 'link' => 'img/wallpaper-m.png'],
+                        ['label' => 'Desktop', 'link' => 'img/persona3-reload-wallpaper.png'],
+                        ['label' => 'Mobile', 'link' => 'img/persona3-reload-wallpaper-mobile.png'],
                     ],
                 ],
             ],
