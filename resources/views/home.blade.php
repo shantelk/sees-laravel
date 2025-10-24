@@ -1,5 +1,4 @@
 @extends('layouts.app')
-<!-- @php dump(session()->all()); @endphp -->
 @section('content')
 <!-- <div id="overlay"></div>
     <div id="toaster">
@@ -17,13 +16,6 @@
 <div class="first-section">
     <img class="switch" src="img/switch.png">
     <div class="start-now-section">
-
-        <!-- <div>
-            <button class="btn-link" onclick="logout()">Yes, log me out</button>
-        </div> -->
-        <!-- <a href="/missions" class="w-100 btn-bold">Launch</a> -->
-
-
         <img src="img/p3.png">
         <h3>S.E.E.S. MISSIONS</h3>
         <p>SOUTHEAST ASIA EDITION</p>
@@ -70,7 +62,6 @@
 </div>
 @endsection
 
-
 @php
 $isLoggedIn = session()->has('api_token');
 @endphp
@@ -80,20 +71,15 @@ $isLoggedIn = session()->has('api_token');
         const continueBtn = document.getElementById('continueMissionBtn');
         if (!continueBtn) return;
 
-        // pass the Blade value into JS safely
         const isLoggedIn = "{{ $isLoggedIn ? 'true' : 'false' }}" === 'true';
-        console.log(isLoggedIn)
         if (continueBtn) {
             continueBtn.addEventListener('click', e => {
                 e.preventDefault();
                 if (isLoggedIn) {
-                    console.log('here')
                     window.location.href = "/missions";
                 } else {
                     const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
                     loginModal.show();
-                    console.log('lol')
-
                 }
             });
         }

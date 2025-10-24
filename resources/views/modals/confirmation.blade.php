@@ -20,23 +20,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function logout() {
-        fetch("{{ route('logout') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                    "Accept": "application/json",
-                },
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    sessionStorage.clear();
-                    window.location.href = "/";
-                }
-            })
-            .catch(err => console.error('Logout failed:', err));
-    }
-</script>

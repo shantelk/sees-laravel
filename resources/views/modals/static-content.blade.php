@@ -11,6 +11,7 @@
             </div>
             <div class="modal-body">
                 @if($id == 'ppModal')
+                <!-- Privacy Policy -->
                 <div>
                     <h6>Introduction</h6>
                     <p> SEGA CORPORATION, its subsidiaries and affiliates (together “SEGA” or “SEGA Group”, individually a “SEGA Entity”) are committed to protecting the privacy and security of your personal information. The term “personal information” used herein also includes “personal data” and equivalent terms, as such terms are defined under applicable laws. SEGA collects different types of information from you, including personal information, when you use our mobile, online and downloadable products and services (together, the "Products").
@@ -230,6 +231,7 @@
                     </ol>
                 </div>
                 @else
+                <!-- Terms of Service -->
                 <div>
                     <p>This “P3R S.E.E.S. Missions” campaign (“Campaign”) is being organized by SEGA Corporation, with an address at Sumitomo Fudosan Osaki Garden Tower, 1-1-1 Nishi-Shinagawa, Shinagawa-ku, Tokyo, 141-0033, Japan (“Company”). By participating in the Campaign, each participant (“Participant”) is deemed to have read, understood, and agreed to be bound by these terms and conditions (“Terms”).
                     </p>

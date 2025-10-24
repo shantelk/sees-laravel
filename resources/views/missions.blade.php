@@ -8,7 +8,6 @@
                 <a href="/">
                     <img class="p3-logo cursor-pointer" src="img/p3.png">
                 </a>
-
                 <div class="d-flex items-center">
                     <div class="user-details">
                         <h6>{{ $username }}</h6>
@@ -58,12 +57,9 @@
                                     <div class="accordion-body">
                                         @if(empty($mission['is_final']))
                                         @foreach($mission['tasks'] as $index => $task)
-                                        @php
-                                        $link = $mission['links'][$index] ?? '#';
-                                        @endphp
-                                        <!-- <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}" onclick="window.open('{{ $link }}', '_blank', 'noopener')"> -->
-                                        <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-api-key="{{ $task['api_key'] }}" data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}">
-                                            <p class="title font-adjust">{{ $task['label']  }}</p>
+                                        <div class="task-card" id="task{{ $loop->iteration }}" data-mission="{{ $mission['id'] }}" data-api-key="{{ $task['api_key'] }}"
+                                            data-step="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}" data-link="{{ $task['link'] }}">
+                                            <p class="title font-adjust">{{ $task['label'] }}</p>
                                             <button class="btn-bold">
                                                 <h6 class="btn-text status-text font-adjust">GO</h6>
                                                 <img src="{{ asset('img/polygon.png') }}" class="btn-bg">
@@ -107,7 +103,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center gap-2 mt-2">
                                                     <div class="progress flex-grow-1 me-2">
-                                                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                     <span id="progressPercent" class="help-text text-white m-0">0%</span>
                                                 </div>
@@ -151,18 +147,21 @@
                 </div>
             </div>
         </div>
-
     </div>
-
-
 </div>
-
 @include('modals.entry-submission')
-
 @endsection
 
 @section('scripts')
 <script>
+    async function handleUnauthorized(response) {
+        if (response.status === 401) {
+            await logout();
+            return true;
+        }
+        return false;
+    }
+
     const missions = {
         1: {
             total: 1,
@@ -196,17 +195,15 @@
                     completed: true,
                 }),
             });
+            if (await handleUnauthorized(response)) return;
 
             const data = await response.json();
-            console.log('update-progress', data);
             if (data.success) {
                 await checkProgress();
                 updateEntriesDisplay();
-            } else {
-                console.warn("update-progress failed:", data.message);
             }
         } catch (error) {
-            console.error("submitProgress() failed:", error);
+            console.error("Login / Signup failed:", error);
         }
     }
 
@@ -220,19 +217,18 @@
                 },
             });
 
+            if (await handleUnauthorized(response)) return;
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            const data = await response.json();
-            console.log("check-progress response:", data);
 
+            const data = await response.json();
             const missionsData = data.data?.missions || data.missions;
+            const missionCompletion = {};
+
             if (!missionsData) return;
 
             Object.values(missions).forEach(m => m.completed = 0);
-
-            const missionCompletion = {};
-
             for (const [key, obj] of Object.entries(missionsData)) {
                 const card = document.querySelector(`[data-api-key="${key}"]`);
                 if (!card) continue;
@@ -245,19 +241,20 @@
                     total: 0
                 };
                 missionCompletion[mission].total++;
-
                 if (obj.completed) {
                     card.classList.add("complete");
+                    card.style.pointerEvents = "none";
+                    card.setAttribute("aria-disabled", "true");
                     if (statusText) statusText.textContent = "DONE";
                     missionCompletion[mission].done++;
                 } else {
                     card.classList.remove("complete");
+                    card.style.pointerEvents = "auto";
+                    card.removeAttribute("aria-disabled");
                     if (statusText) statusText.textContent = "GO";
                 }
             }
-
             for (const [missionId, counts] of Object.entries(missionCompletion)) {
-                // persist the real numbers
                 missions[missionId].completed = counts.done;
 
                 const progressEl = document.getElementById(`mission${missionId}-progress`);
@@ -268,15 +265,15 @@
                         `${formatNumber(counts.done)}/${formatNumber(counts.total)}`;
                     progressEl.classList.toggle("completed", counts.done >= counts.total);
                 }
-
                 if (counts.done >= counts.total) {
-                    completeMission(missionId); // full unlock
+                    completeMission(missionId);
                 } else {
-                    lockMissionUI(missionId, counts); // 🔒 partial progress stays, no reset to 0
+                    lockMissionUI(missionId, counts);
                 }
             }
             updateLuckyDrawSection();
             updateEntriesDisplay();
+
         } catch (error) {
             console.error("check progress failed:", error);
         }
@@ -295,7 +292,6 @@
         }
         if (lockIcon) lockIcon.style.display = "inline-block";
 
-        // Keep the *real* counts, don't zero them
         const done = counts?.done ?? missions[missionId].completed;
         const total = counts?.total ?? missions[missionId].total;
         if (descEl) descEl.textContent = `Complete all ${total} task(s) to unlock a bonus prize!`;
@@ -303,10 +299,9 @@
 
     function completeMission(missionId) {
         if (!missions[missionId]) return;
-
         missions[missionId].completed = missions[missionId].total;
 
-        const progressEl = document.getElementById(`mission${missionId}-progress`) || document.getElementById('receipt-submitted');
+        const progressEl = document.getElementById(`mission${missionId}-progress`);
         if (progressEl) {
             progressEl.textContent = "Completed";
             progressEl.classList.add("completed");
@@ -324,30 +319,23 @@
         }
         if (lockIcon) lockIcon.style.display = "none";
         if (descEl) descEl.innerHTML = "You have completed your tasks! <br> Unlock and claim your bonus prize.";
-
         updateLuckyDrawSection();
     }
 
     function incompleteMission(missionId, doneCount = null) {
         if (!missions[missionId]) return;
 
-        // keep current progress unless explicitly provided
         if (doneCount !== null) {
-            missions[missionId].completed = doneCount;
+            missions[missionId].completed = doneCount !== null ? doneCount : 0;
         }
 
         const progressEl = document.getElementById(`mission${missionId}-progress`);
-        const receiptEl = document.getElementById('receipt-submitted');
         const done = missions[missionId].completed;
         const total = missions[missionId].total;
 
         if (progressEl) {
             progressEl.textContent = `${formatNumber(done)}/${formatNumber(total)}`;
             progressEl.classList.remove("completed");
-        }
-        if (receiptEl) {
-            receiptEl.textContent = `${formatNumber(done)}`;
-            receiptEl.classList.remove("completed");
         }
 
         const statusEl = document.getElementById(`mission${missionId}-status`);
@@ -362,7 +350,6 @@
         }
         if (lockIcon) lockIcon.style.display = "inline-block";
         if (descEl) descEl.textContent = `Complete all ${total} task(s) to unlock a bonus prize!`;
-
         updateLuckyDrawSection();
     }
 
@@ -386,7 +373,6 @@
             luckyDrawBtn.disabled = false;
             luckyDrawBtn.classList.remove("disabled");
             if (progressText) progressText.textContent = "";
-
             if (completedMissions === allMissions) {
                 luckyDrawText.textContent = "You've completed all mission(s)!";
             } else {
@@ -401,7 +387,6 @@
             if (progressText) progressText.textContent = "Complete a mission to unlock!";
             luckyDrawText.textContent = "Complete missions to accumulate entry chances!";
         }
-
         if (entriesCount) {
             entriesCount.textContent = completedMissions;
         }
@@ -409,11 +394,10 @@
     }
 
     function updateEntriesDisplay() {
-        const totalMissions = 3; // fixed base missions (1–3)
+        const totalMissions = 3;
         let completedMissions = 0;
         let hasReceipt = false;
 
-        // Check completed missions
         for (let [id, mission] of Object.entries(missions)) {
             if (parseInt(id) <= 3 && mission.completed >= mission.total) {
                 completedMissions++;
@@ -424,35 +408,61 @@
         }
 
         const displayCount = hasReceipt ? completedMissions + 1 : completedMissions;
-
         const entriesCount = document.getElementById('entriesCount');
         const entriesTotal = document.getElementById('entriesTotal');
+
         if (entriesCount) entriesCount.textContent = displayCount;
         if (entriesTotal) entriesTotal.textContent = totalMissions;
-
         sessionStorage.setItem('entriesCompleted', displayCount);
         sessionStorage.setItem('entriesTotal', totalMissions);
     }
 
-    document.querySelectorAll(".btn-bold").forEach(btn => {
-        btn.addEventListener("click", e => {
-            e.stopPropagation();
-            const card = btn.closest(".task-card");
-            const missionKey = card.dataset.apiKey;
-            const missionId = card.dataset.mission;
-            console.log("Clicked mission:", missionKey);
-            updateProgress(missionKey, missionId); // now matches correctly
-        });
-    });
+    document.querySelectorAll(".task-card").forEach(card => {
+        const link = card.dataset.link || null;
+        const missionKey = card.dataset.apiKey;
+        const missionId = card.dataset.mission;
+        const btn = card.querySelector(".btn-bold");
+        const statusText = card.querySelector(".status-text");
 
+        const handleClick = (e) => {
+            e.stopPropagation();
+            if (card.classList.contains("complete")) return;
+
+            if (link) {
+                window.open(link, "_blank", "noopener,noreferrer");
+            }
+            // if (btn) btn.disabled = true;
+            setTimeout(async () => {
+                try {
+                    await updateProgress(missionKey, missionId);
+                } catch (err) {
+                    console.error("updateProgress error:", err);
+                    if (statusText) statusText.textContent = "GO";
+                    if (btn) btn.disabled = false;
+                }
+            }, 5000);
+        };
+
+        card.addEventListener("click", handleClick);
+        if (btn) btn.addEventListener("click", handleClick);
+    });
 
     function onReceiptUploaded() {
         completeMission(4);
         updateEntriesDisplay();
     }
 
-    function formatNumber(num) {
-        return String(num).padStart(2, "0");
+    function updateReceiptStatus(isUploaded) {
+        const receiptEl = document.getElementById('receipt-submitted');
+        if (!receiptEl) return;
+
+        if (isUploaded) {
+            receiptEl.textContent = "01";
+            receiptEl.classList.add("completed");
+        } else {
+            receiptEl.textContent = "00";
+            receiptEl.classList.remove("completed");
+        }
     }
 
     // TODO: replace startFakeUpload() with startRealUpload() when backend API is ready
@@ -494,7 +504,6 @@
 
             if (progress >= 100) {
                 clearInterval(uploadInterval);
-
                 if (uploadStatus) {
                     uploadStatus.textContent = "Complete ✓";
                     uploadStatus.classList.remove("text-cyan");
@@ -516,12 +525,121 @@
                 const submissionEl = document.querySelector(".submission");
                 const missionId = Number(submissionEl?.dataset.mission) || 4;
                 completeMission(missionId);
+                updateReceiptStatus(true);
                 onReceiptUploaded();
             }
         }, 200);
     }
 
-    // ✅ Call once when page loads to sync with API
+    function uploadFile(file) {
+        const fileNameEl = document.querySelector(".file-name");
+        const fileSizeEl = document.querySelector(".file-size");
+        const uploadStatus = document.querySelector(".upload-status");
+        const progressBar = document.getElementById("progressBar");
+        const progressPercent = document.getElementById("progressPercent");
+        const progressBox = document.querySelector(".progress");
+        const deleteBtn = document.getElementById("deleteFileBtn");
+        const browseBtn = document.getElementById("browseBtn");
+
+        if (fileNameEl) fileNameEl.textContent = file.name;
+        if (fileSizeEl) fileSizeEl.textContent = "-";
+        uploadStatus.textContent = "Uploading...";
+        uploadStatus.classList.remove("text-success", "text-danger", "d-none");
+        uploadStatus.classList.add("text-cyan");
+
+        progressBox.classList.remove("d-none");
+        progressBar.style.width = "0%";
+        progressPercent.textContent = "0%";
+        progressPercent.classList.remove("d-none");
+
+        deleteBtn.disabled = true;
+        browseBtn.disabled = true;
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/upload-image", true);
+            xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').content);
+
+            xhr.upload.onprogress = (event) => {
+                if (event.lengthComputable) {
+                    const percent = Math.round((event.loaded / event.total) * 100);
+                    progressBar.style.width = `${percent}%`;
+                    progressPercent.textContent = `${percent}%`;
+                }
+            };
+
+            xhr.onload = function() {
+                const status = xhr.status;
+                let data = {};
+                try {
+                    data = JSON.parse(xhr.responseText);
+                } catch {}
+
+                progressBox.classList.add("d-none");
+                progressPercent.classList.add("d-none");
+
+                deleteBtn.disabled = false;
+                browseBtn.disabled = false;
+
+                if (xhr.status === 401) {
+                    alert("Session expired. Please log in again.");
+                    sessionStorage.clear();
+                    window.location.href = "/";
+                    return;
+                }
+
+                if (status >= 200 && status < 300) {
+                    uploadStatus.textContent = "Complete";
+                    uploadStatus.className = "upload-status text-success";
+                    fileSizeEl.textContent = formatFileSize(file.size);
+
+                    completeMission(4);
+                    updateEntriesDisplay();
+                    updateReceiptStatus(true);
+                    onReceiptUploaded();
+                } else {
+                    handleUploadError(file, uploadStatus, progressBar, fileSizeEl, "Upload failed");
+                }
+            };
+
+            xhr.onerror = function() {
+                progressBox.classList.add("d-none");
+                progressPercent.classList.add("d-none");
+                deleteBtn.disabled = false;
+                browseBtn.disabled = false;
+
+                handleUploadError(file, uploadStatus, progressBar, fileSizeEl, "Connection lost");
+            };
+
+            xhr.send(formData);
+        } catch (error) {
+            progressBox.classList.add("d-none");
+            progressPercent.classList.add("d-none");
+            deleteBtn.disabled = false;
+            browseBtn.disabled = false;
+
+            handleUploadError(file, uploadStatus, progressBar, fileSizeEl, "Upload failed");
+        }
+    }
+
+    function handleUploadError(file, uploadStatus, progressBar, fileSizeEl, message) {
+        uploadStatus.textContent = message;
+        uploadStatus.className = "upload-status text-danger";
+        fileSizeEl.textContent = formatFileSize(file.size);
+    }
+
+    function formatFileSize(bytes) {
+        const kb = bytes / 1024;
+        return kb > 1024 ? (kb / 1024).toFixed(2) + " MB" : kb.toFixed(1) + " KB";
+    }
+
+    function formatNumber(num) {
+        return String(num).padStart(2, "0");
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         checkProgress();
 
@@ -615,20 +733,6 @@
             startFakeUpload(file);
         }
 
-        deleteFileBtn.addEventListener("click", () => {
-            fileBox.classList.add("d-none");
-            dropArea.classList.remove("d-none");
-            fileInput.value = "";
-            progressBar.style.width = "0%";
-            progressPercent.textContent = "0%";
-            receiptSubmitted.textContent = "00";
-
-            bonusStatus.classList.remove("bonus-unlocked");
-            bonusStatus.classList.add("bonus-locked");
-            bonusLabel.textContent = "BONUS PRIZE LOCKED";
-            incompleteMission(4);
-        });
-
         function validateFile(file) {
             const validTypes = ["image/jpeg", "image/png", "application/pdf"];
             if (!validTypes.includes(file.type)) {
@@ -637,6 +741,19 @@
             }
             return true;
         }
+
+        deleteFileBtn.addEventListener("click", () => {
+            fileBox.classList.add("d-none");
+            dropArea.classList.remove("d-none");
+            fileInput.value = "";
+            progressBar.style.width = "0%";
+            progressPercent.textContent = "0%";
+
+            updateReceiptStatus(false);
+            missions[4].completed = 0;
+            incompleteMission(4, 0);
+            updateEntriesDisplay();
+        });
 
         const luckyDrawBtn = document.getElementById('luckyDrawBtn');
         const entryModalEl = document.getElementById('entryModal');
@@ -684,7 +801,6 @@
                 luckyDrawBtn.classList.add('btn-check-entries');
             }
         });
-
     });
 </script>
 @endsection

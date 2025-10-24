@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>P3R S.E.E.S Missions</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <link rel="preload" as="image" href="{{ asset('img/mission-bg.png') }}">
 </head>
 
 <body>
@@ -28,22 +28,20 @@
 
     @include('partials.footer')
 
-
     @include('modals.auth.login')
     @include('modals.auth.signup')
 
-    @include('modals.static-content', [ 'id'=> 'ppModal', 'title'=> 'Privacy Policy'])
     @include('modals.static-content', [ 'id'=> 'tosModal', 'title'=> 'P3R S.E.E.S. Missions” Campaign Terms and Conditions'])
 
     @include('modals.confirmation', [
-    'id' => 'signoutModal',
-    'title' => 'Are you sure <br> you want to logout?',
-    'buttonText' => 'No, bring me back',
+        'id' => 'signoutModal',
+        'title' => 'Are you sure <br> you want to logout?',
+        'buttonText' => 'No, bring me back',
     ])
     @include('modals.confirmation', [
-    'id' => 'errorUnlockModal',
-    'title' => 'Complete at least 1 <br> mission to join.',
-    'buttonText' => 'Back to Missions',
+        'id' => 'errorUnlockModal',
+        'title' => 'Complete at least 1 <br> mission to join.',
+        'buttonText' => 'Back to Missions',
     ])
 
     <script src="{{ asset('js/script.js') }}"></script>

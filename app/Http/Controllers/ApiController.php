@@ -79,6 +79,11 @@ class ApiController extends Controller
                 'status' => $response->status(),
                 'response' => $response->json(),
             ]);
+
+            return response()->json(
+                $response->json(),
+                $response->status()
+            );
         } catch (\Exception $e) {
             Log::error('External API call failed', ['message' => $e->getMessage()]);
             return response()->json([
@@ -86,7 +91,6 @@ class ApiController extends Controller
                 'message' => 'Server error: ' . $e->getMessage(),
             ], 500);
         }
-        return $response;
     }
 
     public function checkProgress()
@@ -119,36 +123,72 @@ class ApiController extends Controller
         }
     }
 
-    public function logout(Request $request)
-    {
-        $request->session()->forget(['api_token', 'username', 'email']);
-        $request->session()->regenerate();
-        Log::info('External API called', [
-            'response' => response()->json(),
-        ]);
-        return response()->json([
-            'success' => true,
-            'message' => 'Logged out successfully'
-        ]);
-    }
-
-
-
-
     public function uploadImage(Request $request)
     {
         $token = session('api_token');
         $path = 'https://api-psblue.agatedev.net/api/upload-image';
-        $file = $request->file('image');
 
-        $response = Http::withHeaders([
-            'X-Api-Token' => $token,
-        ])->attach(
-            'image',
-            file_get_contents($file),
-            $file->getClientOriginalName()
-        )->post($path);
+        try {
+            $request->validate([
+                'image' => 'required|file|mimes:jpeg,jpg,png,pdf|max:51200', // 50MB
+            ]);
 
-        return $response->json();
+            $file = $request->file('image');
+
+            $response = Http::withHeaders([
+                'X-Api-Token' => $token,
+            ])->attach(
+                'image',
+                fopen($request->file('image')->getRealPath(), 'r'),
+                $request->file('image')->getClientOriginalName()
+            )->post($path);
+
+            Log::info('File upload debug', [
+                'file_exists' => file_exists($request->file('image')->getRealPath()),
+                'file_name' => $request->file('image')->getClientOriginalName(),
+                'mime' => $request->file('image')->getMimeType(),
+                'size_kb' => round($request->file('image')->getSize() / 1024, 2),
+            ]);
+
+            Log::info('External API called', [
+                'endpoint' => $path,
+                'status'   => $response->status(),
+                'response' => $response->json(),
+            ]);
+
+            // 🔐 Handle 401
+            if ($response->status() === 401) {
+                $request->session()->forget('api_token');
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+            }
+
+            return response()->json($response->json(), $response->status());
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid file or format.',
+                'errors'  => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Upload failed', ['error' => $e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->session()->forget(['api_token', 'username', 'email']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        Log::info('Logout hit successfully');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully logout.'
+        ]);
     }
 }

@@ -671,6 +671,10 @@ input:-webkit-autofill:active {
 }
 
 /* Mission Modal */
+#missionModal {
+  background: #161752;
+}
+
 .bg-image-modal {
   background: url('../img/mission-bg.png') no-repeat center center;
   background-size: cover;
@@ -863,6 +867,7 @@ input:-webkit-autofill:active {
 
 #receipt-submitted.progress-text.completed {
   color: #000;
+  font-size: 28px;
 }
 
 .progress-sec h5 {
@@ -903,6 +908,8 @@ input:-webkit-autofill:active {
 
 .task-card.complete {
   opacity: 0.64;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 .task-card.complete .btn-bold:hover:not(:disabled) .btn-bg {
@@ -964,7 +971,7 @@ input:-webkit-autofill:active {
 }
 
 #submitBtn {
-    margin: 20px 24px 5px;
+  margin: 20px 24px 5px;
 
 }
 
@@ -1075,9 +1082,18 @@ input:-webkit-autofill:active {
   color: #FE0100 !important;
 }
 
+#deleteFileBtn {
+  border-radius: 0;
+  border: none;
+}
+
 #deleteFileBtn:hover {
   background: #1901FB;
   border-radius: 0;
+}
+
+#deleteFileBtn.disabled {
+  border: none;
 }
 
 .lucky-draw-sec {

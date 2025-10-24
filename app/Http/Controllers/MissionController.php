@@ -6,25 +6,14 @@ use Illuminate\Http\Request;
 
 class MissionController extends Controller
 {
-    public function index()
-    {
-        return view('missions', [
-            'username' => session('username'),
-            'email'    => session('email'),
-        ]);
-    }
-
-    public function missionsData()
+    public function getMissions()
     {
         $missions = [
             [
                 'id' => 1,
                 'title' => 'Contract',
                 'tasks' => [
-                    ['api_key' => 'm1', 'label' => 'Login or signup for a SEGA Account', 'links' => 'https://cpn.sega-account.com/'],
-                ],
-                'links' => [
-                    'https://cpn.sega-account.com/',
+                    ['api_key' => 'm1', 'label' => 'Login or signup for a SEGA Account', 'link' => 'https://cpn.sega-account.com/'],
                 ],
                 'note' => 'Please use the same email as this campaign to qualify for a valid entry.',
                 'bonus' => [
@@ -40,12 +29,8 @@ class MissionController extends Controller
                 'id' => 2,
                 'title' => 'Drive',
                 'tasks' => [
-                    ['api_key' => 'm2_a1', 'label' => 'Like / Follow ATLUS SEA on Facebook', 'links' => 'https://www.facebook.com/Atlus.asia/'],
-                    ['api_key' => 'm2_a2', 'label' => 'Follow @atlus.sea on Instagram', 'links' => 'https://www.instagram.com/atlus.sea/'],
-                ],
-                'links' => [
-                    'https://www.facebook.com/Atlus.asia/',
-                    'https://www.instagram.com/atlus.sea/',
+                    ['api_key' => 'm2_a1', 'label' => 'Like / Follow ATLUS SEA on Facebook', 'link' => 'https://www.facebook.com/Atlus.asia/'],
+                    ['api_key' => 'm2_a2', 'label' => 'Follow @atlus.sea on Instagram', 'link' => 'https://www.instagram.com/atlus.sea/'],
                 ],
                 'bonus' => [
                     'description' => "Here is a S.E.E.S. Missions avatar frame as a bonus prize.",
@@ -59,10 +44,7 @@ class MissionController extends Controller
                 'id' => 3,
                 'title' => 'Unity',
                 'tasks' => [
-                    ['api_key' => 'm3_a1', 'label' => 'Join the ATLUS SEA Discord', 'links' => 'https://discord.com/invite/atlussea/'],
-                ],
-                'links' => [
-                    'https://discord.com/invite/atlussea/',
+                    ['api_key' => 'm3_a1', 'label' => 'Join the ATLUS SEA Discord', 'link' => 'https://discord.com/invite/atlussea/'],
                 ],
                 'bonus' => [
                     'description' => "Screenshot this and send your image to the ATLUS SEA Discord to claim your exclusive S.E.E.S. Missions role.",
@@ -85,13 +67,13 @@ class MissionController extends Controller
         return $missions;
     }
 
-    public function showMissions(Request $request)
+    public function index(Request $request)
     {
         if (!$request->session()->has('api_token')) {
             return redirect('/')->with('error', 'Please log in to continue.');
         }
 
-        $missions = $this->missionsData();
+        $missions = $this->getMissions();
         $username = session('username');
         $email = session('email');
         return view('missions', compact('missions', 'username', 'email'));
