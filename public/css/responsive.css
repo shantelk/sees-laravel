@@ -184,7 +184,7 @@
 
     /* Mission Modal */
     .bg-image-modal {
-        background: url("../img/m-mission-bg.png") no-repeat top center;
+        background: url("../img/m-mission-bg.webp") no-repeat top center;
         background-size: cover;
     }
 
@@ -500,7 +500,7 @@
     }
 
     .bg-image-modal {
-        background: url("../img/m-mission-bg.png") no-repeat top center;
+        background: url("../img/m-mission-bg.webp") no-repeat top center;
         background-size: cover;
     }
 

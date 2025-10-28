@@ -378,7 +378,7 @@
         if (completedMissions >= 1) {
             imgTint.classList.add("unlocked");
             imgTint.classList.remove("locked");
-            prizeImg.src = 'img/prize.png';
+            prizeImg.src = 'img/prize.webp';
             luckyDrawBtn.disabled = false;
             luckyDrawBtn.classList.remove("disabled");
             if (progressText) progressText.textContent = "";

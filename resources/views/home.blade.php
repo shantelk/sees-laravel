@@ -11,13 +11,13 @@
         </div>
     </div>
     <div class="img-container">
-        <img src="img/character.png">
+        <img src="img/character.webp">
     </div>
 </div>
 <div class="second-section">
     <img src="img/band.png" class="img-band">
     <div class="background-box">
-        <img src="img/background-box.png" class="background-box-img">
+        <img src="img/background-box.webp" class="background-box-img">
         <div class="row introduction">
             <div class="col-md-12 title">
                 <h3>JOIN THE S.E.E.S. MISSIONS!</h3>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="col-12 col-lg-6 img-content p-0 order-1 order-lg-2">
-                <img src="img/prize.png">
+                <img src="img/prize.webp">
                 <p>*Prizes subject to change</p>
             </div>
         </div>

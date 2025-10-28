@@ -399,7 +399,7 @@ html {
 }
 
 .second-section {
-  background-image: url(../img/home-bg.png);
+  background-image: url(../img/home-bg.webp);
   background-repeat: no-repeat;
   background-size: cover;
   background-color: #0cbbf6;
@@ -683,7 +683,7 @@ input:-webkit-autofill:active {
 }
 
 .bg-image-modal {
-  background: url('../img/mission-bg.png') no-repeat center center;
+  background: url('../img/mission-bg.webp') no-repeat center center;
   background-size: cover;
   min-height: 100vh;
 }
