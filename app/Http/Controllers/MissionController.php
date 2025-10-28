@@ -13,7 +13,7 @@ class MissionController extends Controller
                 'id' => 1,
                 'title' => 'Contract',
                 'tasks' => [
-                    ['api_key' => 'm1', 'label' => 'Login or signup for a SEGA Account', 'link' => 'https://cpn.sega-account.com/'],
+                    ['api_key' => 'm1', 'label' => 'Login or signup for a SEGA Account', 'link' => 'https://sega-account.com/'],
                 ],
                 'note' => 'Please use the same email as this campaign to qualify for a valid entry.',
                 'bonus' => [
@@ -29,7 +29,7 @@ class MissionController extends Controller
                 'id' => 2,
                 'title' => 'Drive',
                 'tasks' => [
-                    ['api_key' => 'm2_a1', 'label' => 'Like / Follow ATLUS SEA on Facebook', 'link' => 'https://www.facebook.com/Atlus.asia/'],
+                    ['api_key' => 'm2_a1', 'label' => 'Follow ATLUS SEA on Facebook', 'link' => 'https://www.facebook.com/Atlus.asia/'],
                     ['api_key' => 'm2_a2', 'label' => 'Follow @atlus.sea on Instagram', 'link' => 'https://www.instagram.com/atlus.sea/'],
                 ],
                 'bonus' => [

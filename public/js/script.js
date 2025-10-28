@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!homeAudio) return;
 
-    const hasAccepted = sessionStorage.getItem("cookieAccepted") === "true";
-    const isMuted = sessionStorage.getItem("audioMuted") === "true";
+    const hasAccepted = localStorage.getItem("cookieAccepted") === "true";
+    const isMuted = localStorage.getItem("audioMuted") === "true";
     homeAudio.muted = isMuted;
 
     const updateAudioButtonUI = (muted) => {
@@ -51,9 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
         toasterBtn.addEventListener("click", () => {
             overlay.style.display = "none";
             toaster.style.display = "none";
-            sessionStorage.setItem("cookieAccepted", "true");
+            localStorage.setItem("cookieAccepted", "true");
             homeAudio.muted = false;
-            sessionStorage.setItem("audioMuted", "false");
+            localStorage.setItem("audioMuted", "false");
             homeAudio.play().catch(() => { });
             updateAudioButtonUI(false);
         });
@@ -62,12 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
     homeToggle.addEventListener("click", () => {
         const nowMuted = !homeAudio.muted;
         homeAudio.muted = nowMuted;
-        sessionStorage.setItem("audioMuted", nowMuted);
+        localStorage.setItem("audioMuted", nowMuted);
         updateAudioButtonUI(nowMuted);
 
         if (!nowMuted) {
             homeAudio.play().catch(() => { });
-            sessionStorage.setItem("cookieAccepted", "true");
+            localStorage.setItem("cookieAccepted", "true");
         }
     });
 
@@ -145,8 +145,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function downloadCover() {
     const link = document.createElement('a');
-    link.href = 'img/paper-cover.jpg';
-    link.download = 'Persona3-Reload-Nintendo-Switch-2-Cover.png';
+    link.href = 'pdf/P3R_NSW2-Cover.pdf'; // path to your PDF
+    link.download = 'P3R_NSW2 Cover.pdf'; // filename for download
     link.click();
 }
 
@@ -168,8 +168,8 @@ async function submitEmail(type) {
 
         if (!api.ok) throw new Error(res.error || 'Request failed.');
         if (res.success) {
-            sessionStorage.setItem('api_token', res.data.api_token);
-            sessionStorage.setItem('user_data', JSON.stringify(res.data));
+            localStorage.setItem('api_token', res.data.api_token);
+            localStorage.setItem('user_data', JSON.stringify(res.data));
             updateEntriesFromAPI(res.data.missions);
 
             const modalEl = document.getElementById(`${type}Modal`);
@@ -189,7 +189,7 @@ function updateEntriesFromAPI(missions) {
     const entriesDisplay = document.getElementById('entriesCount');
 
     if (entriesDisplay) entriesDisplay.textContent = entries;
-    sessionStorage.setItem('entriesCount', entries);
+    localStorage.setItem('entriesCount', entries);
 }
 
 function calculateEntries(missions) {
@@ -232,7 +232,7 @@ async function logout() {
             data = {};
         }
 
-        sessionStorage.clear();
+        localStorage.clear();
 
         if (response.status === 401) {
             console.warn("Session already expired on server.");
@@ -242,7 +242,7 @@ async function logout() {
         window.location.href = "/";
     } catch (err) {
         console.error("Logout failed:", err);
-        sessionStorage.clear();
+        localStorage.clear();
         window.location.href = "/";
     }
 }

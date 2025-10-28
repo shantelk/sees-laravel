@@ -26,13 +26,16 @@
                         </div>
                         <div class="info">
                             <em>*Note down the exact username and email used here to retrieve your mission progress in the future.</em>
-                            <p id="signupInputErr">Please enter both nick name and email to proceed.</p>
+                            <p id="signupInputErr">Please enter both username and email to proceed.</p>
                             <p id="signupCheckboxErr">Please read and check the Terms of Service and Privacy Policy to proceed.</p>
                         </div>
                     </div>
                     <div class="form-check">
                         <input class="cursor-pointer form-check-input" type="checkbox" id="signupCheckbox" required>
-                        <label class="cursor-pointer form-check-label" for="signupCheckbox">Yes, I acknowledge that I have read, understood, and agreed to the <a class="text-cyan text-underline">Terms of Service</a> and that I have read and understood the <a class="text-cyan text-underline">Privacy Policy</a>.</label>
+                        <label class="form-check-label">Yes, I acknowledge that I have read, understood, and agreed to the 
+                            <a class="text-cyan text-underline cursor-pointer" data-bs-toggle="modal" data-bs-target="#tosModal">Terms of Service</a> 
+                            and that I have read and understood the 
+                            <a class="text-cyan text-underline cursor-pointer" href="https://www.sega.co.jp/en/privacypolicy/index.html" target="_blank">Privacy Policy</a>.</label>
                     </div>
                 </form>
                 <button id="signupNextBtn" class="w-100 btn-bold mt-md-5" onclick="submitEmail('signup')" disabled>

@@ -20,7 +20,7 @@
         <div id="overlay" style="display: none;"></div>
         <div id="toaster" style="display: none;">
             <span>This website uses cookies to enhance your browsing experience.
-                <a href="#">Learn more</a>
+                <a href="https://www.sega.co.jp/en/privacypolicy/#your-choices-and-rights" target="_blank">Learn more</a>
             </span>
             <button id="toasterBtn" class="btn-bold">
                 <span class="btn-text">Ok</span>

@@ -399,7 +399,7 @@
         if (entriesCount) {
             entriesCount.textContent = completedMissions;
         }
-        sessionStorage.setItem('entriesCount', completedMissions);
+        localStorage.setItem('entriesCount', completedMissions);
     }
 
     function updateEntriesDisplay() {
@@ -422,8 +422,8 @@
 
         if (entriesCount) entriesCount.textContent = displayCount;
         if (entriesTotal) entriesTotal.textContent = totalMissions;
-        sessionStorage.setItem('entriesCompleted', displayCount);
-        sessionStorage.setItem('entriesTotal', totalMissions);
+        localStorage.setItem('entriesCompleted', displayCount);
+        localStorage.setItem('entriesTotal', totalMissions);
     }
 
     document.querySelectorAll(".task-card").forEach(card => {
@@ -525,7 +525,7 @@
 
                 if (xhr.status === 401) {
                     alert("Session expired. Please log in again.");
-                    sessionStorage.clear();
+                    localStorage.clear();
                     window.location.href = "/";
                     return;
                 }
@@ -536,7 +536,7 @@
                         box_url: data.data.box_url,
                         file_size: formatFileSize(file.size),
                     };
-                    sessionStorage.setItem('receipt', JSON.stringify(receiptData));
+                    localStorage.setItem('receipt', JSON.stringify(receiptData));
 
                     uploadStatus.textContent = "Complete";
                     uploadStatus.className = "upload-status text-success";
@@ -734,8 +734,8 @@
             entryModalEl.querySelector('.step-1').classList.remove('d-none');
             entryModalEl.querySelector('.step-2').classList.add('d-none');
 
-            const completed = sessionStorage.getItem('entriesCompleted') || 0;
-            const total = sessionStorage.getItem('entriesTotal') || 3;
+            const completed = localStorage.getItem('entriesCompleted') || 0;
+            const total = localStorage.getItem('entriesTotal') || 3;
 
             if (hasSubmitted) {
                 entryBtn.disabled = true;
