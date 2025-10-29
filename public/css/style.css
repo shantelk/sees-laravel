@@ -1387,3 +1387,24 @@ input:-webkit-autofill:active {
 .socials-cta a {
   margin: 8px;
 }
+
+#errorTitle {
+  font-family: 'Croma Sans Bold';
+  font-size: 34px;
+}
+
+#errorMessage {
+  font-family: 'Croma Sans Regular';
+  font-size: 22px;
+  color: #fff;
+}
+
+#errorModal {
+  z-index: 1060 !important;
+  /* higher than default modal (1050) */
+}
+
+#errorModal+.modal-backdrop {
+  z-index: 1055 !important;
+  /* just below modal, above other backdrops */
+}

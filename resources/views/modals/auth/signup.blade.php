@@ -38,7 +38,7 @@
                             <a class="text-cyan text-underline cursor-pointer" href="https://www.sega.co.jp/en/privacypolicy/index.html" target="_blank">Privacy Policy</a>.</label>
                     </div>
                 </form>
-                <button id="signupNextBtn" class="w-100 btn-bold mt-md-5" onclick="submitEmail('signup')" disabled>
+                <button id="signupNextBtn" class="w-100 btn-bold mt-md-5" onclick="submitAuth('signup')" disabled>
                     <span class="btn-text">Next</span>
                     <img src="img/polygon.png" class="btn-bg">
                 </button>
@@ -46,3 +46,5 @@
         </div>
     </div>
 </div>
+
+@include('modals.error')

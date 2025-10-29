@@ -43,6 +43,7 @@
 
     @include('modals.auth.login')
     @include('modals.auth.signup')
+    @include('modals.error')
 
     @include('modals.static-content', [ 'id'=> 'tosModal', 'title'=> 'P3R S.E.E.S. Missions” Campaign Terms and Conditions'])
 
@@ -71,6 +72,55 @@
         });
     </script>
     @yield('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const path = window.location.pathname;
+            const token = sessionStorage.getItem('api_token');
+            const isValidLaravelSession = await verifyLaravelSession();
+
+            if (token && isValidLaravelSession) {
+                if (path === '/' || path === '/index' || path === '/home') {
+                    window.location.replace('/missions');
+                    return;
+                }
+                if (path === '/missions') {
+                    history.pushState(null, '', window.location.href);
+                    window.addEventListener('popstate', () => {
+                        history.pushState(null, '', window.location.href);
+                    });
+                }
+            } else {
+                if (path === '/missions') {
+                    window.location.replace('/');
+                }
+            }
+        });
+
+        async function verifyLaravelSession() {
+            try {
+                const response = await fetch('/check-session');
+                const data = await response.json();
+                const tokenInStorage = sessionStorage.getItem('api_token');
+                const tokenInLaravel = data.api_token;
+
+                if (tokenInStorage && data.authenticated && tokenInStorage === tokenInLaravel) {
+                    return true;
+                }
+                if (!tokenInStorage && data.authenticated) {
+                    await fetch('/logout', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    });
+                }
+                return false;
+            } catch (err) {
+                console.error('Session check failed:', err);
+                return false;
+            }
+        }
+    </script>
 </body>
 
 </html>

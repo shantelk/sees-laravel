@@ -1,5 +1,5 @@
 function scrollToBottom() {
-    const container = document.querySelector(".second-section"); // change selector
+    const container = document.querySelector(".second-section");
     container.scrollIntoView({
         behavior: "smooth",
         block: "end"
@@ -15,11 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!homeAudio || !homeToggle) return;
 
-    // --- Load stored session states ---
     const hasAccepted = sessionStorage.getItem("cookieAccepted") === "true";
     let isMuted = sessionStorage.getItem("audioMuted");
 
-    // --- Default: start muted on first visit ---
     if (isMuted === null) {
         isMuted = "true";
         sessionStorage.setItem("audioMuted", "true");
@@ -27,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     homeAudio.muted = isMuted === "true";
 
-    // --- Update audio button UI ---
     const updateAudioButtonUI = (muted) => {
         const text = homeToggle.querySelector(".audio-text");
         const volume = homeToggle.querySelector(".volume");
@@ -38,10 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (mute) mute.classList.toggle("active", muted);
     };
 
-    // Apply initial UI state
     updateAudioButtonUI(homeAudio.muted);
 
-    // --- Cookie toaster visibility ---
     if (!hasAccepted) {
         overlay?.classList.remove("d-none");
         toaster?.classList.remove("d-none");
@@ -54,12 +49,10 @@ document.addEventListener("DOMContentLoaded", function () {
         toaster.style.display = "none";
     }
 
-    // --- Try to auto-play only if unmuted and cookies accepted ---
     if (hasAccepted && !homeAudio.muted) {
         homeAudio.play().catch(() => {
             console.log("Autoplay blocked (browser policy). Waiting for user interaction.");
 
-            // Resume playback on first real interaction
             const resumeAudio = () => {
                 if (!homeAudio.muted) {
                     homeAudio.play().catch(() => { });
@@ -73,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // --- Cookie consent button ---
     if (toasterBtn) {
         toasterBtn.addEventListener("click", () => {
             overlay.style.display = "none";
@@ -84,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // --- Audio toggle button ---
     homeToggle.addEventListener("click", () => {
         const nowMuted = !homeAudio.muted;
         homeAudio.muted = nowMuted;
@@ -92,11 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
         updateAudioButtonUI(nowMuted);
 
         if (!nowMuted) {
-            // user unmuted — play should be allowed
             homeAudio.play().catch(() => { });
             sessionStorage.setItem("cookieAccepted", "true");
         } else {
-            // optional: pause when muted
             homeAudio.pause();
         }
     });
@@ -175,44 +164,103 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function downloadCover() {
     const link = document.createElement('a');
-    link.href = 'pdf/P3R_NSW2-Cover.pdf'; // path to your PDF
-    link.download = 'P3R_NSW2 Cover.pdf'; // filename for download
+    link.href = 'pdf/P3R_NSW2-Cover.pdf'; 
+    link.download = 'P3R_NSW2 Cover.pdf'; 
     link.click();
 }
 
-async function submitEmail(type) {
+async function submitAuth(type) {
     const username = document.getElementById(`${type}Username`).value.trim();
     const email = document.getElementById(`${type}Email`).value.trim();
-
+    const endpoint = type === 'login' ? '/api/login' : '/api/register';
+    const errorEl = document.getElementById(`${type}APIErr`);
     try {
-        const api = await fetch('/api/submit-email', {
+        const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "X-CSRF-TOKEN": document.querySelector('meta[name=csrf-token]').content
+                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
             },
-            body: JSON.stringify({ username: username, email: email })
+            body: JSON.stringify({ username, email })
         });
 
-        const res = await api.json();
+        const res = await response.json();
 
-        if (!api.ok) throw new Error(res.error || 'Request failed.');
-        if (res.success) {
-            sessionStorage.setItem('api_token', res.data.api_token);
-            sessionStorage.setItem('user_data', JSON.stringify(res.data));
-            updateEntriesFromAPI(res.data.missions);
-
-            const modalEl = document.getElementById(`${type}Modal`);
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) modal.hide();
-
-            window.location.href = '/missions';
+        if (!response.ok || !res.success) {
+            throw new Error(res.message || 'Request failed.');
         }
+
+        const userData = res.data;
+        sessionStorage.setItem('api_token', userData.api_token);
+        sessionStorage.setItem('user_data', JSON.stringify(userData));
+
+        if (typeof updateEntriesFromAPI === 'function') {
+            updateEntriesFromAPI(userData.missions);
+        }
+
+        const modalEl = document.getElementById(`${type}Modal`);
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+
+        window.location.href = '/missions';
     } catch (err) {
         console.error(err);
-        alert(`${type} failed: ${err.message}`);
+        const title = type === 'login' ? 'Login failed.' : 'Register failed.';
+        const message = err.message || 'Please try again later.';
+        showErrorModal(title, message);
+
     }
 }
+
+function showErrorModal(title, message) {
+    const modalEl = document.getElementById('errorModal');
+    const titleEl = document.getElementById('errorTitle');
+    const messageEl = document.getElementById('errorMessage');
+
+    if (titleEl) titleEl.textContent = title;
+    if (messageEl) messageEl.textContent = message;
+
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+}
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// async function submitEmail(type) {
+//     const username = document.getElementById(`${type}Username`).value.trim();
+//     const email = document.getElementById(`${type}Email`).value.trim();
+
+//     try {
+//         const api = await fetch('/api/submit-email', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 "X-CSRF-TOKEN": document.querySelector('meta[name=csrf-token]').content
+//             },
+//             body: JSON.stringify({ username: username, email: email })
+//         });
+
+//         const res = await api.json();
+
+//         if (!api.ok) throw new Error(res.error || 'Request failed.');
+//         if (res.success) {
+//             sessionStorage.setItem('api_token', res.data.api_token);
+//             sessionStorage.setItem('user_data', JSON.stringify(res.data));
+//             updateEntriesFromAPI(res.data.missions);
+
+//             const modalEl = document.getElementById(`${type}Modal`);
+//             const modal = bootstrap.Modal.getInstance(modalEl);
+//             if (modal) modal.hide();
+
+//             window.location.href = '/missions';
+//         }
+//     } catch (err) {
+//         console.error(err);
+//         alert(`${type} failed: ${err.message}`);
+//     }
+// }
 
 function updateEntriesFromAPI(missions) {
     const entries = calculateEntries(missions);
@@ -254,26 +302,21 @@ async function logout() {
             },
         });
 
-        let data = {};
-
-        try {
-            data = await response.json();
-        } catch {
-            data = {};
-        }
-
         sessionStorage.clear();
 
-        if (response.status === 401) {
+        if (response.status === 200) {
+            console.info("Logout successful from server.");
+        } else if (response.status === 401) {
             console.warn("Session already expired on server.");
         } else {
-            console.warn("Logout endpoint returned unexpected status:", response.status);
+            console.warn("Logout returned status:", response.status);
         }
-        window.location.href = "/";
+
     } catch (err) {
-        console.error("Logout failed:", err);
+        console.error("Logout request failed:", err);
         sessionStorage.clear();
-        window.location.href = "/";
+    } finally {
+        window.location.replace("/");
     }
 }
 

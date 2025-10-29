@@ -280,6 +280,18 @@
                 incompleteMission(4, 0);
                 updateReceiptStatus(false);
             }
+
+            const luckyDraw = missionsData.lucky_draw;
+            if (luckyDraw && luckyDraw.completed) {
+                sessionStorage.setItem('luckyDrawCompleted', 'true');
+                luckyDrawBtn.textContent = "Check Entries";
+                luckyDrawBtn.classList.add('btn-check-entries');
+            } else {
+                sessionStorage.removeItem('luckyDrawCompleted');
+                luckyDrawBtn.textContent = "Enter Lucky Draw";
+                luckyDrawBtn.classList.remove('btn-check-entries');
+            }
+
             updateLuckyDrawSection();
             updateEntriesDisplay();
 
@@ -726,39 +738,76 @@
         const modalInstance = new bootstrap.Modal(entryModalEl);
         const emText = document.getElementById('emText');
 
-        let hasSubmitted = false;
+        let hasSubmitted = sessionStorage.getItem('luckyDrawCompleted') === 'true';
 
         luckyDrawBtn.addEventListener('click', (e) => {
             e.preventDefault();
 
-            entryModalEl.querySelector('.step-1').classList.remove('d-none');
-            entryModalEl.querySelector('.step-2').classList.add('d-none');
+            const step1 = entryModalEl.querySelector('.step-1');
+            const step2 = entryModalEl.querySelector('.step-2');
+            const completed = Number(sessionStorage.getItem('entriesCompleted') || 0);
+            const total = Number(sessionStorage.getItem('entriesTotal') || 3);
+            const capped = Math.min(completed, 3);
+            const hasSubmitted = sessionStorage.getItem('luckyDrawCompleted') === 'true';
 
-            const completed = sessionStorage.getItem('entriesCompleted') || 0;
-            const total = sessionStorage.getItem('entriesTotal') || 3;
+            step1.classList.remove('d-none');
+            step2.classList.add('d-none');
 
             if (hasSubmitted) {
                 entryBtn.disabled = true;
                 entryBtn.textContent = "Entries Submitted";
-                emText.textContent = `You have submitted accumulated entries of [${completed}] for the draw.`;
                 backBtn.classList.remove('d-none');
+                emText.textContent = `You have submitted accumulated entries of [${capped}] for the draw.`;
             } else {
                 entryBtn.disabled = false;
                 entryBtn.textContent = `Submit Entries (${completed}/${total})`;
-                emText.textContent = `You have completed [${completed}] mission(s), and have accumulated entries of [${Math.min(completed, 3)}] for the draw.`;
                 backBtn.classList.add('d-none');
+                emText.textContent = `You have completed [${completed}] mission(s), and have accumulated entries of [${capped}] for the draw.`;
             }
+
             modalInstance.show();
         });
-
-        entryBtn.addEventListener('click', () => {
+        entryBtn.addEventListener('click', async () => {
             if (entryBtn.disabled) return;
 
-            entryModalEl.querySelector('.step-1').classList.add('d-none');
-            entryModalEl.querySelector('.step-2').classList.remove('d-none');
-            hasSubmitted = true;
-        });
+            try {
+                const token = sessionStorage.getItem('api_token');
+                if (!token) return await logout();
 
+                entryBtn.disabled = true;
+                entryBtn.textContent = "Submitting...";
+
+                const response = await fetch('/api/update-progress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Api-Token': token,
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
+                    },
+                    body: JSON.stringify({
+                        mission: 'is_lucky_draw',
+                        completed: true
+                    })
+                });
+
+                if (await handleUnauthorized(response)) return;
+
+                const res = await response.json();
+                if (!response.ok || !res.success) throw new Error(res.message || 'Failed to submit lucky draw.');
+
+                sessionStorage.setItem('luckyDrawCompleted', 'true');
+
+                entryModalEl.querySelector('.step-1').classList.add('d-none');
+                entryModalEl.querySelector('.step-2').classList.remove('d-none');
+
+                luckyDrawBtn.textContent = "Check Entries";
+                luckyDrawBtn.classList.add('btn-check-entries');
+            } catch (err) {
+                console.error(err);
+                entryBtn.disabled = false;
+                entryBtn.textContent = "Submit Entries";
+            }
+        });
         entryModalEl.addEventListener('hidden.bs.modal', () => {
             if (hasSubmitted) {
                 luckyDrawBtn.textContent = "Check Entries";

@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </form>
-                <button type="submit" id="loginNextBtn" class="w-100 btn-bold mt-md-5" onclick="submitEmail('login')" disabled>
+                <button type="submit" id="loginNextBtn" class="w-100 btn-bold mt-md-5" onclick="submitAuth('login')" disabled>
                     <span class="btn-text">Next</span>
                     <img src="img/polygon.png" class="btn-bg">
                 </button>
@@ -36,3 +36,5 @@
         </div>
     </div>
 </div>
+
+@include('modals.error')

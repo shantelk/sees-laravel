@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 class ApiController extends Controller
 {
 
-    public function submitEmail(Request $request)
+    public function login(Request $request)
     {
         $validated = $request->validate([
             'email' => 'required|email',
@@ -17,37 +17,141 @@ class ApiController extends Controller
         ]);
 
         try {
-            $path = 'https://api-psblue.agatedev.net/api/submit-email';
+            $path = 'https://api-psblue.agatedev.net/api/login';
             $response = Http::post($path, $validated);
 
             if (!$response->successful()) {
+                $body = $response->body();
+                $errorBody = null;
+
+                if (strlen($body) < 500000 && $this->isJson($body)) {
+                    $errorBody = json_decode($body, true);
+                }
+
                 return response()->json([
                     'success' => false,
-                    'message' => 'External API failed.',
-                    'response' => $response->body(),
+                    'message' => $errorBody['message'] ?? 'Login failed. Please check your credentials.',
+                    'errors'  => $errorBody['errors'] ?? null,
+                    'status'  => $response->status(),
                 ], $response->status());
             }
 
-            $data = $response->json()['data'] ?? $response->json();
+            $json = $response->json();
+            $data = $json['data'] ?? $json;
+
+            session([
+                'api_token' => $data['api_token'] ?? null,
+                'username'  => $data['username'] ?? null,
+                'email'     => $data['email'] ?? null,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => $response->json()['message'] ?? 'Login success.',
+                'data'    => $data,
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Server error: ' . $e->getMessage(),
             ], 500);
         }
-
-        session([
-            'api_token' => $data['api_token'] ?? null,
-            'username'  => $data['username'] ?? null,
-            'email'     => $data['email'] ?? null,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Login success',
-            'data' => $data,
-        ]);
     }
+
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'username' => 'required|string',
+        ]);
+
+        try {
+            $path = 'https://api-psblue.agatedev.net/api/register';
+            $response = Http::post($path, $validated);
+
+            if (!$response->successful()) {
+                $body = $response->body();
+                $errorBody = null;
+
+                if (strlen($body) < 500000 && $this->isJson($body)) {
+                    $errorBody = json_decode($body, true);
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorBody['message'] ?? 'Register failed. Please check your credentials.',
+                    'errors'  => $errorBody['errors'] ?? null,
+                    'status'  => $response->status(),
+                ], $response->status());
+            }
+
+            $json = $response->json();
+            $data = $json['data'] ?? $json;
+
+            session([
+                'api_token' => $data['api_token'] ?? null,
+                'username'  => $data['username'] ?? null,
+                'email'     => $data['email'] ?? null,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => $response->json()['message'] ?? 'Register success.',
+                'data'    => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    private function isJson($string)
+    {
+        json_decode($string);
+        return json_last_error() === JSON_ERROR_NONE;
+    }
+
+    // public function submitEmail(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'email' => 'required|email',
+    //         'username' => 'required|string',
+    //     ]);
+
+    //     try {
+    //         $path = 'https://api-psblue.agatedev.net/api/submit-email';
+    //         $response = Http::post($path, $validated);
+
+    //         if (!$response->successful()) {
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'External API failed.',
+    //                 'response' => $response->body(),
+    //             ], $response->status());
+    //         }
+
+    //         $data = $response->json()['data'] ?? $response->json();
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Server error: ' . $e->getMessage(),
+    //         ], 500);
+    //     }
+
+    //     session([
+    //         'api_token' => $data['api_token'] ?? null,
+    //         'username'  => $data['username'] ?? null,
+    //         'email'     => $data['email'] ?? null,
+    //     ]);
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Login success',
+    //         'data' => $data,
+    //     ]);
+    // }
 
     public function updateProgress(Request $request)
     {
