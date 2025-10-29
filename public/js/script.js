@@ -13,12 +13,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const toaster = document.getElementById("toaster");
     const toasterBtn = document.getElementById("toasterBtn");
 
-    if (!homeAudio) return;
+    if (!homeAudio || !homeToggle) return;
 
-    const hasAccepted = localStorage.getItem("cookieAccepted") === "true";
-    const isMuted = localStorage.getItem("audioMuted") === "true";
-    homeAudio.muted = isMuted;
+    // --- Load stored session states ---
+    const hasAccepted = sessionStorage.getItem("cookieAccepted") === "true";
+    let isMuted = sessionStorage.getItem("audioMuted");
 
+    // --- Default: start muted on first visit ---
+    if (isMuted === null) {
+        isMuted = "true";
+        sessionStorage.setItem("audioMuted", "true");
+    }
+
+    homeAudio.muted = isMuted === "true";
+
+    // --- Update audio button UI ---
     const updateAudioButtonUI = (muted) => {
         const text = homeToggle.querySelector(".audio-text");
         const volume = homeToggle.querySelector(".volume");
@@ -29,8 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (mute) mute.classList.toggle("active", muted);
     };
 
-    updateAudioButtonUI(isMuted);
+    // Apply initial UI state
+    updateAudioButtonUI(homeAudio.muted);
 
+    // --- Cookie toaster visibility ---
     if (!hasAccepted) {
         overlay?.classList.remove("d-none");
         toaster?.classList.remove("d-none");
@@ -43,31 +54,50 @@ document.addEventListener("DOMContentLoaded", function () {
         toaster.style.display = "none";
     }
 
-    if (hasAccepted && !isMuted) {
-        homeAudio.play().catch(() => { });
+    // --- Try to auto-play only if unmuted and cookies accepted ---
+    if (hasAccepted && !homeAudio.muted) {
+        homeAudio.play().catch(() => {
+            console.log("Autoplay blocked (browser policy). Waiting for user interaction.");
+
+            // Resume playback on first real interaction
+            const resumeAudio = () => {
+                if (!homeAudio.muted) {
+                    homeAudio.play().catch(() => { });
+                }
+                document.removeEventListener("click", resumeAudio);
+                document.removeEventListener("keydown", resumeAudio);
+            };
+
+            document.addEventListener("click", resumeAudio, { once: true });
+            document.addEventListener("keydown", resumeAudio, { once: true });
+        });
     }
 
+    // --- Cookie consent button ---
     if (toasterBtn) {
         toasterBtn.addEventListener("click", () => {
             overlay.style.display = "none";
             toaster.style.display = "none";
-            localStorage.setItem("cookieAccepted", "true");
-            homeAudio.muted = false;
-            localStorage.setItem("audioMuted", "false");
-            homeAudio.play().catch(() => { });
-            updateAudioButtonUI(false);
+            sessionStorage.setItem("cookieAccepted", "true");
+            // stays muted until user manually unmutes
+            updateAudioButtonUI(true);
         });
     }
 
+    // --- Audio toggle button ---
     homeToggle.addEventListener("click", () => {
         const nowMuted = !homeAudio.muted;
         homeAudio.muted = nowMuted;
-        localStorage.setItem("audioMuted", nowMuted);
+        sessionStorage.setItem("audioMuted", nowMuted);
         updateAudioButtonUI(nowMuted);
 
         if (!nowMuted) {
+            // user unmuted — play should be allowed
             homeAudio.play().catch(() => { });
-            localStorage.setItem("cookieAccepted", "true");
+            sessionStorage.setItem("cookieAccepted", "true");
+        } else {
+            // optional: pause when muted
+            homeAudio.pause();
         }
     });
 
@@ -168,8 +198,8 @@ async function submitEmail(type) {
 
         if (!api.ok) throw new Error(res.error || 'Request failed.');
         if (res.success) {
-            localStorage.setItem('api_token', res.data.api_token);
-            localStorage.setItem('user_data', JSON.stringify(res.data));
+            sessionStorage.setItem('api_token', res.data.api_token);
+            sessionStorage.setItem('user_data', JSON.stringify(res.data));
             updateEntriesFromAPI(res.data.missions);
 
             const modalEl = document.getElementById(`${type}Modal`);
@@ -189,7 +219,7 @@ function updateEntriesFromAPI(missions) {
     const entriesDisplay = document.getElementById('entriesCount');
 
     if (entriesDisplay) entriesDisplay.textContent = entries;
-    localStorage.setItem('entriesCount', entries);
+    sessionStorage.setItem('entriesCount', entries);
 }
 
 function calculateEntries(missions) {
@@ -232,7 +262,7 @@ async function logout() {
             data = {};
         }
 
-        localStorage.clear();
+        sessionStorage.clear();
 
         if (response.status === 401) {
             console.warn("Session already expired on server.");
@@ -242,7 +272,7 @@ async function logout() {
         window.location.href = "/";
     } catch (err) {
         console.error("Logout failed:", err);
-        localStorage.clear();
+        sessionStorage.clear();
         window.location.href = "/";
     }
 }

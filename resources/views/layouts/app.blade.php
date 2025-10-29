@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
-    <link rel="preload" as="image" href="{{ asset('img/mission-bg.webp') }}">
 </head>
 
 <body>
