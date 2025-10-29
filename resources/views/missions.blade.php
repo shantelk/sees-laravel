@@ -283,11 +283,11 @@
 
             const luckyDraw = missionsData.lucky_draw;
             if (luckyDraw && luckyDraw.completed) {
-                sessionStorage.setItem('luckyDrawCompleted', 'true');
+                localStorage.setItem('luckyDrawCompleted', 'true');
                 luckyDrawBtn.textContent = "Check Entries";
                 luckyDrawBtn.classList.add('btn-check-entries');
             } else {
-                sessionStorage.removeItem('luckyDrawCompleted');
+                localStorage.removeItem('luckyDrawCompleted');
                 luckyDrawBtn.textContent = "Enter Lucky Draw";
                 luckyDrawBtn.classList.remove('btn-check-entries');
             }
@@ -411,7 +411,7 @@
         if (entriesCount) {
             entriesCount.textContent = completedMissions;
         }
-        sessionStorage.setItem('entriesCount', completedMissions);
+        localStorage.setItem('entriesCount', completedMissions);
     }
 
     function updateEntriesDisplay() {
@@ -434,8 +434,8 @@
 
         if (entriesCount) entriesCount.textContent = displayCount;
         if (entriesTotal) entriesTotal.textContent = totalMissions;
-        sessionStorage.setItem('entriesCompleted', displayCount);
-        sessionStorage.setItem('entriesTotal', totalMissions);
+        localStorage.setItem('entriesCompleted', displayCount);
+        localStorage.setItem('entriesTotal', totalMissions);
     }
 
     document.querySelectorAll(".task-card").forEach(card => {
@@ -537,7 +537,7 @@
 
                 if (xhr.status === 401) {
                     alert("Session expired. Please log in again.");
-                    sessionStorage.clear();
+                    localStorage.clear();
                     window.location.href = "/";
                     return;
                 }
@@ -548,7 +548,7 @@
                         box_url: data.data.box_url,
                         file_size: formatFileSize(file.size),
                     };
-                    sessionStorage.setItem('receipt', JSON.stringify(receiptData));
+                    localStorage.setItem('receipt', JSON.stringify(receiptData));
 
                     uploadStatus.textContent = "Complete";
                     uploadStatus.className = "upload-status text-success";
@@ -738,17 +738,17 @@
         const modalInstance = new bootstrap.Modal(entryModalEl);
         const emText = document.getElementById('emText');
 
-        let hasSubmitted = sessionStorage.getItem('luckyDrawCompleted') === 'true';
+        let hasSubmitted = localStorage.getItem('luckyDrawCompleted') === 'true';
 
         luckyDrawBtn.addEventListener('click', (e) => {
             e.preventDefault();
 
             const step1 = entryModalEl.querySelector('.step-1');
             const step2 = entryModalEl.querySelector('.step-2');
-            const completed = Number(sessionStorage.getItem('entriesCompleted') || 0);
-            const total = Number(sessionStorage.getItem('entriesTotal') || 3);
+            const completed = Number(localStorage.getItem('entriesCompleted') || 0);
+            const total = Number(localStorage.getItem('entriesTotal') || 3);
             const capped = Math.min(completed, 3);
-            const hasSubmitted = sessionStorage.getItem('luckyDrawCompleted') === 'true';
+            const hasSubmitted = localStorage.getItem('luckyDrawCompleted') === 'true';
 
             step1.classList.remove('d-none');
             step2.classList.add('d-none');
@@ -771,7 +771,7 @@
             if (entryBtn.disabled) return;
 
             try {
-                const token = sessionStorage.getItem('api_token');
+                const token = localStorage.getItem('api_token');
                 if (!token) return await logout();
 
                 entryBtn.disabled = true;
@@ -795,7 +795,7 @@
                 const res = await response.json();
                 if (!response.ok || !res.success) throw new Error(res.message || 'Failed to submit lucky draw.');
 
-                sessionStorage.setItem('luckyDrawCompleted', 'true');
+                localStorage.setItem('luckyDrawCompleted', 'true');
 
                 entryModalEl.querySelector('.step-1').classList.add('d-none');
                 entryModalEl.querySelector('.step-2').classList.remove('d-none');

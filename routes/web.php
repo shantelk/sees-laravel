@@ -23,6 +23,6 @@ Route::post('/logout', [ApiController::class, 'logout'])->name('logout');
 Route::get('/check-session', function () {
     return response()->json([
         'authenticated' => session()->has('api_token'),
-        'api_token' => session('api_token')
+        'api_token'     => session('api_token'),
     ]);
 });

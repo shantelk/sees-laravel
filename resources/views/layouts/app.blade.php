@@ -48,14 +48,14 @@
     @include('modals.static-content', [ 'id'=> 'tosModal', 'title'=> 'P3R S.E.E.S. Missions” Campaign Terms and Conditions'])
 
     @include('modals.confirmation', [
-        'id' => 'signoutModal',
-        'title' => 'Are you sure <br> you want to logout?',
-        'buttonText' => 'No, bring me back',
+    'id' => 'signoutModal',
+    'title' => 'Are you sure <br> you want to logout?',
+    'buttonText' => 'No, bring me back',
     ])
     @include('modals.confirmation', [
-        'id' => 'errorUnlockModal',
-        'title' => 'Complete at least 1 <br> mission to join.',
-        'buttonText' => 'Back to Missions',
+    'id' => 'errorUnlockModal',
+    'title' => 'Complete at least 1 <br> mission to join.',
+    'buttonText' => 'Back to Missions',
     ])
 
     <script src="{{ asset('js/script.js') }}"></script>
@@ -75,50 +75,81 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const path = window.location.pathname;
-            const token = sessionStorage.getItem('api_token');
-            const isValidLaravelSession = await verifyLaravelSession();
 
-            if (token && isValidLaravelSession) {
-                if (path === '/' || path === '/index' || path === '/home') {
-                    window.location.replace('/missions');
-                    return;
+            // Check local expiry
+            if (!checkLocalTokenExpiry()) {
+                await logoutCompletely();
+                return;
+            }
+
+            const localToken = localStorage.getItem('api_token');
+            const validLaravel = await verifyLaravelSession();
+
+            if (!localToken || !validLaravel) {
+                if (path !== '/' && path !== '/home' && path !== '/index') {
+                    await logoutCompletely();
+                } else {
+                    localStorage.clear();
+                    sessionStorage.clear();
                 }
-                if (path === '/missions') {
+                return;
+            }
+
+            if (['/', '/home', '/index'].includes(path)) {
+                window.location.replace('/missions');
+                return;
+            }
+
+            if (path === '/missions') {
+                history.pushState(null, '', window.location.href);
+                window.addEventListener('popstate', () => {
                     history.pushState(null, '', window.location.href);
-                    window.addEventListener('popstate', () => {
-                        history.pushState(null, '', window.location.href);
-                    });
-                }
-            } else {
-                if (path === '/missions') {
-                    window.location.replace('/');
-                }
+                });
             }
         });
+
+        async function logoutCompletely() {
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                await fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+            } catch (err) {
+                console.warn('Logout cleanup failed:', err);
+            } finally {
+                window.location.replace('/');
+            }
+        }
 
         async function verifyLaravelSession() {
             try {
                 const response = await fetch('/check-session');
+                if (!response.ok) throw new Error('Session check failed');
                 const data = await response.json();
-                const tokenInStorage = sessionStorage.getItem('api_token');
-                const tokenInLaravel = data.api_token;
-
-                if (tokenInStorage && data.authenticated && tokenInStorage === tokenInLaravel) {
-                    return true;
-                }
-                if (!tokenInStorage && data.authenticated) {
-                    await fetch('/logout', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    });
-                }
-                return false;
+                return data.authenticated === true && !!data.api_token;
             } catch (err) {
-                console.error('Session check failed:', err);
+                console.warn('verifyLaravelSession error:', err);
                 return false;
             }
+        }
+
+        function checkLocalTokenExpiry() {
+            const expiry = localStorage.getItem('token_expiry');
+            if (!expiry) return true;
+
+            const now = Date.now();
+            const expiresAt = parseInt(expiry, 10);
+
+            if (now >= expiresAt) {
+                console.warn('Local token expired — clearing session.');
+                localStorage.clear();
+                return false;
+            }
+            return true;
         }
     </script>
 </body>

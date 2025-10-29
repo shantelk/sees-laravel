@@ -15,12 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!homeAudio || !homeToggle) return;
 
-    const hasAccepted = sessionStorage.getItem("cookieAccepted") === "true";
-    let isMuted = sessionStorage.getItem("audioMuted");
+    const hasAccepted = localStorage.getItem("cookieAccepted") === "true";
+    let isMuted = localStorage.getItem("audioMuted");
 
     if (isMuted === null) {
         isMuted = "true";
-        sessionStorage.setItem("audioMuted", "true");
+        localStorage.setItem("audioMuted", "true");
     }
 
     homeAudio.muted = isMuted === "true";
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         toasterBtn.addEventListener("click", () => {
             overlay.style.display = "none";
             toaster.style.display = "none";
-            sessionStorage.setItem("cookieAccepted", "true");
+            localStorage.setItem("cookieAccepted", "true");
             // stays muted until user manually unmutes
             updateAudioButtonUI(true);
         });
@@ -79,12 +79,12 @@ document.addEventListener("DOMContentLoaded", function () {
     homeToggle.addEventListener("click", () => {
         const nowMuted = !homeAudio.muted;
         homeAudio.muted = nowMuted;
-        sessionStorage.setItem("audioMuted", nowMuted);
+        localStorage.setItem("audioMuted", nowMuted);
         updateAudioButtonUI(nowMuted);
 
         if (!nowMuted) {
             homeAudio.play().catch(() => { });
-            sessionStorage.setItem("cookieAccepted", "true");
+            localStorage.setItem("cookieAccepted", "true");
         } else {
             homeAudio.pause();
         }
@@ -164,8 +164,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function downloadCover() {
     const link = document.createElement('a');
-    link.href = 'pdf/P3R_NSW2-Cover.pdf'; 
-    link.download = 'P3R_NSW2 Cover.pdf'; 
+    link.href = 'pdf/P3R_NSW2-Cover.pdf';
+    link.download = 'P3R_NSW2 Cover.pdf';
     link.click();
 }
 
@@ -191,9 +191,9 @@ async function submitAuth(type) {
         }
 
         const userData = res.data;
-        sessionStorage.setItem('api_token', userData.api_token);
-        sessionStorage.setItem('user_data', JSON.stringify(userData));
-
+        localStorage.setItem('api_token', userData.api_token);
+        localStorage.setItem('user_data', JSON.stringify(userData));
+        localStorage.setItem('token_expiry', Date.now() + 8 * 60 * 60 * 1000); //8h
         if (typeof updateEntriesFromAPI === 'function') {
             updateEntriesFromAPI(userData.missions);
         }
@@ -246,8 +246,8 @@ function capitalize(str) {
 
 //         if (!api.ok) throw new Error(res.error || 'Request failed.');
 //         if (res.success) {
-//             sessionStorage.setItem('api_token', res.data.api_token);
-//             sessionStorage.setItem('user_data', JSON.stringify(res.data));
+//             localStorage.setItem('api_token', res.data.api_token);
+//             localStorage.setItem('user_data', JSON.stringify(res.data));
 //             updateEntriesFromAPI(res.data.missions);
 
 //             const modalEl = document.getElementById(`${type}Modal`);
@@ -267,7 +267,7 @@ function updateEntriesFromAPI(missions) {
     const entriesDisplay = document.getElementById('entriesCount');
 
     if (entriesDisplay) entriesDisplay.textContent = entries;
-    sessionStorage.setItem('entriesCount', entries);
+    localStorage.setItem('entriesCount', entries);
 }
 
 function calculateEntries(missions) {
@@ -292,31 +292,22 @@ function groupMissions(missions) {
     return grouped;
 }
 
+const TOKEN_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours in ms
+
 async function logout() {
     try {
-        const response = await fetch('/logout', {
-            method: "POST",
+        await fetch('/logout', {
+            method: 'POST',
             headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                "Accept": "application/json",
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
             },
         });
-
-        sessionStorage.clear();
-
-        if (response.status === 200) {
-            console.info("Logout successful from server.");
-        } else if (response.status === 401) {
-            console.warn("Session already expired on server.");
-        } else {
-            console.warn("Logout returned status:", response.status);
-        }
-
     } catch (err) {
-        console.error("Logout request failed:", err);
-        sessionStorage.clear();
+        console.error('Logout failed:', err);
     } finally {
-        window.location.replace("/");
+        localStorage.clear();
+        window.location.replace('/');
     }
 }
 
