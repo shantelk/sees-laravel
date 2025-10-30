@@ -45,7 +45,7 @@
     @include('modals.auth.signup')
     @include('modals.error')
 
-    @include('modals.static-content', [ 'id'=> 'tosModal', 'title'=> 'P3R S.E.E.S. Missions” Campaign Terms and Conditions'])
+    @include('modals.static-content', [ 'id'=> 'tosModal', 'title'=> '“P3R S.E.E.S. Missions” Campaign Terms and Conditions'])
 
     @include('modals.confirmation', [
     'id' => 'signoutModal',

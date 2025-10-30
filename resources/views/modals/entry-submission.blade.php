@@ -11,7 +11,7 @@
                 <div class="m-lg-3">
                     <h3>10 WINNERS ONLY!</h3>
                     <p class="mb-0">10 lucky winners will be selected to win the following prizes. Verification of entries will be done during the selection process.</p>
-                    <p class="font-secondary text-cyan mb-4">Event period: 31 October - 21 November 2025</h6>
+                    <p class="font-secondary text-cyan mb-4">Event period: 31 October 2025 (12:00, GMT+8) to 21 November 2025 (23:59, GMT+8)</h6>
 
                     <p class="mb-1">Please ensure that this is the correct email of your entries:</p>
                     <div class="credentials">
@@ -33,6 +33,9 @@
                         </div>
                         <p class="mt-3 mb-0">1 x Signed Shikishi from Azusa Shimada <br> (Persona 3 Reload Character Designer)</p>
                     </div>
+                </div>
+                <div class="w-100 mb-2">
+                    <em class="text-danger">You will only be able to submit your entries once.</em>
                 </div>
                 <div class="w-100">
                     <button id="entryBtn" class="btn-tertiary">Submit Entries (4)</button>

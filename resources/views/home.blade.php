@@ -25,7 +25,7 @@
             <div class="col-12 col-lg-6 text-center order-2 order-lg-1">
                 <div class=" text-content">
                     <h3>Win Amazing Prizes</h3>
-                    <h6 class="event-dt text-cyan">Event period: 31 October - 21 November 2025</h6>
+                    <h6 class="event-dt text-cyan px-4">Event period: 31 October 2025 (12:00, GMT+8) to 21 November 2025 (23:59, GMT+8)</h6>
                     <p>Participate in this Southeast Asia exclusive launch campaign for Persona 3 Reload on the Nintendo Switch 2! <br><br>
                         Join missions, work together on milestones and unlock a lucky draw for everyone. There’s a freebie in every mission, so everyone is a winner.</p>
                     </p>

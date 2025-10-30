@@ -7,8 +7,12 @@
                 </svg>
             </button>
             <div class="modal-body pt-0">
-                <h3 id="errorTitle" class="mb-0">Login failed</h3>
-                <p id="errorMessage" class="my-2">Please try again later.</p>
+                <h3 id="errorTitle" class="mb-3">Login failed</h3>
+                <p id="errorMessage" class="my-2">
+                    The username does not match the email entered or the email entered has not been registered yet.
+                    <br>
+                    Please try again with the correct username and email combination, or sign up with the email address.
+                </p>
                 <div class="w-100">
                     <button class="btn-tertiary mt-4" data-bs-dismiss="modal" aria-label="Close">OK</button>
                 </div>

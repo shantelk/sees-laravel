@@ -140,7 +140,7 @@
                             <h6 id="progressText">Complete a mission to unlock!</h6>
                         </div>
                     </div>
-                    <h6 class="event-dt text-cyan">Event period: 31 October - 21 November 2025</h6>
+                    <h6 class="event-dt text-cyan px-4">Event period: 31 October 2025 (12:00, GMT+8) to 21 November 2025 (23:59, GMT+8)</h6>
                     <button id="luckyDrawBtn" class="btn-tertiary" disabled>
                         ENTER LUCKY DRAW
                     </button>

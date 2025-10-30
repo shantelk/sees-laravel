@@ -90,6 +90,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    const openTosLink = document.getElementById("openTosLink");
+    const tosModal = new bootstrap.Modal(document.getElementById("tosModal"), {
+        backdrop: false, 
+        keyboard: false
+    });
+
+    openTosLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        tosModal.show();
+    });
+
     // Form Validation //
     function isEmailValid(email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -207,20 +218,30 @@ async function submitAuth(type) {
         console.error(err);
         const title = type === 'login' ? 'Login failed.' : 'Register failed.';
         const message = err.message || 'Please try again later.';
-        showErrorModal(title, message);
+        showErrorModal(type);
 
     }
 }
 
-function showErrorModal(title, message) {
-    const modalEl = document.getElementById('errorModal');
-    const titleEl = document.getElementById('errorTitle');
-    const messageEl = document.getElementById('errorMessage');
+function showErrorModal(type) {
+    const modalTitle = document.getElementById("errorTitle");
+    const modalMessage = document.getElementById("errorMessage");
 
-    if (titleEl) titleEl.textContent = title;
-    if (messageEl) messageEl.textContent = message;
+    if (type === "login") {
+        modalTitle.textContent = "Login failed";
+        modalMessage.innerHTML = `
+            The username does not match the email entered or the email entered has not been registered yet.
+            <br>
+            Please try again with the correct username and email combination, or sign up with the email address.
+        `;
+    } else if (type === "signup") {
+        modalTitle.textContent = "Registration failed";
+        modalMessage.innerHTML = `
+            This email has already been registered. Please login instead.
+        `;
+    }
 
-    const modal = new bootstrap.Modal(modalEl);
+    const modal = new bootstrap.Modal(document.getElementById("errorModal"));
     modal.show();
 }
 
